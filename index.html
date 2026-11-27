@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>우리 가족 여행 지역 & 비용 계산기 (숙소·맛집·코스 상세 가이드)</title>
+  <title>3가족(11인) 공동 여행 예산 & 지역 비교 계산기</title>
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     body {
@@ -25,7 +25,7 @@
       z-index: 30;
     }
     .header-inner {
-      max-width: 1180px;
+      max-width: 1200px;
       margin: 0 auto;
       padding: 14px 16px;
       display: flex;
@@ -83,14 +83,14 @@
 
     /* 메인 2단 그리드 */
     .container {
-      max-width: 1180px;
+      max-width: 1200px;
       margin: 20px auto 0;
       padding: 0 16px;
       display: grid;
       grid-template-columns: 1fr;
       gap: 20px;
     }
-    @media (min-width: 960px) {
+    @media (min-width: 980px) {
       .container {
         grid-template-columns: 7.2fr 3.8fr;
         align-items: start;
@@ -208,6 +208,143 @@
       color: #334155;
     }
 
+    /* 3가족 선택 및 구성 카드 */
+    .family-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 12px;
+    }
+    @media (min-width: 680px) {
+      .family-grid { grid-template-columns: repeat(3, 1fr); }
+    }
+    .fam-card {
+      border: 2px solid #e2e8f0;
+      border-radius: 14px;
+      padding: 14px;
+      background: #f8fafc;
+      transition: all 0.15s ease;
+    }
+    .fam-card.active {
+      border-color: #2563eb;
+      background: #eff6ff;
+    }
+    .fam-card.inactive {
+      opacity: 0.55;
+      background: #f1f5f9;
+    }
+    .fam-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding-bottom: 10px;
+      border-bottom: 1px solid #cbd5e1;
+      margin-bottom: 10px;
+    }
+    .fam-toggle-btn {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 15px;
+      font-weight: 800;
+      color: #0f172a;
+      text-align: left;
+    }
+    .fam-check {
+      width: 22px;
+      height: 22px;
+      border-radius: 6px;
+      border: 2px solid #94a3b8;
+      background: #ffffff;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 13px;
+      font-weight: 900;
+      color: #ffffff;
+    }
+    .fam-card.active .fam-check {
+      background: #2563eb;
+      border-color: #2563eb;
+    }
+    .fam-badge {
+      font-size: 12px;
+      font-weight: 800;
+      padding: 2px 8px;
+      border-radius: 999px;
+      background: #dbeafe;
+      color: #1d4ed8;
+    }
+    .fam-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 12.5px;
+      margin-bottom: 7px;
+    }
+    .fam-ctrl {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .btn-mini-step {
+      width: 26px;
+      height: 26px;
+      border-radius: 6px;
+      background: #ffffff;
+      border: 1px solid #cbd5e1;
+      font-size: 14px;
+      font-weight: 800;
+      color: #0f172a;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .btn-mini-step:hover { background: #e2e8f0; }
+    .fam-num {
+      min-width: 22px;
+      text-align: center;
+      font-weight: 800;
+      font-size: 13px;
+    }
+    .fam-cost-preview {
+      margin-top: 10px;
+      padding-top: 8px;
+      border-top: 1px dashed #cbd5e1;
+      font-size: 12px;
+      display: flex;
+      justify-content: space-between;
+      color: #334155;
+    }
+
+    /* 공동 예산 & 박수 바 */
+    .budget-bar-box {
+      margin-top: 14px;
+      padding: 14px;
+      border-radius: 12px;
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+    }
+    .budget-input-wrap {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .budget-input {
+      width: 140px;
+      padding: 7px 10px;
+      border-radius: 8px;
+      border: 1px solid #94a3b8;
+      font-size: 14px;
+      font-weight: 800;
+      text-align: right;
+      background: #ffffff;
+    }
+
     /* 추천 숙소 · 맛집 · 코스 가이드 */
     .guide-subhead {
       display: flex;
@@ -226,8 +363,6 @@
       border: 1px solid #bfdbfe;
       white-space: nowrap;
     }
-
-    /* 숙소 카드 그리드 */
     .hotel-grid {
       display: grid;
       grid-template-columns: 1fr;
@@ -245,9 +380,7 @@
       flex-direction: column;
       justify-content: space-between;
       gap: 10px;
-      transition: all 0.15s ease;
     }
-    .hotel-card:hover { border-color: #93c5fd; }
     .hotel-card.selected {
       border-color: #2563eb;
       background: #f0f9ff;
@@ -263,24 +396,9 @@
     .tier-budget { background: #e2e8f0; color: #334155; }
     .tier-standard { background: #dbeafe; color: #1d4ed8; }
     .tier-luxury { background: #fef3c7; color: #b45309; }
-    .hotel-name {
-      font-size: 15px;
-      font-weight: 800;
-      color: #0f172a;
-      line-height: 1.3;
-    }
-    .hotel-area {
-      font-size: 11px;
-      font-weight: 700;
-      color: #2563eb;
-      margin-top: 4px;
-    }
-    .hotel-features {
-      font-size: 12px;
-      color: #475569;
-      margin-top: 6px;
-      line-height: 1.45;
-    }
+    .hotel-name { font-size: 15px; font-weight: 800; color: #0f172a; line-height: 1.3; }
+    .hotel-area { font-size: 11px; font-weight: 700; color: #2563eb; margin-top: 4px; }
+    .hotel-features { font-size: 12px; color: #475569; margin-top: 6px; line-height: 1.45; }
     .hotel-price-row {
       padding-top: 8px;
       border-top: 1px dashed #cbd5e1;
@@ -288,16 +406,8 @@
       align-items: center;
       justify-content: space-between;
     }
-    .hotel-rate {
-      font-size: 14px;
-      font-weight: 900;
-      color: #0f172a;
-    }
-    .hotel-actions {
-      display: flex;
-      gap: 6px;
-      margin-top: 6px;
-    }
+    .hotel-rate { font-size: 14px; font-weight: 900; color: #0f172a; }
+    .hotel-actions { display: flex; gap: 6px; margin-top: 6px; }
     .btn-apply-hotel {
       flex: 1;
       padding: 7px 8px;
@@ -308,10 +418,7 @@
       color: #ffffff;
       text-align: center;
     }
-    .btn-apply-hotel.active {
-      background: #2563eb;
-      color: #ffffff;
-    }
+    .btn-apply-hotel.active { background: #2563eb; }
     .btn-map-mini {
       padding: 7px 9px;
       border-radius: 8px;
@@ -321,13 +428,9 @@
       color: #334155;
       border: 1px solid #cbd5e1;
       text-decoration: none;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
     }
-    .btn-map-mini:hover { background: #e2e8f0; }
 
-    /* 맛집 카드 그리드 */
+    /* 맛집 카드 */
     .food-grid {
       display: grid;
       grid-template-columns: 1fr;
@@ -346,18 +449,8 @@
       justify-content: space-between;
       gap: 8px;
     }
-    .food-card:hover { border-color: #cbd5e1; background: #fafafa; }
-    .food-top {
-      display: flex;
-      justify-content: space-between;
-      align-items: flex-start;
-      gap: 8px;
-    }
-    .food-name {
-      font-size: 15px;
-      font-weight: 800;
-      color: #0f172a;
-    }
+    .food-top { display: flex; justify-content: space-between; align-items: flex-start; gap: 8px; }
+    .food-name { font-size: 15px; font-weight: 800; color: #0f172a; }
     .food-cat {
       font-size: 11px;
       font-weight: 700;
@@ -367,14 +460,7 @@
       color: #92400e;
       white-space: nowrap;
     }
-    .food-detail-list {
-      display: flex;
-      flex-direction: column;
-      gap: 4px;
-      font-size: 12px;
-      color: #334155;
-      margin-top: 6px;
-    }
+    .food-detail-list { display: flex; flex-direction: column; gap: 4px; font-size: 12px; color: #334155; margin-top: 6px; }
     .food-tip-box {
       background: #f8fafc;
       border-radius: 8px;
@@ -385,10 +471,8 @@
     }
     .food-meta {
       display: flex;
-      flex-wrap: wrap;
       align-items: center;
       justify-content: space-between;
-      gap: 6px;
       padding-top: 8px;
       border-top: 1px dashed #e2e8f0;
       font-size: 11px;
@@ -403,9 +487,8 @@
       border-radius: 6px;
       background: #eff6ff;
     }
-    .map-link:hover { background: #dbeafe; }
 
-    /* 추천 코스 */
+    /* 코스 카드 */
     .course-list {
       display: grid;
       grid-template-columns: 1fr;
@@ -434,56 +517,7 @@
       border-radius: 8px;
       border: 1px solid #e2e8f0;
     }
-    .course-tip { font-size: 12px; color: #64748b; line-height: 1.45; }
-
-    /* 인원 & 기간 2단 박스 */
-    .two-col {
-      display: grid;
-      grid-template-columns: 1fr;
-      gap: 14px;
-    }
-    @media (min-width: 640px) {
-      .two-col { grid-template-columns: 1fr 1fr; }
-    }
-    .sub-box {
-      background: #f8fafc;
-      border: 1px solid #e2e8f0;
-      border-radius: 12px;
-      padding: 14px;
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-      gap: 12px;
-    }
-    .sub-box-title { font-size: 14px; font-weight: 800; color: #1e293b; }
-    .counter-row { display: flex; align-items: center; justify-content: space-between; }
-    .counter-label { font-size: 14px; font-weight: 700; }
-    .counter-hint { font-size: 11px; color: #64748b; }
-    .counter-ctrl { display: flex; align-items: center; gap: 8px; }
-    .btn-step {
-      width: 32px;
-      height: 32px;
-      border-radius: 8px;
-      background: #ffffff;
-      border: 1px solid #cbd5e1;
-      font-size: 16px;
-      font-weight: 800;
-      color: #0f172a;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-    }
-    .btn-step:hover { background: #e2e8f0; }
-    .btn-step:active { transform: scale(0.95); }
-    .counter-val { min-width: 34px; text-align: center; font-size: 15px; font-weight: 800; }
-    .pax-footer {
-      border-top: 1px solid #e2e8f0;
-      padding-top: 10px;
-      display: flex;
-      justify-content: space-between;
-      font-size: 12px;
-      color: #475569;
-    }
+    .course-tip { font-size: 12px; color: #64748b; }
 
     /* 항공권 필터 & 리스트 */
     .filter-bar {
@@ -506,11 +540,7 @@
       background: #ffffff;
       color: #475569;
     }
-    .time-btn.active {
-      background: #2563eb;
-      color: #ffffff;
-      border-color: #2563eb;
-    }
+    .time-btn.active { background: #2563eb; color: #ffffff; border-color: #2563eb; }
     .sort-select {
       padding: 6px 10px;
       border-radius: 8px;
@@ -532,11 +562,7 @@
       gap: 12px;
       cursor: pointer;
     }
-    .flight-card:hover { border-color: #93c5fd; }
-    .flight-card.active {
-      border-color: #2563eb;
-      background: #f0f9ff;
-    }
+    .flight-card.active { border-color: #2563eb; background: #f0f9ff; }
     .flight-airline { font-size: 15px; font-weight: 800; color: #0f172a; }
     .flight-badge {
       font-size: 11px;
@@ -552,28 +578,7 @@
     .flight-total { font-size: 17px; font-weight: 800; color: #2563eb; }
     .flight-sub { font-size: 11px; color: #64748b; }
 
-    /* 숙소 등급 & 입력칸 */
-    .tier-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 8px;
-      margin-bottom: 16px;
-    }
-    .tier-btn {
-      padding: 10px;
-      border-radius: 10px;
-      border: 1px solid #cbd5e1;
-      background: #ffffff;
-      text-align: left;
-    }
-    .tier-btn.active {
-      background: #1e293b;
-      color: #ffffff;
-      border-color: #1e293b;
-    }
-    .tier-title { font-size: 12px; font-weight: 800; }
-    .tier-sub { font-size: 11px; opacity: 0.8; margin-top: 2px; }
-
+    /* 세부 단가 조정 */
     .input-grid {
       display: grid;
       grid-template-columns: 1fr;
@@ -600,23 +605,23 @@
     }
     .input-hint { font-size: 11px; color: #64748b; margin-top: 5px; }
 
-    /* 오른쪽 요약 사이드바 */
+    /* 오른쪽 요약 및 600만원 정산 사이드바 */
     .summary-card {
       background: #0f172a;
       color: #ffffff;
       border-radius: 18px;
-      padding: 22px;
+      padding: 20px;
       position: sticky;
       top: 84px;
-      box-shadow: 0 10px 25px rgba(15, 23, 42, 0.18);
+      box-shadow: 0 10px 25px rgba(15, 23, 42, 0.2);
     }
     .sum-head {
       display: flex;
       justify-content: space-between;
       align-items: flex-start;
-      padding-bottom: 14px;
+      padding-bottom: 12px;
       border-bottom: 1px solid #334155;
-      margin-bottom: 16px;
+      margin-bottom: 14px;
     }
     .sum-badge {
       font-size: 11px;
@@ -625,52 +630,105 @@
       padding: 3px 8px;
       border-radius: 6px;
     }
-    .sum-city { font-size: 22px; font-weight: 800; margin-top: 6px; }
+    .sum-city { font-size: 21px; font-weight: 800; margin-top: 5px; }
     .sum-total-label { font-size: 12px; color: #94a3b8; }
-    .sum-total-val { font-size: 30px; font-weight: 900; color: #fbbf24; margin-top: 2px; }
-    .sum-per-pax { font-size: 12px; color: #cbd5e1; margin-top: 2px; }
+    .sum-total-val { font-size: 28px; font-weight: 900; color: #fbbf24; margin-top: 2px; }
+
+    /* 600만원 공동 예산 상태 박스 */
+    .budget-status-box {
+      margin-top: 12px;
+      padding: 14px;
+      border-radius: 12px;
+      border: 1px solid #334155;
+      background: #1e293b;
+    }
+    .budget-status-box.over {
+      background: rgba(159, 18, 57, 0.32);
+      border-color: #fb7185;
+    }
+    .budget-status-box.under {
+      background: rgba(6, 95, 70, 0.32);
+      border-color: #34d399;
+    }
+    .bs-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 12px;
+      margin-bottom: 6px;
+    }
+    .bs-diff {
+      font-size: 18px;
+      font-weight: 900;
+    }
+    .split-toggle {
+      display: flex;
+      gap: 4px;
+      background: #0f172a;
+      padding: 3px;
+      border-radius: 8px;
+      margin: 10px 0 8px;
+    }
+    .split-btn {
+      flex: 1;
+      padding: 5px 6px;
+      border-radius: 6px;
+      font-size: 11px;
+      font-weight: 700;
+      color: #94a3b8;
+    }
+    .split-btn.active {
+      background: #2563eb;
+      color: #ffffff;
+    }
+    .fam-share-list {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      margin-top: 8px;
+    }
+    .fam-share-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 7px 10px;
+      border-radius: 8px;
+      background: rgba(15, 23, 42, 0.65);
+      font-size: 12px;
+    }
 
     .breakdown {
-      margin-top: 16px;
-      padding-top: 14px;
+      margin-top: 14px;
+      padding-top: 12px;
       border-top: 1px solid #334155;
       display: flex;
       flex-direction: column;
-      gap: 10px;
-      font-size: 13px;
+      gap: 8px;
+      font-size: 12.5px;
     }
     .bd-row { display: flex; justify-content: space-between; }
-    .bd-sub { font-size: 11px; color: #94a3b8; margin-top: -6px; padding-left: 18px; }
+    .bd-sub { font-size: 11px; color: #94a3b8; margin-top: -5px; padding-left: 16px; }
 
-    .ratio-wrap { margin: 18px 0; }
-    .ratio-labels { display: flex; justify-content: space-between; font-size: 11px; color: #94a3b8; margin-bottom: 6px; }
-    .ratio-bar { height: 10px; background: #1e293b; border-radius: 999px; overflow: hidden; display: flex; }
-    .bar-f { background: #3b82f6; height: 100%; }
-    .bar-h { background: #34d399; height: 100%; }
-    .bar-l { background: #fbbf24; height: 100%; }
-
-    .btn-action-group { display: flex; flex-direction: column; gap: 10px; }
+    .btn-action-group { display: flex; flex-direction: column; gap: 8px; margin-top: 16px; }
     .btn-compare-add {
       width: 100%;
-      padding: 12px;
+      padding: 11px;
       border-radius: 12px;
       background: #1e293b;
       border: 1px solid #475569;
       color: #ffffff;
-      font-size: 14px;
+      font-size: 13px;
       font-weight: 700;
     }
-    .btn-compare-add:hover { background: #334155; }
     .btn-share {
       width: 100%;
-      padding: 14px;
+      padding: 13px;
       border-radius: 12px;
       background: #fbbf24;
       color: #0f172a;
       font-size: 14px;
       font-weight: 900;
     }
-    .btn-share:hover { background: #fcd34d; }
 
     /* 모달 & 토스트 */
     .modal-backdrop {
@@ -687,7 +745,7 @@
     .modal-box {
       background: #ffffff;
       border-radius: 16px;
-      max-width: 840px;
+      max-width: 880px;
       width: 100%;
       max-height: 85vh;
       display: flex;
@@ -710,7 +768,7 @@
       justify-content: space-between;
       gap: 8px;
     }
-    table.cmp-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+    table.cmp-table { width: 100%; border-collapse: collapse; font-size: 12.5px; }
     table.cmp-table th, table.cmp-table td { padding: 10px; border-bottom: 1px solid #e2e8f0; text-align: left; }
     table.cmp-table th { background: #f1f5f9; font-weight: 800; }
 
@@ -738,10 +796,10 @@
     <div class="header-inner">
       <div>
         <div class="header-title">
-          <span>✈️ 우리 가족 여행 지역 & 비용 계산기</span>
+          <span>✈️ 3가족(11인) 공동 여행 예산 & 지역 계산기</span>
           <span class="status-pill">● 정상 작동 중</span>
         </div>
-        <div class="header-sub">도시별 추천 숙소 · 검증 맛집 · 핵심 코스 · 항공권(인원/시간/가격) 통합 비교</div>
+        <div class="header-sub">공동 예산 600만 원 기준 · 가족별 참여 선택 및 초과 분담금 자동 정산</div>
       </div>
       <div class="header-actions">
         <button type="button" data-action="open-compare" class="btn-header">
@@ -755,10 +813,36 @@
   <main class="container">
     <div class="left-col">
 
-      <!-- 1. 후보 도시 선택 -->
+      <!-- 1. 3가족 구성 및 참여 선택 (4인 / 4인 / 3인) -->
       <section class="card">
         <div class="section-head">
-          <h2 class="section-title"><span class="step-num">1</span> 여행 후보 도시 선택</h2>
+          <h2 class="section-title"><span class="step-num">1</span> 참여 가족 선택 및 인원 구성 (기본 4인 · 4인 · 3인)</h2>
+          <div style="font-size:12px; font-weight:700; color:#2563eb;" id="activeFamilySummary">3가족 모두 참여 (총 11명 · 3실)</div>
+        </div>
+
+        <div id="familyGrid" class="family-grid"></div>
+
+        <!-- 공동 예산 및 여행 박수 설정 -->
+        <div class="budget-bar-box">
+          <div class="budget-input-wrap">
+            <span style="font-size:13px; font-weight:800; color:#1e293b;">💰 공동 여행 예산:</span>
+            <input type="number" id="inputSharedBudget" step="100000" value="6000000" class="budget-input" />
+            <span style="font-size:13px; font-weight:700; color:#475569;">원 (600만 원)</span>
+          </div>
+
+          <div style="display:flex; align-items:center; gap:10px;">
+            <span style="font-size:13px; font-weight:800; color:#1e293b;">🗓️ 여행 기간:</span>
+            <button type="button" data-action="step-nights" data-delta="-1" class="btn-mini-step">-</button>
+            <strong id="val-nights" style="font-size:14px; color:#2563eb;">3박 4일</strong>
+            <button type="button" data-action="step-nights" data-delta="1" class="btn-mini-step">+</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- 2. 여행 후보 도시 선택 -->
+      <section class="card">
+        <div class="section-head">
+          <h2 class="section-title"><span class="step-num">2</span> 여행 후보 도시 선택</h2>
           <div class="tab-group">
             <button type="button" data-action="filter-country" data-country="ALL" class="tab-btn active">전체 (6곳)</button>
             <button type="button" data-action="filter-country" data-country="JP" class="tab-btn">🇯🇵 일본 (3곳)</button>
@@ -769,11 +853,11 @@
         <div id="cityInfoBanner" class="city-desc-box"></div>
       </section>
 
-      <!-- 2. 선택 도시 추천 숙소 · 맛집 · 코스 상세 가이드 -->
+      <!-- 3. 추천 숙소 · 검증 맛집 · 핵심 코스 -->
       <section class="card">
         <div class="section-head">
           <h2 class="section-title">
-            <span class="step-num">2</span>
+            <span class="step-num">3</span>
             <span id="guideSectionTitle">후쿠오카 추천 숙소 · 맛집 · 코스</span>
           </h2>
           <div class="tab-group">
@@ -784,7 +868,6 @@
           </div>
         </div>
 
-        <!-- 추천 숙소 블록 -->
         <div id="hotelGuideBlock" style="margin-bottom: 22px;">
           <div class="guide-subhead">
             <strong style="font-size:14px; color:#1e293b;">🏨 등급별 가족 인기 숙소 (클릭 시 1박 단가 즉시 반영)</strong>
@@ -793,7 +876,6 @@
           <div id="hotelGuideGrid" class="hotel-grid"></div>
         </div>
 
-        <!-- 검증 맛집 블록 -->
         <div id="foodBlock" style="margin-bottom: 22px;">
           <div class="guide-subhead">
             <strong style="font-size:14px; color:#1e293b;">🍽️ 대표 메뉴·위치·웨이팅 팁까지 담은 검증 맛집</strong>
@@ -802,7 +884,6 @@
           <div id="foodGrid" class="food-grid"></div>
         </div>
 
-        <!-- 추천 코스 블록 -->
         <div id="courseBlock">
           <div class="guide-subhead">
             <strong style="font-size:14px; color:#1e293b;">🗺️ 가족 맞춤형 3일 핵심 동선</strong>
@@ -812,89 +893,12 @@
         </div>
       </section>
 
-      <!-- 3. 가족 인원 및 여행 기간 -->
-      <section class="card">
-        <div class="section-head">
-          <h2 class="section-title"><span class="step-num">3</span> 가족 인원 및 여행 기간</h2>
-        </div>
-        <div class="two-col">
-          <div class="sub-box">
-            <div class="sub-box-title">👨‍👩‍👧‍👦 탑승 인원 (항공 요금 차등)</div>
-            <div class="counter-row">
-              <div>
-                <div class="counter-label">성인</div>
-                <div class="counter-hint">만 12세 이상 (100%)</div>
-              </div>
-              <div class="counter-ctrl">
-                <button type="button" data-action="step" data-field="adult" data-delta="-1" class="btn-step">-</button>
-                <span id="val-adult" class="counter-val">2</span>
-                <button type="button" data-action="step" data-field="adult" data-delta="1" class="btn-step">+</button>
-              </div>
-            </div>
-            <div class="counter-row">
-              <div>
-                <div class="counter-label">아동 (소아)</div>
-                <div class="counter-hint">만 2~11세 (약 75%)</div>
-              </div>
-              <div class="counter-ctrl">
-                <button type="button" data-action="step" data-field="child" data-delta="-1" class="btn-step">-</button>
-                <span id="val-child" class="counter-val">1</span>
-                <button type="button" data-action="step" data-field="child" data-delta="1" class="btn-step">+</button>
-              </div>
-            </div>
-            <div class="counter-row">
-              <div>
-                <div class="counter-label">유아</div>
-                <div class="counter-hint">24개월 미만 (약 15%)</div>
-              </div>
-              <div class="counter-ctrl">
-                <button type="button" data-action="step" data-field="infant" data-delta="-1" class="btn-step">-</button>
-                <span id="val-infant" class="counter-val">0</span>
-                <button type="button" data-action="step" data-field="infant" data-delta="1" class="btn-step">+</button>
-              </div>
-            </div>
-          </div>
-
-          <div class="sub-box">
-            <div style="display:flex; flex-direction:column; gap:12px;">
-              <div class="sub-box-title">🗓️ 여행 박수 및 객실 수</div>
-              <div class="counter-row">
-                <div>
-                  <div class="counter-label">숙박 일수</div>
-                  <div id="tripDurationLabel" class="counter-hint" style="color:#2563eb; font-weight:700;">3박 4일 일정</div>
-                </div>
-                <div class="counter-ctrl">
-                  <button type="button" data-action="step" data-field="nights" data-delta="-1" class="btn-step">-</button>
-                  <span id="val-nights" class="counter-val">3박</span>
-                  <button type="button" data-action="step" data-field="nights" data-delta="1" class="btn-step">+</button>
-                </div>
-              </div>
-              <div class="counter-row">
-                <div>
-                  <div class="counter-label">객실 개수</div>
-                  <div class="counter-hint">가족 구성에 따라 조절</div>
-                </div>
-                <div class="counter-ctrl">
-                  <button type="button" data-action="step" data-field="rooms" data-delta="-1" class="btn-step">-</button>
-                  <span id="val-rooms" class="counter-val">1실</span>
-                  <button type="button" data-action="step" data-field="rooms" data-delta="1" class="btn-step">+</button>
-                </div>
-              </div>
-            </div>
-            <div class="pax-footer">
-              <span>총 여행 인원</span>
-              <strong id="totalPaxSummary">총 3명 (성인 2, 아동 1)</strong>
-            </div>
-          </div>
-        </div>
-      </section>
-
       <!-- 4. 항공권 조회 -->
       <section class="card">
         <div class="section-head">
           <h2 class="section-title"><span class="step-num">4</span> 항공권 조회 (왕복 기준)</h2>
           <div class="tab-group">
-            <button type="button" data-action="price-mode" data-mode="TOTAL" class="tab-btn active">가족 총액 보기</button>
+            <button type="button" data-action="price-mode" data-mode="TOTAL" class="tab-btn active">전체 인원 총액</button>
             <button type="button" data-action="price-mode" data-mode="PER_PAX" class="tab-btn">인원별 단가 보기</button>
           </div>
         </div>
@@ -919,25 +923,10 @@
         <div id="flightList" class="flight-list"></div>
       </section>
 
-      <!-- 5. 숙박 및 현지 경비 -->
+      <!-- 5. 숙박 및 현지 경비 세부 단가 조정 -->
       <section class="card">
         <div class="section-head">
-          <h2 class="section-title"><span class="step-num">5</span> 숙박 · 식비 · 현지 경비 세부 조정</h2>
-        </div>
-
-        <div class="tier-grid">
-          <button type="button" data-action="hotel-tier" data-tier="budget" class="tier-btn">
-            <div class="tier-title">가성비 호텔</div>
-            <div class="tier-sub" id="tierSubBudget">추천 숙소 반영</div>
-          </button>
-          <button type="button" data-action="hotel-tier" data-tier="standard" class="tier-btn active">
-            <div class="tier-title">4성급 가족호텔</div>
-            <div class="tier-sub" id="tierSubStandard">추천 숙소 반영</div>
-          </button>
-          <button type="button" data-action="hotel-tier" data-tier="luxury" class="tier-btn">
-            <div class="tier-title">5성급 리조트</div>
-            <div class="tier-sub" id="tierSubLuxury">추천 숙소 반영</div>
-          </button>
+          <h2 class="section-title"><span class="step-num">5</span> 숙박 · 식비 · 현지 경비 단가 조정</h2>
         </div>
 
         <div class="input-grid">
@@ -957,15 +946,15 @@
             <div id="activityCalcHint" class="input-hint"></div>
           </div>
           <div class="input-box">
-            <label class="input-label" for="inputExtraPrice">쇼핑 · 예비비 · 보험 (가족 전체, 원)</label>
+            <label class="input-label" for="inputExtraPrice">예비비·보험·공동경비 (1인당 기준, 원)</label>
             <input type="number" id="inputExtraPrice" step="10000" class="num-input" />
-            <div class="input-hint">유심, 로밍, 여행자보험, 기념품 등</div>
+            <div id="extraCalcHint" class="input-hint"></div>
           </div>
         </div>
       </section>
     </div>
 
-    <!-- 오른쪽 견적 요약 -->
+    <!-- 오른쪽 견적 및 600만 원 초과 정산 사이드바 -->
     <aside>
       <div class="summary-card">
         <div class="sum-head">
@@ -974,15 +963,34 @@
             <div id="summaryCityName" class="sum-city">후쿠오카</div>
           </div>
           <div style="text-align:right;">
-            <div id="summaryTripMeta" style="font-size:12px; color:#cbd5e1;">3박 4일 · 총 3명</div>
+            <div id="summaryTripMeta" style="font-size:12px; color:#cbd5e1;">3박 4일 · 3가족 11명</div>
             <div id="summaryFlightMeta" style="font-size:12px; color:#93c5fd; font-weight:700; margin-top:3px;">대한항공</div>
           </div>
         </div>
 
         <div>
-          <div class="sum-total-label">우리 가족 예상 총 경비</div>
+          <div class="sum-total-label">전체 참여 가족 예상 총 경비</div>
           <div id="summaryGrandTotal" class="sum-total-val">0원</div>
-          <div id="summaryPerPerson" class="sum-per-pax">1인 평균 약 0원</div>
+          <div id="summaryPerPerson" style="font-size:12px; color:#cbd5e1; margin-top:2px;">1인 평균 약 0원</div>
+        </div>
+
+        <!-- 600만 원 예산 초과 / 잔액 & 가족별 부담금 정산 박스 -->
+        <div id="budgetStatusBox" class="budget-status-box over">
+          <div class="bs-top">
+            <span id="bsTitle" style="font-weight:800; color:#fda4af;">🚨 공동 예산 600만 원 초과</span>
+            <span id="bsBudgetLabel" style="color:#cbd5e1;">예산 6,000,000원</span>
+          </div>
+          <div id="bsDiffAmount" class="bs-diff" style="color:#fda4af;">+0원 초과</div>
+          <div id="bsSubGuide" style="font-size:11.5px; color:#e2e8f0; margin-top:3px;">
+            초과 금액을 참여 가족별로 나누어 부담합니다.
+          </div>
+
+          <div class="split-toggle">
+            <button type="button" data-action="split-mode" data-smode="ACTUAL" class="split-btn active">실제 비용 비례 부담</button>
+            <button type="button" data-action="split-mode" data-smode="EQUAL" class="split-btn">초과금 가족수 1/N 균등</button>
+          </div>
+
+          <div id="famShareList" class="fam-share-list"></div>
         </div>
 
         <div class="breakdown">
@@ -990,7 +998,7 @@
             <span>✈️ 왕복 항공권 총액</span>
             <strong id="breakdownFlight">0원</strong>
           </div>
-          <div id="breakdownFlightDetail" class="bd-sub">성인 2 · 아동 1</div>
+          <div id="breakdownFlightDetail" class="bd-sub">성인 · 아동 · 유아</div>
           <div class="bd-row">
             <span>🏨 숙박비 총액</span>
             <strong id="breakdownHotel">0원</strong>
@@ -1005,26 +1013,14 @@
             <strong id="breakdownActivity">0원</strong>
           </div>
           <div class="bd-row">
-            <span>🛍️ 예비비·보험</span>
+            <span>🛍️ 예비비·보험 총액</span>
             <strong id="breakdownExtra">0원</strong>
-          </div>
-        </div>
-
-        <div class="ratio-wrap">
-          <div class="ratio-labels">
-            <span>예산 비중</span>
-            <span id="ratioText">항공 0% · 숙박 0% · 현지 0%</span>
-          </div>
-          <div class="ratio-bar">
-            <div id="barFlight" class="bar-f" style="width:33%"></div>
-            <div id="barHotel" class="bar-h" style="width:33%"></div>
-            <div id="barLocal" class="bar-l" style="width:34%"></div>
           </div>
         </div>
 
         <div class="btn-action-group">
           <button type="button" data-action="add-compare" class="btn-compare-add">➕ 현재 견적 비교함에 담기</button>
-          <button type="button" data-action="copy-share" class="btn-share">💬 카카오톡 공유용 견적 복사</button>
+          <button type="button" data-action="copy-share" class="btn-share">💬 가족 단톡방용 정산표 복사</button>
         </div>
       </div>
     </aside>
@@ -1035,8 +1031,8 @@
     <div class="modal-box">
       <div class="modal-head">
         <div>
-          <strong style="font-size:17px;">📋 가족 여행 후보지 견적 비교함</strong>
-          <div style="font-size:12px; color:#64748b;">저장한 도시별 숙소·항공·예상 경비를 나란히 비교하세요</div>
+          <strong style="font-size:17px;">📋 후보지별 총 경비 & 가족 분담금 비교함</strong>
+          <div style="font-size:12px; color:#64748b;">저장한 도시별 총액과 600만 원 초과 시 가족별 추가 부담금을 비교하세요</div>
         </div>
         <button type="button" data-action="close-compare" style="font-size:20px; font-weight:800; padding:4px 8px;">✕</button>
       </div>
@@ -1057,25 +1053,25 @@
     var CITIES = {
       fukuoka: {
         id: 'fukuoka', country: 'JP', countryName: '일본', flag: '🇯🇵', name: '후쿠오카',
-        flightTimeText: '약 1시간 20분', tag: '초단거리 · 효도/아이동반 추천',
-        desc: '공항에서 시내까지 지하철 10분! 비행시간이 가장 짧아 어린 자녀나 부모님과 함께 가기 가장 부담 없는 도시입니다.',
+        flightTimeText: '약 1시간 20분', tag: '초단거리 · 대가족 이동 최적',
+        desc: '공항에서 시내까지 10분! 비행시간이 가장 짧고 이동 피로도가 적어 3가족(11명)이 함께 움직이기 가장 수월한 도시입니다.',
         hotelRates: { budget: 135000, standard: 225000, luxury: 430000 },
-        foodPerDay: 55000, activityPerDay: 25000, extraDefault: 150000,
+        foodPerDay: 50000, activityPerDay: 25000, extraPerPax: 40000,
         hotels: [
-          { tier: 'budget', tierLabel: '가성비 3성급', name: '도미 인 하카타 기온', area: '기온역 도보 1분 · 하카타역 도보 7분', features: '천연 온천 대욕장 무료 이용, 밤 9시 반 무료 야식 라멘(요나키소바) 제공, 부모님 만족도 최상', rate: 135000, mapQuery: 'Dormy Inn Hakata Gion' },
-          { tier: 'standard', tierLabel: '4성급 가족호텔', name: 'JR 큐슈 호텔 블로섬 하카타 중앙', area: '하카타역 하카타출구 도보 2분', features: '유후인·다자이후 버스투어 집결지 초근접, 3인~4인 패밀리 트윈 객실 보유, 조식 퀄리티 우수', rate: 225000, mapQuery: 'JR Kyushu Hotel Blossom Hakata Central' },
-          { tier: 'luxury', tierLabel: '5성급 럭셔리', name: '힐튼 후쿠오카 씨호크', area: '모모치 해변 · 후쿠오카 타워 바로 옆', features: '전 객실 오션뷰, 대형 실내외 수영장·온천 시설 완비, 아이 동반 리조트형 호캉스 최적', rate: 430000, mapQuery: 'Hilton Fukuoka Sea Hawk' }
+          { tier: 'budget', tierLabel: '가성비 3성급', name: '도미 인 하카타 기온', area: '기온역 도보 1분 · 하카타역 도보 7분', features: '천연 온천 대욕장 무료, 밤 9시 반 무료 야식 라멘 제공, 3가족 연박 가성비 우수', rate: 135000, mapQuery: 'Dormy Inn Hakata Gion' },
+          { tier: 'standard', tierLabel: '4성급 가족호텔', name: 'JR 큐슈 호텔 블로섬 하카타 중앙', area: '하카타역 하카타출구 도보 2분', features: '유후인·다자이후 전세버스/투어 집결지 초근접, 3~4인 패밀리룸 보유, 조식 우수', rate: 225000, mapQuery: 'JR Kyushu Hotel Blossom Hakata Central' },
+          { tier: 'luxury', tierLabel: '5성급 리조트', name: '힐튼 후쿠오카 씨호크', area: '모모치 해변 · 후쿠오카 타워 바로 옆', features: '전 객실 오션뷰, 대형 실내외 수영장·온천 시설 완비, 대가족 리조트형 휴양 최적', rate: 430000, mapQuery: 'Hilton Fukuoka Sea Hawk' }
         ],
         foods: [
-          { name: '이치란 본점 (나카스)', cat: '돈코츠 라멘', menu: '천연 돈코츠 라멘 + 반숙계란 (1인 약 1,200엔)', area: '나카스카와바타역 2번 출구 도보 2분', reason: '맵기·마늘·파 조절이 가능해 매운 걸 못 먹는 아이부터 어른까지 호불호 없는 대표 메뉴', tip: '24시간 영업하므로 식사 피크타임(12~14시)을 살짝 피해 방문하면 대기 없이 입장 가능합니다.', mapQuery: 'Ichiran Main Shop Fukuoka' },
-          { name: '모츠나베 라쿠텐치 하카타역점', cat: '소곱창전골', menu: '간장 모츠나베 + 짬뽕면 사리 (1인 약 2,000엔)', area: '하카타역 데이토스 지하 1층 / 아뮤플라자 인근', reason: '부추와 양배추가 듬뿍 들어간 깔끔한 간장 육수로 부모님 보양식·반주 메뉴로 인기', tip: '좌식/테이블 좌석이 넉넉하며 오후 5시 이전 방문 시 웨이팅이 적습니다.', mapQuery: 'Motsunabe Rakutenchi Hakata' },
-          { name: '효탄스시 (텐진점)', cat: '초밥·해산물', menu: '점심 특선 스시 세트 & 게살 크림고로케 (약 2,500엔)', area: '니시테츠 후쿠오카(텐진)역 도보 3분', reason: '두툼한 활어 네타와 합리적 가격으로 한국 여행자·현지인 모두에게 검증된 초밥집', tip: '오전 11시 30분 오픈 전 11시쯤 미리 줄을 서면 1회차로 바로 착석할 수 있습니다.', mapQuery: 'Hyotan Sushi Tenjin Fukuoka' },
-          { name: '키와미야 함바그 (하카타점)', cat: '철판 와규함바그', menu: '와규 함바그 M사이즈 + 밥·국 세트 (약 2,200엔)', area: '하카타 버스터미널 1층 (하카타역 바로 옆)', reason: '뜨거운 개인 돌판에 한 점씩 구워 먹는 재미가 있어 초등학생 이상 자녀 만족도 1위', tip: '옷에 고기 냄새가 밸 수 있으니 비치된 앞치마를 꼭 착용하세요.', mapQuery: 'Kiwamiya Hamburg Hakata' }
+          { name: '이치란 본점 (나카스)', cat: '돈코츠 라멘', menu: '천연 돈코츠 라멘 + 반숙계란 (1인 약 1,200엔)', area: '나카스카와바타역 2번 출구 도보 2분', reason: '맵기·마늘 조절 가능해 아이부터 어른까지 호불호 없는 후쿠오카 대표 메뉴', tip: '24시간 영업하므로 식사 피크타임을 살짝 피하면 11명도 빠르게 순차 입장 가능합니다.', mapQuery: 'Ichiran Main Shop Fukuoka' },
+          { name: '모츠나베 라쿠텐치 하카타역점', cat: '소곱창전골', menu: '간장 모츠나베 + 짬뽕면 사리 (1인 약 2,000엔)', area: '하카타역 데이토스 지하 1층', reason: '부추와 양배추가 듬뿍 들어간 깔끔한 간장 육수로 어른들 보양식·반주 메뉴로 인기', tip: '좌식·테이블 좌석이 넉넉해 3가족이 테이블을 나눠 앉기 좋습니다.', mapQuery: 'Motsunabe Rakutenchi Hakata' },
+          { name: '효탄스시 (텐진점)', cat: '초밥·해산물', menu: '점심 특선 스시 세트 & 게살 크림고로케 (약 2,500엔)', area: '니시테츠 후쿠오카(텐진)역 도보 3분', reason: '두툼한 활어 네타와 합리적 가격으로 한국 여행자·현지인 모두 검증한 초밥집', tip: '오전 11시 30분 오픈 전 11시쯤 미리 줄을 서면 1회차로 착석할 수 있습니다.', mapQuery: 'Hyotan Sushi Tenjin Fukuoka' },
+          { name: '키와미야 함바그 (하카타점)', cat: '철판 와규함바그', menu: '와규 함바그 M사이즈 + 밥·국 세트 (약 2,200엔)', area: '하카타 버스터미널 1층', reason: '뜨거운 개인 돌판에 구워 먹는 재미가 있어 초등학생 이상 자녀 만족도 1위', tip: '옷에 냄새가 밸 수 있으니 비치된 앞치마를 착용하세요.', mapQuery: 'Kiwamiya Hamburg Hakata' }
         ],
         courses: [
-          { day: '1일차 · 시내 핵심', title: '하카타 & 캐널시티 코스', route: '후쿠오카 공항 → 하카타역 → 캐널시티 분수쇼 → 나카스 포장마차 거리', tip: '공항에서 시내까지 10분 거리라 도착 첫날 체력 부담이 전혀 없습니다.' },
-          { day: '2일차 · 근교 힐링', title: '다자이후 & 유후인 버스투어', route: '다자이후 텐만구(매화떡) → 유후인 긴린코 호수 → 벳푸 지옥온천', tip: '가족 단위라면 일일 버스투어 예약 시 부모님·아이 모두 편하게 이동합니다.' },
-          { day: '3일차 · 공원·쇼핑', title: '오호리공원 & 텐진 쇼핑', route: '오호리공원 보트·산책 → 후쿠오카 타워 야경 → 텐진 지하상가·돈키호테', tip: '평지 위주 산책 코스와 대형 쇼핑몰이 연결되어 유모차 이동도 수월합니다.' }
+          { day: '1일차 · 시내 핵심', title: '하카타 & 캐널시티 코스', route: '후쿠오카 공항 → 하카타역 → 캐널시티 분수쇼 → 나카스 강변 산책', tip: '공항에서 시내까지 10분 거리라 도착 첫날 체력 부담이 전혀 없습니다.' },
+          { day: '2일차 · 근교 힐링', title: '다자이후 & 유후인 전용차량 투어', route: '다자이후 텐만구 → 유후인 긴린코 호수 → 벳푸 지옥온천', tip: '11명 대가족이라면 점보택시나 단독 미니밴 투어를 이용하면 훨씬 편합니다.' },
+          { day: '3일차 · 공원·쇼핑', title: '오호리공원 & 텐진 쇼핑', route: '오호리공원 산책 → 후쿠오카 타워 야경 → 텐진 지하상가·돈키호테', tip: '평지 위주 산책 코스와 대형 쇼핑몰이 연결되어 아이 동반 이동이 수월합니다.' }
         ],
         flights: [
           { id: 'fuk-1', airline: '제주항공', type: 'LCC · 수하물 15kg', depTime: '07:50', arrTime: '09:10', retDep: '10:10', retArr: '11:35', slot: 'MORNING', durationMin: 80, adultPrice: 235000 },
@@ -1088,24 +1084,24 @@
       osaka: {
         id: 'osaka', country: 'JP', countryName: '일본', flag: '🇯🇵', name: '오사카',
         flightTimeText: '약 1시간 50분', tag: '유니버설 · 먹방/근교여행',
-        desc: '유니버설 스튜디오 재팬, 해유관, 교토·나라 근교 여행까지 볼거리와 먹거리가 가장 풍부한 인기 가족 여행지입니다.',
+        desc: '유니버설 스튜디오 재팬, 해유관, 교토·나라 근교 여행까지 볼거리와 먹거리가 풍부한 인기 가족 여행지입니다.',
         hotelRates: { budget: 155000, standard: 260000, luxury: 490000 },
-        foodPerDay: 65000, activityPerDay: 45000, extraDefault: 200000,
+        foodPerDay: 60000, activityPerDay: 40000, extraPerPax: 45000,
         hotels: [
-          { tier: 'budget', tierLabel: '가성비 3성급', name: '소테츠 프레사 인 오사카 난바', area: '난바역 도보 2분 · 도톤보리 도보 5분', features: '간사이 공항 라피트 특급열차 종점 바로 앞, 아이 동반 공항 이동 및 먹방 동선 최강', rate: 155000, mapQuery: 'Sotetsu Fresa Inn Osaka Namba' },
-          { tier: 'standard', tierLabel: '4성급 가족호텔', name: '크로스 호텔 오사카', area: '도톤보리 글리코상 도보 2분 · 신사이바시', features: '욕실과 화장실이 분리된 넓고 쾌적한 패밀리룸, 쇼핑 중 짐 두고 쉬기 완벽한 위치', rate: 260000, mapQuery: 'Cross Hotel Osaka' },
-          { tier: 'luxury', tierLabel: '5성급 테마파크', name: '더 파크 프론트 호텔 앳 USJ', area: '유니버설 스튜디오 재팬 정문 도보 1분', features: 'USJ 공식 파트너 호텔로 오픈런 및 야간 퍼레이드 후 즉시 휴식 가능, 가족 테마룸 인기', rate: 490000, mapQuery: 'The Park Front Hotel at Universal Studios Japan' }
+          { tier: 'budget', tierLabel: '가성비 3성급', name: '소테츠 프레사 인 오사카 난바', area: '난바역 도보 2분 · 도톤보리 도보 5분', features: '간사이 공항 라피트 특급열차 종점 바로 앞, 대가족 공항 이동 및 먹방 동선 최강', rate: 155000, mapQuery: 'Sotetsu Fresa Inn Osaka Namba' },
+          { tier: 'standard', tierLabel: '4성급 가족호텔', name: '크로스 호텔 오사카', area: '도톤보리 글리코상 도보 2분', features: '욕실과 화장실이 분리된 쾌적한 패밀리룸, 쇼핑 중 짐 두고 쉬기 완벽한 위치', rate: 260000, mapQuery: 'Cross Hotel Osaka' },
+          { tier: 'luxury', tierLabel: '5성급 테마파크', name: '더 파크 프론트 호텔 앳 USJ', area: '유니버설 스튜디오 정문 도보 1분', features: 'USJ 공식 파트너 호텔로 오픈런 및 퍼레이드 후 즉시 휴식 가능, 가족 테마룸 인기', rate: 490000, mapQuery: 'The Park Front Hotel at Universal Studios Japan' }
         ],
         foods: [
-          { name: '치보 (도톤보리 본점)', cat: '오코노미야키', menu: '도톤보리야키 & 철판 야키소바 (1인 약 2,000엔)', area: '도톤보리 중심가 (난바역 도보 5분)', reason: '직원이 철판에서 먹기 좋게 구워주며 테이블이 넓어 4인 이상 가족 외식에 최적', tip: '구글 지도나 공식 사이트에서 사전 좌석 예약을 하면 대기 없이 바로 입장합니다.', mapQuery: 'Chibo Okonomiyaki Dotonbori' },
-          { name: '동양정 (아베노 하루카스점)', cat: '함박스테이크', menu: '100년 전통 은박지 함박스테이크 + 통토마토 샐러드', area: '텐노지역 아베노 하루카스 14층', reason: '부드러운 육즙의 함박스테이크와 고층 야경 덕분에 부모님·아이 모두 극찬하는 명소', tip: '식사 후 하루카스 300 전망대 야경 코스로 바로 연계하기 좋습니다.', mapQuery: 'Grill Capital Touyoutei Abeno Harukas' },
-          { name: '카무쿠라 라멘 (도톤보리점)', cat: '배추 간장라멘', menu: '오이시이 라멘 + 반숙계란·차슈 토핑 (약 1,100엔)', area: '도톤보리·신사이바시 인근', reason: '돼지 잡내 없이 배추로 우려낸 시원하고 달큰한 국물이라 어르신·어린이 입맛에 딱 맞음', tip: '키오스크 한국어 메뉴가 지원되어 주문이 매우 간편합니다.', mapQuery: 'Kamukura Ramen Dotonbori' },
-          { name: '하루코마 스시 (텐진바시 본점)', cat: '가성비 초밥', menu: '두툼한 연어·참치·장어 니기리 스시 (약 2,200엔)', area: '텐진바시스지 로쿠초메역 도보 2분', reason: '오사카 현지인과 여행 유튜버 모두가 꼽는 압도적 가성비·두께감의 스시 맛집', tip: '주유패스 코스인 "오사카 주택박물관"과 도보 3분 거리라 묶어서 가기 좋습니다.', mapQuery: 'Harukoma Sushi Osaka' }
+          { name: '치보 (도톤보리 본점)', cat: '오코노미야키', menu: '도톤보리야키 & 철판 야키소바 (1인 약 2,000엔)', area: '도톤보리 중심가 (난바역 도보 5분)', reason: '직원이 철판에서 구워주며 대형 매장이 있어 3가족 단체 외식에 적합', tip: '공식 사이트에서 사전 좌석 예약을 하면 대기 없이 바로 입장합니다.', mapQuery: 'Chibo Okonomiyaki Dotonbori' },
+          { name: '동양정 (아베노 하루카스점)', cat: '함박스테이크', menu: '100년 전통 은박지 함박스테이크 + 통토마토 샐러드', area: '텐노지역 아베노 하루카스 14층', reason: '부드러운 육즙의 함박스테이크와 고층 야경 덕분에 어른·아이 모두 극찬하는 명소', tip: '식사 후 하루카스 300 전망대 야경 코스로 바로 연계하기 좋습니다.', mapQuery: 'Grill Capital Touyoutei Abeno Harukas' },
+          { name: '카무쿠라 라멘 (도톤보리점)', cat: '배추 간장라멘', menu: '오이시이 라멘 + 반숙계란·차슈 토핑 (약 1,100엔)', area: '도톤보리·신사이바시 인근', reason: '배추로 우려낸 시원하고 달큰한 국물이라 아이들과 어른 입맛에 모두 잘 맞음', tip: '매장 규모가 크고 회전율이 빨라 단체 인원도 금방 착석합니다.', mapQuery: 'Kamukura Ramen Dotonbori' },
+          { name: '하루코마 스시 (텐진바시 본점)', cat: '가성비 초밥', menu: '두툼한 연어·참치·장어 니기리 스시 (약 2,200엔)', area: '텐진바시스지 로쿠초메역 도보 2분', reason: '오사카 현지인과 유튜버 모두가 꼽는 압도적 가성비·두께감의 스시 맛집', tip: '오사카 주택박물관과 도보 3분 거리라 묶어서 가기 좋습니다.', mapQuery: 'Harukoma Sushi Osaka' }
         ],
         courses: [
-          { day: '1일차 · 먹방·야경', title: '도톤보리 & 신사이바시', route: '난바 체크인 → 오사카성 천수각 → 도톤보리 글리코상 & 리버크루즈', tip: '주유패스 활용 시 리버크루즈·오사카성 무료 입장으로 경비를 아낄 수 있습니다.' },
-          { day: '2일차 · 테마파크', title: '유니버설 스튜디오(USJ) 종일', route: '슈퍼 닌텐도 월드 → 해리포터 존 → 미니언 파크 → 시티워크 저녁', tip: '아이 동반 시 익스프레스 패스 또는 오픈런으로 대기 시간을 줄이세요.' },
-          { day: '3일차 · 수족관·근교', title: '가이유칸 수족관 or 교토 투어', route: '텐포잔 대관람차 & 가이유칸 수족관 → 우메다 공중정원 야경', tip: '부모님 동반 시 수족관 대신 교토 청수사·아라시야마 반나절 코스를 추천합니다.' }
+          { day: '1일차 · 먹방·야경', title: '도톤보리 & 오사카성', route: '난바 체크인 → 오사카성 천수각 → 도톤보리 글리코상 & 리버크루즈', tip: '주유패스 활용 시 리버크루즈·오사카성 무료 입장으로 경비를 아낄 수 있습니다.' },
+          { day: '2일차 · 테마파크', title: '유니버설 스튜디오(USJ) 종일', route: '슈퍼 닌텐도 월드 → 해리포터 존 → 미니언 파크 → 시티워크 저녁', tip: '가족별 취향에 따라 USJ 팀과 교토 관광 팀으로 나뉘어 움직이기도 좋습니다.' },
+          { day: '3일차 · 수족관·전망', title: '가이유칸 수족관 & 우메다', route: '텐포잔 대관람차 & 가이유칸 수족관 → 우메다 공중정원 야경', tip: '실내 수족관 위주라 날씨에 구애받지 않고 아이들이 즐거워합니다.' }
         ],
         flights: [
           { id: 'osa-1', airline: '진에어', type: 'LCC · 수하물 15kg', depTime: '08:15', arrTime: '10:05', retDep: '11:05', retArr: '13:00', slot: 'MORNING', durationMin: 110, adultPrice: 279000 },
@@ -1120,22 +1116,22 @@
         flightTimeText: '약 2시간 25분', tag: '디즈니랜드 · 쇼핑/테마파크',
         desc: '도쿄 디즈니랜드·디즈니씨, 해리포터 스튜디오, 최신 쇼핑 명소까지 아이부터 어른까지 취향 만족도가 높습니다.',
         hotelRates: { budget: 175000, standard: 295000, luxury: 580000 },
-        foodPerDay: 70000, activityPerDay: 50000, extraDefault: 250000,
+        foodPerDay: 65000, activityPerDay: 45000, extraPerPax: 50000,
         hotels: [
-          { tier: 'budget', tierLabel: '가성비 3성급', name: '소테츠 그랜드 프레사 도쿄베이 아리아케', area: '오다이바·디즈니 무료 셔틀버스 운행', features: '도쿄 디즈니 리조트 무료 셔틀 운영, 오다이바 쇼핑몰 인접, 가족 3~4인 트윈·트리플룸 가성비 최고', rate: 175000, mapQuery: 'Sotetsu Grand Fresa Tokyo-Bay Ariake' },
-          { tier: 'standard', tierLabel: '4성급 가족호텔', name: '호텔 그레이서리 신주쿠 (고질라 호텔)', area: '신주쿠역 동쪽 출구 도보 5분', features: '테라스 실물 크기 고질라 조형물로 아이들에게 인기, 공항 리무진 정류장 및 맛집 밀집 지역', rate: 295000, mapQuery: 'Hotel Gracery Shinjuku' },
-          { tier: 'luxury', tierLabel: '5성급 리조트', name: '힐튼 도쿄 베이', area: '도쿄 디즈니 리조트 공식 호텔 (베이사이드역)', features: '디즈니 모노레일 역 바로 앞, 키즈 테마 객실(해피 매직룸)과 실내외 수영장 완비', rate: 580000, mapQuery: 'Hilton Tokyo Bay' }
+          { tier: 'budget', tierLabel: '가성비 3성급', name: '소테츠 그랜드 프레사 도쿄베이 아리아케', area: '오다이바·디즈니 무료 셔틀버스 운행', features: '도쿄 디즈니 리조트 무료 셔틀 운영, 가족 3~4인 트리플룸 가성비 최고', rate: 175000, mapQuery: 'Sotetsu Grand Fresa Tokyo-Bay Ariake' },
+          { tier: 'standard', tierLabel: '4성급 가족호텔', name: '호텔 그레이서리 신주쿠 (고질라 호텔)', area: '신주쿠역 동쪽 출구 도보 5분', features: '테라스 실물 크기 고질라 조형물로 아이들에게 인기, 공항 리무진 정류장 인접', rate: 295000, mapQuery: 'Hotel Gracery Shinjuku' },
+          { tier: 'luxury', tierLabel: '5성급 리조트', name: '힐튼 도쿄 베이', area: '도쿄 디즈니 리조트 공식 호텔', features: '디즈니 모노레일 역 바로 앞, 키즈 테마 객실(해피 매직룸)과 실내외 수영장 완비', rate: 580000, mapQuery: 'Hilton Tokyo Bay' }
         ],
         foods: [
-          { name: '아사쿠사 이마한 (국제거리 본점)', cat: '와규 스키야키', menu: '구로게와규 스키야키 런치 코스 (약 5,500엔~)', area: '아사쿠사역 도보 3분 (센소지 인근)', reason: '130년 전통의 부드러운 최고급 소고기 전골로 부모님 효도 식사 1순위 명가', tip: '런치 세트가 디너 대비 훨씬 합리적이며 공식 홈페이지 사전 예약을 추천합니다.', mapQuery: 'Asakusa Imahan Kokusai Dori' },
-          { name: '미도리스시 (긴자/시부야점)', cat: '프리미엄 초밥', menu: '특선 모둠 초밥 세트 & 게살 미소샐러드 (약 3,300엔)', area: '시부야 마크시티 4층 / 긴자 본점', reason: '합리적인 가격에 최상급 제철 네타를 제공하는 도쿄 대표 인기 스시 전문점', tip: '가게 앞 번호표 발급 후 주변 백화점을 구경하다가 카톡/웹 알림으로 입장 가능합니다.', mapQuery: 'Umegaoka Sushi No Midori Shibuya' },
-          { name: '규카츠 모토무라 (신주쿠/시부야)', cat: '소고기 규카츠', menu: '규카츠 정식 130g/260g + 명란·마 세트 (약 2,100엔)', area: '신주쿠역·시부야역·도쿄역 다수 지점', reason: '겉바속촉 소고기 커틀릿을 개인 화로에 구워 먹는 재미로 아이·어른 모두 좋아함', tip: '지점이 여러 곳이므로 메인 거리에서 살짝 떨어진 지점을 가면 대기가 짧습니다.', mapQuery: 'Gyukatsu Motomura Shinjuku' },
-          { name: '도쿄 라멘 스트리트 (도쿄역)', cat: '라멘 명가 집결', menu: '로쿠린샤 츠케멘 / 소라노이로 베지라멘 (약 1,200엔)', area: '도쿄역 야에스 지하 1층 이치방가이', reason: '도쿄 최정상급 라멘집 10곳이 한곳에 모여 있어 가족 각자 취향대로 골라 먹기 편리', tip: '캐릭터 스트리트(포켓몬·지브리 굿즈샵)와 바로 연결되어 아이들과 함께하기 좋습니다.', mapQuery: 'Tokyo Ramen Street' }
+          { name: '아사쿠사 이마한 (국제거리 본점)', cat: '와규 스키야키', menu: '구로게와규 스키야키 런치 코스 (약 5,500엔~)', area: '아사쿠사역 도보 3분', reason: '130년 전통의 부드러운 최고급 소고기 전골로 가족 기념 식사 1순위 명가', tip: '런치 세트가 훨씬 합리적이며 공식 홈페이지 사전 예약을 추천합니다.', mapQuery: 'Asakusa Imahan Kokusai Dori' },
+          { name: '미도리스시 (긴자/시부야점)', cat: '프리미엄 초밥', menu: '특선 모둠 초밥 세트 & 게살 미소샐러드 (약 3,300엔)', area: '시부야 마크시티 4층 / 긴자 본점', reason: '합리적 가격에 최상급 제철 네타를 제공하는 도쿄 대표 인기 스시 전문점', tip: '번호표 발급 후 백화점을 구경하다가 알림으로 입장 가능합니다.', mapQuery: 'Umegaoka Sushi No Midori Shibuya' },
+          { name: '규카츠 모토무라', cat: '소고기 규카츠', menu: '규카츠 정식 + 명란·마 세트 (약 2,100엔)', area: '신주쿠역·시부야역·도쿄역 다수 지점', reason: '겉바속촉 소고기 커틀릿을 개인 화로에 구워 먹는 재미로 아이·어른 모두 좋아함', tip: '지점이 여러 곳이므로 메인 거리에서 살짝 떨어진 지점을 추천합니다.', mapQuery: 'Gyukatsu Motomura Shinjuku' },
+          { name: '도쿄 라멘 스트리트 (도쿄역)', cat: '라멘 명가 집결', menu: '로쿠린샤 츠케멘 / 소라노이로 베지라멘 (약 1,200엔)', area: '도쿄역 야에스 지하 1층', reason: '유명 라멘집 10곳이 모여 있어 3가족이 각자 취향대로 흩어져 먹기 편리', tip: '캐릭터 스트리트(포켓몬·지브리 굿즈샵)와 바로 연결됩니다.', mapQuery: 'Tokyo Ramen Street' }
         ],
         courses: [
-          { day: '1일차 · 전통·야경', title: '아사쿠사 & 스카이트리', route: '아사쿠사 센소지·나카미세 거리 → 스미다강 산책 → 도쿄 스카이트리 소라마치', tip: '평지 위주 동선과 소라마치 실내 식당가·쇼핑몰이 연결되어 쾌적합니다.' },
+          { day: '1일차 · 전통·야경', title: '아사쿠사 & 스카이트리', route: '아사쿠사 센소지 → 스미다강 산책 → 도쿄 스카이트리 소라마치', tip: '평지 위주 동선과 소라마치 실내 식당가·쇼핑몰이 연결되어 쾌적합니다.' },
           { day: '2일차 · 꿈의 나라', title: '도쿄 디즈니랜드 or 디즈니씨', route: '마이하마역 → 디즈니랜드 퍼레이드 & 어트랙션 → 불꽃놀이 관람', tip: '어린 자녀는 디즈니랜드, 초등 고학년·성인은 디즈니씨 만족도가 높습니다.' },
-          { day: '3일차 · 숲길·전망', title: '메이지신궁 & 시부야·오다이바', route: '하라주쿠 메이지신궁 숲길 → 시부야 스카이 전망대 → 오다이바 자유의 여신상', tip: '시부야 스카이는 일몰 시간대 기준 3~4주 전 사전 예매가 필수입니다.' }
+          { day: '3일차 · 숲길·전망', title: '메이지신궁 & 시부야·오다이바', route: '하라주쿠 메이지신궁 → 시부야 스카이 전망대 → 오다이바 자유의 여신상', tip: '시부야 스카이는 일몰 시간대 기준 3~4주 전 사전 예매가 필수입니다.' }
         ],
         flights: [
           { id: 'tyo-1', airline: '대한항공 (하네다)', type: 'FSC · 도심 초근접 공항', depTime: '08:40', arrTime: '10:55', retDep: '12:15', retArr: '14:45', slot: 'MORNING', durationMin: 135, adultPrice: 485000 },
@@ -1147,23 +1143,23 @@
       },
       danang: {
         id: 'danang', country: 'VN', countryName: '베트남', flag: '🇻🇳', name: '다낭',
-        flightTimeText: '약 4시간 40분', tag: '가성비 리조트 · 호이안/바나힐',
-        desc: '합리적인 비용으로 5성급 리조트·풀빌라를 누릴 수 있으며, 바나힐 테마파크와 호이안 야경 투어가 인기입니다.',
+        flightTimeText: '약 4시간 40분', tag: '600만 원 예산 가장 현실적 · 풀빌라',
+        desc: '11명 대가족이 600만 원대 예산에 가장 가깝게 맞출 수 있는 최고 가성비 휴양지! 5성급 리조트와 바나힐·호이안 투어가 인기입니다.',
         hotelRates: { budget: 95000, standard: 175000, luxury: 350000 },
-        foodPerDay: 35000, activityPerDay: 30000, extraDefault: 150000,
+        foodPerDay: 30000, activityPerDay: 25000, extraPerPax: 30000,
         hotels: [
           { tier: 'budget', tierLabel: '가성비 4성급', name: '살라 다낭 비치 호텔', area: '미케비치 해변 바로 앞', features: '루프탑 인피니티 풀과 오션뷰 조식, 10만 원 미만으로 누리는 최상급 가성비 가족 호텔', rate: 95000, mapQuery: 'Sala Danang Beach Hotel' },
-          { tier: 'standard', tierLabel: '4.5성급 리조트', name: 'TMS 호텔 다낭 비치', area: '미케비치 해변 중심가', features: '넓은 거실형 스위트 객실(2베드룸 선택 가능), 최상층 수영장과 키즈 시설 우수', rate: 175000, mapQuery: 'TMS Hotel Da Nang Beach' },
-          { tier: 'luxury', tierLabel: '5성급 풀빌라', name: '하얏트 리젠시 다낭 리조트 앤 스파', area: '논누억 비치 (다낭-호이안 중간)', features: '아이들이 좋아하는 모래사장 수영장·워터슬라이드·키즈클럽 완비, 대가족 레지던스 추천', rate: 350000, mapQuery: 'Hyatt Regency Danang Resort and Spa' }
+          { tier: 'standard', tierLabel: '4.5성급 리조트', name: 'TMS 호텔 다낭 비치', area: '미케비치 해변 중심가', features: '넓은 거실형 스위트 객실, 최상층 수영장과 키즈 시설 우수, 3가족 나란히 투숙 추천', rate: 175000, mapQuery: 'TMS Hotel Da Nang Beach' },
+          { tier: 'luxury', tierLabel: '5성급 풀빌라', name: '하얏트 리젠시 다낭 리조트 앤 스파', area: '논누억 비치 (다낭-호이안 중간)', features: '모래사장 수영장·워터슬라이드·키즈클럽 완비, 3베드룸 빌라로 3가족이 함께 모이기 최적', rate: 350000, mapQuery: 'Hyatt Regency Danang Resort and Spa' }
         ],
         foods: [
-          { name: '마담란 (Madame Lan)', cat: '베트남 가정식', menu: '반쎄오, 숯불 분짜, 모닝글로리, 파인애플 볶음밥', area: '다낭 한강변 중심가 (노보텔 인근)', reason: '위생적이고 쾌적한 대형 정원형 레스토랑으로 한국 가족 여행객 후기 수 압도적 1위', tip: '메뉴판에 한국어와 사진이 모두 있어 부모님도 편하게 고르실 수 있습니다.', mapQuery: 'Madame Lan Restaurant Da Nang' },
-          { name: '목식당 (Moc Quan)', cat: '해산물 요리', menu: '갈릭·칠리 타이거새우구이, 가리비구이, 해산물 볶음밥', area: '미케비치 도보 5분 거리', reason: '시원한 에어컨 실내 좌석과 직원이 직접 새우 껍질을 까주는 친절한 서비스로 인기', tip: '저녁 피크타임에는 대기가 길어 카카오톡 채널로 사전 예약 후 방문하세요.', mapQuery: 'Moc Seafood Restaurant Da Nang' },
-          { name: '벱꾸온 (Bep Cuon)', cat: '모던 베트남식', menu: '반쎄오 플래터, 분팃느엉, 코코넛 스무디 커피', area: '미케비치 인근 안트엉 거리', reason: '향신료 향이 강하지 않고 정갈하게 나와 어린 자녀와 부모님 모두 잘 먹는 맛집', tip: '고수는 따로 요청해서 뺄 수 있으니 주문 시 "노 고수(No Cilantro)"를 말씀하세요.', mapQuery: 'Bep Cuon Da Nang' },
-          { name: '콩카페 (한시장 앞 1호점)', cat: '디저트·카페', menu: '코코넛 스무디 커피, 코코넛 코코아 (약 3,000원)', area: '한시장·핑크성당 도보 2분', reason: '한시장 쇼핑 후 더위를 식히며 달콤고소한 코코넛 음료를 즐기는 필수 코스', tip: '아이들은 커피가 들어가지 않은 "코코넛 코코아"나 "망고 스무디"를 추천합니다.', mapQuery: 'Cong Caphe Bach Dang Da Nang' }
+          { name: '마담란 (Madame Lan)', cat: '베트남 가정식', menu: '반쎄오, 숯불 분짜, 모닝글로리, 파인애플 볶음밥', area: '다낭 한강변 중심가', reason: '위생적이고 쾌적한 대형 정원형 레스토랑으로 11명 대가족 단체 식사 만족도 1위', tip: '메뉴판에 한국어와 사진이 모두 있어 주문이 매우 쉽습니다.', mapQuery: 'Madame Lan Restaurant Da Nang' },
+          { name: '목식당 (Moc Quan)', cat: '해산물 요리', menu: '갈릭·칠리 타이거새우구이, 가리비구이, 해산물 볶음밥', area: '미케비치 도보 5분 거리', reason: '시원한 에어컨 실내 좌석과 직원이 직접 새우 껍질을 까주는 친절한 서비스로 인기', tip: '11명 단체라면 카카오톡 채널로 미리 대형 테이블 예약을 권장합니다.', mapQuery: 'Moc Seafood Restaurant Da Nang' },
+          { name: '벱꾸온 (Bep Cuon)', cat: '모던 베트남식', menu: '반쎄오 플래터, 분팃느엉, 코코넛 스무디 커피', area: '미케비치 인근 안트엉 거리', reason: '향신료 향이 강하지 않고 정갈하게 나와 아이들과 어른 모두 잘 먹는 맛집', tip: '주문 시 "노 고수(No Cilantro)"를 요청하면 고수를 빼줍니다.', mapQuery: 'Bep Cuon Da Nang' },
+          { name: '콩카페 (한시장 앞 1호점)', cat: '디저트·카페', menu: '코코넛 스무디 커피, 코코넛 코코아 (약 3,000원)', area: '한시장·핑크성당 도보 2분', reason: '한시장 쇼핑 후 더위를 식히며 달콤고소한 코코넛 음료를 즐기는 필수 코스', tip: '아이들은 커피가 없는 코코넛 코코아나 망고 스무디를 추천합니다.', mapQuery: 'Cong Caphe Bach Dang Da Nang' }
         ],
         courses: [
-          { day: '1일차 · 휴양·야경', title: '미케비치 & 한시장·용다리', route: '리조트 수영장 휴식 → 핑크성당 & 한시장 쇼핑 → 용다리 불쇼·야시장', tip: '한낮 더위를 피해 오전·늦은 오후에 시내를 둘러보고 낮에는 호캉스를 즐기세요.' },
+          { day: '1일차 · 휴양·야경', title: '미케비치 & 한시장·용다리', route: '리조트 수영장 휴식 → 핑크성당 & 한시장 쇼핑 → 용다리 불쇼·야시장', tip: '11명 이동 시 그랩 7인승 SUV 2대 또는 16인승 단독 밴 대여가 매우 저렴합니다.' },
           { day: '2일차 · 테마파크', title: '바나힐 케이블카 & 골든브릿지', route: '세계 최장 케이블카 → 골든브릿지(손가락 다리) → 프랑스 마을 & 판타지파크', tip: '산 정상이라 시내보다 선선하므로 얇은 긴팔 겉옷을 챙기면 좋습니다.' },
           { day: '3일차 · 감성 야경', title: '호이안 올드타운 & 소원배', route: '바구니배 체험 → 호이안 올드타운 산책 → 투본강 소원배 & 등불 야경', tip: '해 질 녘 5시쯤 입장하면 낮 풍경과 화려한 홍등 야경을 모두 볼 수 있습니다.' }
         ],
@@ -1177,24 +1173,24 @@
       },
       hanoi: {
         id: 'hanoi', country: 'VN', countryName: '베트남', flag: '🇻🇳', name: '하노이',
-        flightTimeText: '약 4시간 30분', tag: '하롱베이 크루즈 · 미식/문화',
-        desc: '유네스코 자연유산 하롱베이 크루즈 투어와 호안끼엠 시내 관광, 저렴한 미식과 마사지를 즐기기 좋은 도시입니다.',
+        flightTimeText: '약 4시간 30분', tag: '하롱베이 크루즈 · 최저 체류비',
+        desc: '현지 물가와 숙박비가 6개 도시 중 가장 저렴해 11명 단체 식비·투어 부담을 크게 낮출 수 있는 미식·효도 여행지입니다.',
         hotelRates: { budget: 90000, standard: 155000, luxury: 300000 },
-        foodPerDay: 30000, activityPerDay: 35000, extraDefault: 150000,
+        foodPerDay: 28000, activityPerDay: 30000, extraPerPax: 30000,
         hotels: [
-          { tier: 'budget', tierLabel: '가성비 부티크', name: '라 시에스타 클래식 마 메이', area: '호안끼엠 구시가지 중심', features: '세심한 한국어 응대 서비스, 도보로 호안끼엠 호수·맛집·수상인형극장 모두 이동 가능', rate: 90000, mapQuery: 'La Siesta Classic Ma May Hanoi' },
+          { tier: 'budget', tierLabel: '가성비 부티크', name: '라 시에스타 클래식 마 메이', area: '호안끼엠 구시가지 중심', features: '세심한 서비스, 도보로 호안끼엠 호수·맛집·수상인형극장 모두 이동 가능', rate: 90000, mapQuery: 'La Siesta Classic Ma May Hanoi' },
           { tier: 'standard', tierLabel: '4.5성급 호텔', name: '롯데 호텔 하노이', area: '바딘 지구 (롯데센터 상층부)', features: '한국인 가족 만족도 최고 랜드마크 호텔, 지하 롯데마트·전망대·수영장 한 번에 이용', rate: 155000, mapQuery: 'Lotte Hotel Hanoi' },
-          { tier: 'luxury', tierLabel: '5성급 리조트형', name: '인터컨티넨탈 하노이 웨스트레이크', area: '서호(웨스트레이크) 호수 위 수상 파빌리온', features: '호수 위에 떠 있는 이국적 빌라형 객실과 고요한 휴양 분위기, 부모님 효도 숙소 추천', rate: 300000, mapQuery: 'InterContinental Hanoi Westlake' }
+          { tier: 'luxury', tierLabel: '5성급 리조트형', name: '인터컨티넨탈 하노이 웨스트레이크', area: '서호(웨스트레이크) 호수 위 수상 파빌리온', features: '호수 위에 떠 있는 이국적 빌라형 객실과 고요한 휴양 분위기, 대가족 휴식 추천', rate: 300000, mapQuery: 'InterContinental Hanoi Westlake' }
         ],
         foods: [
-          { name: '퍼 자 쭈옌 (백종원 쌀국수)', cat: '소고기 쌀국수', menu: '진한 양지·차돌 소고기 쌀국수 (약 3,500원)', area: '호안끼엠 구시가지 밧단 거리', reason: '스트리트 푸드 파이터 방영 이후 한국인 필수 방문 코스가 된 깊고 진한 보양식 국물', tip: '오전 시간대(07~10시)에 방문해야 재료 소진 없이 가장 신선한 국물을 맛볼 수 있습니다.', mapQuery: 'Pho Gia Truyen Bat Dan Hanoi' },
-          { name: '분짜 흐엉리엔 (오바마 분짜)', cat: '숯불 분짜', menu: '숯불 돼지고기 분짜 + 해물 넴(춘권) 세트 (약 5,000원)', area: '호안끼엠 남쪽 레반후 거리', reason: '달콤새콤한 육수에 숯불 불향 가득한 고기와 면을 적셔 먹는 하노이 대표 국민 식사', tip: '에어컨이 나오는 위층 좌석을 이용하면 가족 모두 쾌적하게 식사할 수 있습니다.', mapQuery: 'Bun Cha Huong Lien Hanoi' },
-          { name: '분보남보 (73 Hang Dieu)', cat: '비빔 쌀국수', menu: '소고기 샐러드 비빔 쌀국수 (약 4,000원)', area: '호안끼엠 구시가지 중심', reason: '뜨거운 국물 대신 상큼한 간장 소스에 고소한 땅콩·소고기를 비벼 먹어 호불호 제로', tip: '주문 즉시 볶아낸 소고기를 올려주며 회전율이 빨라 줄이 길어도 금방 들어갑니다.', mapQuery: 'Bun Bo Nam Bo 73 Hang Dieu' },
-          { name: '꽌 안 응온 (Quan An Ngon)', cat: '베트남 종합 미식', menu: '반쎄오, 월남쌈, 쌀국수, 볶음밥 (1인 약 1만 원)', area: '호안끼엠 판보이쩌우 거리', reason: '고풍스러운 콜로니얼 저택에서 베트남 전역의 길거리 명물 요리를 위생적으로 한 번에 맛봄', tip: '부모님 동반 시 로컬 노점보다 훨씬 쾌적하고 메뉴 선택 폭이 넓어 가장 안전합니다.', mapQuery: 'Quan An Ngon Hanoi' }
+          { name: '퍼 자 쭈옌 (백종원 쌀국수)', cat: '소고기 쌀국수', menu: '진한 양지·차돌 소고기 쌀국수 (약 3,500원)', area: '호안끼엠 구시가지 밧단 거리', reason: '방송과 수많은 여행 유튜버가 극찬한 깊고 진한 보양식 같은 국물 맛', tip: '오전 시간대(07~10시)에 방문해야 재료 소진 없이 가장 신선합니다.', mapQuery: 'Pho Gia Truyen Bat Dan Hanoi' },
+          { name: '분짜 흐엉리엔 (오바마 분짜)', cat: '숯불 분짜', menu: '숯불 돼지고기 분짜 + 해물 넴(춘권) 세트 (약 5,000원)', area: '호안끼엠 남쪽 레반후 거리', reason: '달콤새콤한 육수에 숯불 불향 가득한 고기와 면을 적셔 먹는 하노이 국민 식사', tip: '에어컨이 나오는 위층 좌석을 이용하면 가족 모두 쾌적합니다.', mapQuery: 'Bun Cha Huong Lien Hanoi' },
+          { name: '분보남보 (73 Hang Dieu)', cat: '비빔 쌀국수', menu: '소고기 샐러드 비빔 쌀국수 (약 4,000원)', area: '호안끼엠 구시가지 중심', reason: '상큼한 간장 소스에 고소한 땅콩·소고기를 비벼 먹어 남녀노소 호불호 제로', tip: '회전율이 빨라 줄이 길어도 금방 들어갑니다.', mapQuery: 'Bun Bo Nam Bo 73 Hang Dieu' },
+          { name: '꽌 안 응온 (Quan An Ngon)', cat: '베트남 종합 미식', menu: '반쎄오, 월남쌈, 쌀국수, 볶음밥 (1인 약 1만 원)', area: '호안끼엠 판보이쩌우 거리', reason: '고풍스러운 저택에서 베트남 대표 요리를 위생적으로 한 번에 맛보는 대형 식당', tip: '11명 대가족이 한자리에 모여 쾌적하게 식사하기 가장 안전한 곳입니다.', mapQuery: 'Quan An Ngon Hanoi' }
         ],
         courses: [
-          { day: '1일차 · 시내·인형극', title: '호안끼엠 호수 & 수상인형극', route: '성요셉 성당 → 호안끼엠 호수 산책 → 탕롱 수상인형극 → 맥주거리', tip: '수상인형극은 언어를 몰라도 아이와 부모님 모두가 흥미롭게 관람할 수 있습니다.' },
-          { day: '2일차 · 대자연 크루즈', title: '하롱베이 럭셔리 데이크루즈', route: '하노이 출발(고속도로 2.5시간) → 하롱베이 크루즈 선상 뷔페 → 승솟동굴·티톱섬', tip: '부모님 효도 여행 만족도 1위 코스! 고속도로 개통으로 당일 투어가 매우 편해졌습니다.' },
+          { day: '1일차 · 시내·인형극', title: '호안끼엠 호수 & 수상인형극', route: '성요셉 성당 → 호안끼엠 호수 산책 → 탕롱 수상인형극 → 야시장', tip: '수상인형극은 언어를 몰라도 아이와 어른 모두가 흥미롭게 관람할 수 있습니다.' },
+          { day: '2일차 · 대자연 크루즈', title: '하롱베이 럭셔리 데이크루즈', route: '하노이 출발(고속도로 2.5시간) → 하롱베이 크루즈 선상 뷔페 → 승솟동굴·티톱섬', tip: '11명 단독 미니버스 왕복 픽업으로 예약하면 이동이 매우 편안합니다.' },
           { day: '3일차 · 유적·쇼핑', title: '바딘광장 & 서호·롯데센터', route: '호치민 묘소·한기둥사원 → 서호 쩐꾸옥 사원 → 롯데센터 전망대 & 마트 쇼핑', tip: '마지막 날 롯데센터에서 기념품 쇼핑과 마사지를 묶으면 공항 이동이 편리합니다.' }
         ],
         flights: [
@@ -1210,22 +1206,22 @@
         flightTimeText: '약 5시간 30분', tag: '프리미엄 휴양 · 사파리/케이블카',
         desc: '베트남의 몰디브라 불리는 휴양 섬! 빈원더스·사파리, 혼똔섬 해상 케이블카, 럭셔리 풀빌라 호캉스에 최적입니다.',
         hotelRates: { budget: 115000, standard: 215000, luxury: 440000 },
-        foodPerDay: 40000, activityPerDay: 40000, extraDefault: 180000,
+        foodPerDay: 38000, activityPerDay: 35000, extraPerPax: 40000,
         hotels: [
           { tier: 'budget', tierLabel: '가성비 리조트', name: '빈홀리데이 피에스타 푸꾸옥', area: '북부 그랜드월드 바로 앞', features: '빈펄 사파리·빈원더스 무료 셔틀 및 도보 야경 관람 최적, 대형 야외 수영장 보유', rate: 115000, mapQuery: 'VinHolidays Fiesta Phu Quoc' },
           { tier: 'standard', tierLabel: '4.5성급 비치리조트', name: '노보텔 푸꾸옥 리조트', area: '중부 쯔엉 비치 (공항 10분 거리)', features: '아이 동반 가족에 특화된 방갈로·패밀리룸, 키즈풀·프라이빗 비치·무료 공항 픽업 제공', rate: 215000, mapQuery: 'Novotel Phu Quoc Resort' },
-          { tier: 'luxury', tierLabel: '5성급 풀빌라', name: '빈펄 원더월드 푸꾸옥 (독채 풀빌라)', area: '북부 전용 해변 · 사파리/빈원더스 인접', features: '개인 수영장이 딸린 2~4베드룸 독채 풀빌라로 3대 대가족 프라이빗 휴양에 압도적 인기', rate: 440000, mapQuery: 'Vinpearl Wonderworld Phu Quoc' }
+          { tier: 'luxury', tierLabel: '5성급 풀빌라', name: '빈펄 원더월드 푸꾸옥 (독채 풀빌라)', area: '북부 전용 해변 · 사파리/빈원더스 인접', features: '개인 수영장이 딸린 독채 풀빌라로 3가족(11명) 프라이빗 휴양에 압도적 인기', rate: 440000, mapQuery: 'Vinpearl Wonderworld Phu Quoc' }
         ],
         foods: [
-          { name: '분꿔이 끼엔싸이 (본점)', cat: '오징어 어묵 쌀국수', menu: '직접 뽑은 생면 쌀국수 + 오징어·새우 어묵탕 (약 4,000원)', area: '중부 즈엉동 시내 (야시장 인근)', reason: '푸꾸옥에서만 맛볼 수 있는 대표 향토 음식으로 시원하고 담백한 해물 육수가 일품', tip: '특제 소스를 직접 제조해 찍어 먹으며, 맵지 않아 아이들도 아주 잘 먹습니다.', mapQuery: 'Bun Quay Kien Xay Phu Quoc' },
-          { name: '신짜오 해산물 레스토랑', cat: '오션뷰 해산물', menu: '갈릭버터 크레이피쉬, 맛조개 볶음, 해산물 볶음밥', area: '즈엉동 해변가 중심', reason: '바다 바로 앞에서 붉은 노을을 보며 쾌적하게 식사할 수 있는 인기 패밀리 레스토랑', tip: '일몰 시간(17:30~18:30)에 맞춰 테라스 좌석을 이용하면 최고의 전망을 즐길 수 있습니다.', mapQuery: 'Xin Chao Seafood Restaurant Phu Quoc' },
-          { name: '쭈온쭈온 비스트로 & 스카이바', cat: '전망대 카페·식사', menu: '망고 스무디, 코코넛 커피, 파스타 & 수제버거', area: '즈엉동 언덕 전망대 (택시 5분)', reason: '푸꾸옥 시내와 에메랄드빛 바다가 파노라마로 내려다보이는 인플루언서 인생샷 성지', tip: '오전이나 늦은 오후에 방문하면 한낮 햇빛을 피해 시원하게 풍경을 감상할 수 있습니다.', mapQuery: 'Chuon Chuon Bistro Sky Bar Phu Quoc' },
-          { name: '온더락 레스토랑 (망고베이)', cat: '선셋 파인다이닝', menu: '해산물 플래터, 스테이크, 베트남 퓨전 요리', area: '중북부 옹랑 비치 해안가', reason: '자연 친화적인 바위 해변 위에서 파도 소리를 들으며 식사하는 로맨틱 가족 외식 명소', tip: '인기가 매우 많아 최소 3~5일 전 웹사이트나 이메일 예약을 권장합니다.', mapQuery: 'On The Rock Restaurant Phu Quoc' }
+          { name: '분꿔이 끼엔싸이 (본점)', cat: '오징어 어묵 쌀국수', menu: '직접 뽑은 생면 쌀국수 + 오징어·새우 어묵탕 (약 4,000원)', area: '중부 즈엉동 시내 (야시장 인근)', reason: '푸꾸옥에서만 맛볼 수 있는 대표 향토 음식으로 시원하고 담백한 해물 육수가 일품', tip: '맵지 않아 어린 아이들도 아주 잘 먹습니다.', mapQuery: 'Bun Quay Kien Xay Phu Quoc' },
+          { name: '신짜오 해산물 레스토랑', cat: '오션뷰 해산물', menu: '갈릭버터 크레이피쉬, 맛조개 볶음, 해산물 볶음밥', area: '즈엉동 해변가 중심', reason: '바다 바로 앞에서 붉은 노을을 보며 쾌적하게 식사할 수 있는 대형 패밀리 레스토랑', tip: '일몰 시간(17:30~18:30)에 맞춰 방문하면 최고의 전망을 즐길 수 있습니다.', mapQuery: 'Xin Chao Seafood Restaurant Phu Quoc' },
+          { name: '쭈온쭈온 비스트로 & 스카이바', cat: '전망대 카페·식사', menu: '망고 스무디, 코코넛 커피, 파스타 & 수제버거', area: '즈엉동 언덕 전망대', reason: '푸꾸옥 시내와 에메랄드빛 바다가 파노라마로 내려다보이는 인플루언서 인생샷 성지', tip: '오전이나 늦은 오후에 방문하면 시원하게 풍경을 감상할 수 있습니다.', mapQuery: 'Chuon Chuon Bistro Sky Bar Phu Quoc' },
+          { name: '온더락 레스토랑 (망고베이)', cat: '선셋 파인다이닝', menu: '해산물 플래터, 스테이크, 베트남 퓨전 요리', area: '중북부 옹랑 비치 해안가', reason: '자연 친화적인 바위 해변 위에서 파도 소리를 들으며 식사하는 가족 외식 명소', tip: '인기가 많아 최소 3~5일 전 사전 예약을 권장합니다.', mapQuery: 'On The Rock Restaurant Phu Quoc' }
         ],
         courses: [
           { day: '1일차 · 북부 테마', title: '빈펄 사파리 & 그랜드월드 야경', route: '빈펄 사파리(기린 먹이주기) → 그랜드월드 수상택시 → 21:30 무료 분수쇼', tip: '오전 일찍 사파리에 가야 동물들이 활발하고 날씨도 선선합니다.' },
-          { day: '2일차 · 놀이·워터파크', title: '빈원더스 테마파크 & 아쿠아리움', route: '빈원더스 놀이기구 → 거북이 아쿠아리움 → 워터파크 물놀이', tip: '한 곳에서 놀이동산·수족관·워터파크를 모두 해결해 아이 동반 가족에 최고입니다.' },
-          { day: '3일차 · 남부 절경', title: '혼똔섬 해상 케이블카 & 선셋타운', route: '세계 최장 8km 해상 케이블카 → 아쿠아토피아 워터파크 → 키스브릿지 노을', tip: '해 질 녘 선셋타운과 키스브릿지의 핑크빛 노을은 가족 인생샷 필수 코스입니다.' }
+          { day: '2일차 · 놀이·워터파크', title: '빈원더스 테마파크 & 아쿠아리움', route: '빈원더스 놀이기구 → 거북이 아쿠아리움 → 워터파크 물놀이', tip: '한 곳에서 놀이동산·수족관·워터파크를 모두 해결해 아이 동반 3가족에 최고입니다.' },
+          { day: '3일차 · 남부 절경', title: '혼똔섬 해상 케이블카 & 선셋타운', route: '세계 최장 8km 해상 케이블카 → 아쿠아토피아 워터파크 → 키스브릿지 노을', tip: '해 질 녘 선셋타운과 키스브릿지의 핑크빛 노을은 대가족 단체사진 필수 코스입니다.' }
         ],
         flights: [
           { id: 'pqc-1', airline: '대한항공', type: 'FSC · 오후 직항/23kg', depTime: '15:45', arrTime: '19:30', retDep: '21:00', retArr: '04:30', slot: 'AFTERNOON', durationMin: 330, adultPrice: 570000 },
@@ -1236,25 +1232,33 @@
       }
     };
 
+    // 3가족 기본 구성: 4인(성인2, 아동2) / 4인(성인2, 아동2) / 3인(성인2, 아동1) = 총 11인
+    function getDefaultFamilies() {
+      return [
+        { id: 'fam1', name: '1가족 (4인)', enabled: true, adult: 2, child: 2, infant: 0, rooms: 1 },
+        { id: 'fam2', name: '2가족 (4인)', enabled: true, adult: 2, child: 2, infant: 0, rooms: 1 },
+        { id: 'fam3', name: '3가족 (3인)', enabled: true, adult: 2, child: 1, infant: 0, rooms: 1 }
+      ];
+    }
+
     var state = {
+      families: getDefaultFamilies(),
+      sharedBudget: 6000000,
+      splitMode: 'ACTUAL', // 'ACTUAL' (실제 발생 비용 비례 부담) | 'EQUAL' (초과금 1/N 가족 균등 부담)
       countryFilter: 'ALL',
       guideTab: 'ALL',
       selectedCityId: 'fukuoka',
-      adult: 2,
-      child: 1,
-      infant: 0,
       nights: 3,
-      rooms: 1,
       timeFilter: 'ALL',
       sortBy: 'PRICE_ASC',
       priceDisplayMode: 'TOTAL',
-      selectedFlightId: 'fuk-2',
-      hotelTier: 'standard',
-      selectedHotelName: 'JR 큐슈 호텔 블로섬 하카타 중앙',
-      hotelPricePerNight: 225000,
-      foodPricePerDay: 55000,
+      selectedFlightId: 'fuk-1',
+      hotelTier: 'budget',
+      selectedHotelName: '도미 인 하카타 기온',
+      hotelPricePerNight: 135000,
+      foodPricePerDay: 50000,
       activityPricePerDay: 25000,
-      extraPriceTotal: 150000,
+      extraPerPax: 40000,
       compareList: []
     };
 
@@ -1283,7 +1287,7 @@
     function copyText(text) {
       if (navigator.clipboard && window.isSecureContext) {
         navigator.clipboard.writeText(text).then(function() {
-          showToast('✅ 복사 완료! 카카오톡에 바로 붙여넣기 하세요.');
+          showToast('✅ 복사 완료! 가족 단톡방에 붙여넣기 하세요.');
         }, function() {
           fallbackCopy(text);
         });
@@ -1302,25 +1306,11 @@
       ta.select();
       try {
         document.execCommand('copy');
-        showToast('✅ 복사 완료! 카카오톡에 바로 붙여넣기 하세요.');
+        showToast('✅ 복사 완료! 가족 단톡방에 붙여넣기 하세요.');
       } catch (e) {
         alert('아래 내용을 복사해 주세요:\n\n' + text);
       }
       document.body.removeChild(ta);
-    }
-
-    function calcFlightCost(adultPrice) {
-      var childPrice = Math.round((adultPrice * 0.75) / 1000) * 1000;
-      var infantPrice = Math.round((adultPrice * 0.15) / 1000) * 1000;
-      var total = (adultPrice * state.adult) + (childPrice * state.child) + (infantPrice * state.infant);
-      return { adultPrice: adultPrice, childPrice: childPrice, infantPrice: infantPrice, total: total };
-    }
-
-    function syncInputs() {
-      document.getElementById('inputHotelPrice').value = state.hotelPricePerNight;
-      document.getElementById('inputFoodPrice').value = state.foodPricePerDay;
-      document.getElementById('inputActivityPrice').value = state.activityPricePerDay;
-      document.getElementById('inputExtraPrice').value = state.extraPriceTotal;
     }
 
     function getHotelByTier(city, tier) {
@@ -1328,6 +1318,14 @@
         if (city.hotels[i].tier === tier) return city.hotels[i];
       }
       return city.hotels[0];
+    }
+
+    function syncInputs() {
+      document.getElementById('inputSharedBudget').value = state.sharedBudget;
+      document.getElementById('inputHotelPrice').value = state.hotelPricePerNight;
+      document.getElementById('inputFoodPrice').value = state.foodPricePerDay;
+      document.getElementById('inputActivityPrice').value = state.activityPricePerDay;
+      document.getElementById('inputExtraPrice').value = state.extraPerPax;
     }
 
     function selectCity(cityId) {
@@ -1339,12 +1337,189 @@
       state.hotelPricePerNight = matchedHotel.rate;
       state.foodPricePerDay = city.foodPerDay;
       state.activityPricePerDay = city.activityPerDay;
-      state.extraPriceTotal = city.extraDefault;
-      state.selectedFlightId = city.flights[0].id;
+      state.extraPerPax = city.extraPerPax;
+      // 가격순 최저가 항공편 기본 선택
+      var sortedFlights = city.flights.slice().sort(function(a, b) { return a.adultPrice - b.adultPrice; });
+      state.selectedFlightId = sortedFlights[0].id;
       syncInputs();
       renderAll();
     }
 
+    // 가족별 실제 발생 경비 및 전체 합계 계산 엔진
+    function calculateAll() {
+      var city = CITIES[state.selectedCityId];
+      var flight = city.flights[0];
+      for (var i = 0; i < city.flights.length; i++) {
+        if (city.flights[i].id === state.selectedFlightId) flight = city.flights[i];
+      }
+
+      var adultUnit = flight.adultPrice;
+      var childUnit = Math.round((adultUnit * 0.75) / 1000) * 1000;
+      var infantUnit = Math.round((adultUnit * 0.15) / 1000) * 1000;
+      var days = state.nights + 1;
+
+      var totalAdult = 0, totalChild = 0, totalInfant = 0, totalRooms = 0;
+      var totalFlight = 0, totalHotel = 0, totalFood = 0, totalActivity = 0, totalExtra = 0;
+      var activeFamilies = [];
+
+      for (var f = 0; f < state.families.length; f++) {
+        var fam = state.families[f];
+        var famPax = fam.adult + fam.child + fam.infant;
+        var famLocalPax = fam.adult + fam.child; // 유아 제외 현지 식비/입장료
+
+        var fFlight = (fam.adult * adultUnit) + (fam.child * childUnit) + (fam.infant * infantUnit);
+        var fHotel = state.hotelPricePerNight * state.nights * fam.rooms;
+        var fFood = state.foodPricePerDay * days * famLocalPax;
+        var fActivity = state.activityPricePerDay * days * famLocalPax;
+        var fExtra = state.extraPerPax * famPax;
+        var fSubtotal = fam.enabled ? (fFlight + fHotel + fFood + fActivity + fExtra) : 0;
+
+        var detail = {
+          id: fam.id,
+          name: fam.name,
+          enabled: fam.enabled,
+          adult: fam.adult,
+          child: fam.child,
+          infant: fam.infant,
+          rooms: fam.rooms,
+          pax: famPax,
+          flightCost: fFlight,
+          hotelCost: fHotel,
+          foodCost: fFood,
+          activityCost: fActivity,
+          extraCost: fExtra,
+          rawCost: fSubtotal,
+          extraBurden: 0
+        };
+
+        if (fam.enabled) {
+          totalAdult += fam.adult;
+          totalChild += fam.child;
+          totalInfant += fam.infant;
+          totalRooms += fam.rooms;
+          totalFlight += fFlight;
+          totalHotel += fHotel;
+          totalFood += fFood;
+          totalActivity += fActivity;
+          totalExtra += fExtra;
+          activeFamilies.push(detail);
+        }
+        fam._calc = detail;
+      }
+
+      var grandTotal = totalFlight + totalHotel + totalFood + totalActivity + totalExtra;
+      var totalPax = totalAdult + totalChild + totalInfant;
+      var perPersonAvg = totalPax > 0 ? Math.round(grandTotal / totalPax) : 0;
+
+      // 600만 원 초과 시 가족별 추가 부담금 배분 계산
+      var diff = grandTotal - state.sharedBudget;
+      if (diff > 0 && activeFamilies.length > 0) {
+        if (state.splitMode === 'EQUAL') {
+          var equalShare = Math.round(diff / activeFamilies.length);
+          for (var e = 0; e < activeFamilies.length; e++) {
+            activeFamilies[e].extraBurden = equalShare;
+          }
+        } else {
+          // 실제 발생한 가족별 비용 비율대로 초과금 분담
+          for (var a = 0; a < activeFamilies.length; a++) {
+            var ratio = grandTotal > 0 ? (activeFamilies[a].rawCost / grandTotal) : (1 / activeFamilies.length);
+            activeFamilies[a].extraBurden = Math.round(diff * ratio);
+          }
+        }
+      }
+
+      return {
+        city: city,
+        flight: flight,
+        adultUnit: adultUnit,
+        childUnit: childUnit,
+        infantUnit: infantUnit,
+        days: days,
+        totalAdult: totalAdult,
+        totalChild: totalChild,
+        totalInfant: totalInfant,
+        totalPax: totalPax,
+        totalRooms: totalRooms,
+        totalFlight: totalFlight,
+        totalHotel: totalHotel,
+        totalFood: totalFood,
+        totalActivity: totalActivity,
+        totalExtra: totalExtra,
+        grandTotal: grandTotal,
+        perPersonAvg: perPersonAvg,
+        diff: diff,
+        activeFamilies: activeFamilies
+      };
+    }
+
+    // 1. 3가족 카드 렌더링
+    function renderFamilies(calc) {
+      var grid = document.getElementById('familyGrid');
+      var html = '';
+      for (var i = 0; i < state.families.length; i++) {
+        var fam = state.families[i];
+        var d = fam._calc;
+        var cardCls = fam.enabled ? 'fam-card active' : 'fam-card inactive';
+
+        html += '<div class="' + cardCls + '">' +
+          '<div class="fam-header">' +
+            '<button type="button" data-action="toggle-family" data-fidx="' + i + '" class="fam-toggle-btn">' +
+              '<span class="fam-check">' + (fam.enabled ? '✓' : '') + '</span>' +
+              '<span>' + fam.name + '</span>' +
+            '</button>' +
+            '<span class="fam-badge">' + (fam.enabled ? ('참여 · ' + d.pax + '명') : '불참') + '</span>' +
+          '</div>' +
+
+          '<div class="fam-row">' +
+            '<span>성인 (100%)</span>' +
+            '<div class="fam-ctrl">' +
+              '<button type="button" data-action="fam-step" data-fidx="' + i + '" data-field="adult" data-delta="-1" class="btn-mini-step">-</button>' +
+              '<span class="fam-num">' + fam.adult + '</span>' +
+              '<button type="button" data-action="fam-step" data-fidx="' + i + '" data-field="adult" data-delta="1" class="btn-mini-step">+</button>' +
+            '</div>' +
+          '</div>' +
+
+          '<div class="fam-row">' +
+            '<span>아동 (75%)</span>' +
+            '<div class="fam-ctrl">' +
+              '<button type="button" data-action="fam-step" data-fidx="' + i + '" data-field="child" data-delta="-1" class="btn-mini-step">-</button>' +
+              '<span class="fam-num">' + fam.child + '</span>' +
+              '<button type="button" data-action="fam-step" data-fidx="' + i + '" data-field="child" data-delta="1" class="btn-mini-step">+</button>' +
+            '</div>' +
+          '</div>' +
+
+          '<div class="fam-row">' +
+            '<span>유아 (15%)</span>' +
+            '<div class="fam-ctrl">' +
+              '<button type="button" data-action="fam-step" data-fidx="' + i + '" data-field="infant" data-delta="-1" class="btn-mini-step">-</button>' +
+              '<span class="fam-num">' + fam.infant + '</span>' +
+              '<button type="button" data-action="fam-step" data-fidx="' + i + '" data-field="infant" data-delta="1" class="btn-mini-step">+</button>' +
+            '</div>' +
+          '</div>' +
+
+          '<div class="fam-row">' +
+            '<span>사용 객실</span>' +
+            '<div class="fam-ctrl">' +
+              '<button type="button" data-action="fam-step" data-fidx="' + i + '" data-field="rooms" data-delta="-1" class="btn-mini-step">-</button>' +
+              '<span class="fam-num">' + fam.rooms + '실</span>' +
+              '<button type="button" data-action="fam-step" data-fidx="' + i + '" data-field="rooms" data-delta="1" class="btn-mini-step">+</button>' +
+            '</div>' +
+          '</div>' +
+
+          '<div class="fam-cost-preview">' +
+            '<span>가족 발생 경비</span>' +
+            '<strong style="color:#1d4ed8;">' + (fam.enabled ? formatKRW(d.rawCost) : '0원 (제외)') + '</strong>' +
+          '</div>' +
+        '</div>';
+      }
+      grid.innerHTML = html;
+
+      document.getElementById('val-nights').textContent = state.nights + '박 ' + (state.nights + 1) + '일';
+      document.getElementById('activeFamilySummary').textContent =
+        calc.activeFamilies.length + '가족 참여 (총 ' + calc.totalPax + '명 · 객실 ' + calc.totalRooms + '실)';
+    }
+
+    // 2. 도시 카드 렌더링
     function renderCities() {
       var grid = document.getElementById('cityGrid');
       var keys = Object.keys(CITIES);
@@ -1378,19 +1553,15 @@
         '<strong style="color:#1d4ed8;">' + cur.flag + ' ' + cur.name + ':</strong> ' + cur.desc;
     }
 
+    // 3. 숙소·맛집·코스 가이드 렌더링
     function renderGuide() {
       var city = CITIES[state.selectedCityId];
       document.getElementById('guideSectionTitle').textContent = city.flag + ' ' + city.name + ' 추천 숙소 · 맛집 · 코스';
 
-      var hotelBlock = document.getElementById('hotelGuideBlock');
-      var foodBlock = document.getElementById('foodBlock');
-      var courseBlock = document.getElementById('courseBlock');
+      document.getElementById('hotelGuideBlock').style.display = (state.guideTab === 'ALL' || state.guideTab === 'HOTEL') ? 'block' : 'none';
+      document.getElementById('foodBlock').style.display = (state.guideTab === 'ALL' || state.guideTab === 'FOOD') ? 'block' : 'none';
+      document.getElementById('courseBlock').style.display = (state.guideTab === 'ALL' || state.guideTab === 'COURSE') ? 'block' : 'none';
 
-      hotelBlock.style.display = (state.guideTab === 'ALL' || state.guideTab === 'HOTEL') ? 'block' : 'none';
-      foodBlock.style.display = (state.guideTab === 'ALL' || state.guideTab === 'FOOD') ? 'block' : 'none';
-      courseBlock.style.display = (state.guideTab === 'ALL' || state.guideTab === 'COURSE') ? 'block' : 'none';
-
-      // 1. 추천 숙소 렌더링
       var hHtml = '';
       for (var h = 0; h < city.hotels.length; h++) {
         var ht = city.hotels[h];
@@ -1421,7 +1592,6 @@
       }
       document.getElementById('hotelGuideGrid').innerHTML = hHtml;
 
-      // 2. 추천 맛집 렌더링
       var fHtml = '';
       for (var j = 0; j < city.foods.length; j++) {
         var fd = city.foods[j];
@@ -1447,7 +1617,6 @@
       }
       document.getElementById('foodGrid').innerHTML = fHtml;
 
-      // 3. 추천 코스 렌더링
       var cHtml = '';
       for (var i = 0; i < city.courses.length; i++) {
         var crs = city.courses[i];
@@ -1461,23 +1630,8 @@
       document.getElementById('courseList').innerHTML = cHtml;
     }
 
-    function renderPax() {
-      document.getElementById('val-adult').textContent = state.adult;
-      document.getElementById('val-child').textContent = state.child;
-      document.getElementById('val-infant').textContent = state.infant;
-      document.getElementById('val-nights').textContent = state.nights + '박';
-      document.getElementById('val-rooms').textContent = state.rooms + '실';
-      document.getElementById('tripDurationLabel').textContent = state.nights + '박 ' + (state.nights + 1) + '일 일정';
-
-      var total = state.adult + state.child + state.infant;
-      var parts = [];
-      if (state.adult > 0) parts.push('성인 ' + state.adult);
-      if (state.child > 0) parts.push('아동 ' + state.child);
-      if (state.infant > 0) parts.push('유아 ' + state.infant);
-      document.getElementById('totalPaxSummary').textContent = '총 ' + total + '명 (' + parts.join(', ') + ')';
-    }
-
-    function renderFlights() {
+    // 4. 항공권 렌더링
+    function renderFlights(calc) {
       var city = CITIES[state.selectedCityId];
       var list = city.flights.slice();
 
@@ -1511,20 +1665,23 @@
       for (var k = 0; k < list.length; k++) {
         var f = list[k];
         var isSel = (f.id === state.selectedFlightId);
-        var cost = calcFlightCost(f.adultPrice);
-        var priceHtml = '';
+        var aUnit = f.adultPrice;
+        var cUnit = Math.round((aUnit * 0.75) / 1000) * 1000;
+        var iUnit = Math.round((aUnit * 0.15) / 1000) * 1000;
+        var allTot = (aUnit * calc.totalAdult) + (cUnit * calc.totalChild) + (iUnit * calc.totalInfant);
 
+        var priceHtml = '';
         if (state.priceDisplayMode === 'TOTAL') {
           priceHtml =
-            '<div class="flight-sub">가족 ' + (state.adult + state.child + state.infant) + '명 왕복 총액</div>' +
-            '<div class="flight-total">' + formatKRW(cost.total) + '</div>' +
-            '<div class="flight-sub">성인 1인 ' + formatKRW(cost.adultPrice) + '</div>';
+            '<div class="flight-sub">참여 ' + calc.totalPax + '명 왕복 총액</div>' +
+            '<div class="flight-total">' + formatKRW(allTot) + '</div>' +
+            '<div class="flight-sub">성인 1인 ' + formatKRW(aUnit) + '</div>';
         } else {
           priceHtml =
-            '<div style="font-size:12px; font-weight:700;">성인: ' + formatKRW(cost.adultPrice) + ' ×' + state.adult + '</div>' +
-            (state.child > 0 ? '<div style="font-size:12px; color:#047857; font-weight:700;">아동: ' + formatKRW(cost.childPrice) + ' ×' + state.child + '</div>' : '') +
-            (state.infant > 0 ? '<div style="font-size:12px; color:#b45309; font-weight:700;">유아: ' + formatKRW(cost.infantPrice) + ' ×' + state.infant + '</div>' : '') +
-            '<div style="font-size:13px; font-weight:800; color:#2563eb; margin-top:2px;">합계 ' + formatKRW(cost.total) + '</div>';
+            '<div style="font-size:12px; font-weight:700;">성인: ' + formatKRW(aUnit) + ' ×' + calc.totalAdult + '</div>' +
+            (calc.totalChild > 0 ? '<div style="font-size:12px; color:#047857; font-weight:700;">아동: ' + formatKRW(cUnit) + ' ×' + calc.totalChild + '</div>' : '') +
+            (calc.totalInfant > 0 ? '<div style="font-size:12px; color:#b45309; font-weight:700;">유아: ' + formatKRW(iUnit) + ' ×' + calc.totalInfant + '</div>' : '') +
+            '<div style="font-size:13px; font-weight:800; color:#2563eb; margin-top:2px;">합계 ' + formatKRW(allTot) + '</div>';
         }
 
         html += '<div data-action="select-flight" data-flight="' + f.id + '" class="flight-card' + (isSel ? ' active' : '') + '">' +
@@ -1547,117 +1704,118 @@
       container.innerHTML = html;
     }
 
-    function syncTierButtons() {
-      var city = CITIES[state.selectedCityId];
-      var hB = getHotelByTier(city, 'budget');
-      var hS = getHotelByTier(city, 'standard');
-      var hL = getHotelByTier(city, 'luxury');
-      document.getElementById('tierSubBudget').textContent = hB.name;
-      document.getElementById('tierSubStandard').textContent = hS.name;
-      document.getElementById('tierSubLuxury').textContent = hL.name;
-
-      var hBtns = document.querySelectorAll('[data-action="hotel-tier"]');
-      for (var i = 0; i < hBtns.length; i++) {
-        if (hBtns[i].getAttribute('data-tier') === state.hotelTier) {
-          hBtns[i].classList.add('active');
-        } else {
-          hBtns[i].classList.remove('active');
-        }
-      }
-    }
-
-    function getSummary() {
-      var city = CITIES[state.selectedCityId];
-      var flight = city.flights[0];
-      for (var i = 0; i < city.flights.length; i++) {
-        if (city.flights[i].id === state.selectedFlightId) flight = city.flights[i];
-      }
-      var flightCost = calcFlightCost(flight.adultPrice);
-      var days = state.nights + 1;
-      var localPax = Math.max(1, state.adult + state.child);
-      var hotelTotal = state.hotelPricePerNight * state.nights * state.rooms;
-      var foodTotal = state.foodPricePerDay * days * localPax;
-      var activityTotal = state.activityPricePerDay * days * localPax;
-      var extraTotal = state.extraPriceTotal;
-      var grandTotal = flightCost.total + hotelTotal + foodTotal + activityTotal + extraTotal;
-      var totalPax = Math.max(1, state.adult + state.child + state.infant);
-      var perPersonAvg = Math.round(grandTotal / totalPax);
-
-      return {
-        city: city, flight: flight, flightCost: flightCost, days: days,
-        localPax: localPax, hotelTotal: hotelTotal, foodTotal: foodTotal,
-        activityTotal: activityTotal, extraTotal: extraTotal,
-        grandTotal: grandTotal, totalPax: totalPax, perPersonAvg: perPersonAvg
-      };
-    }
-
-    function renderSummary() {
-      var s = getSummary();
-      document.getElementById('hotelCalcHint').textContent = state.nights + '박 × ' + state.rooms + '실 = ' + formatKRW(s.hotelTotal);
-      document.getElementById('foodCalcHint').textContent = s.days + '일 × ' + s.localPax + '명(성인·아동) = ' + formatKRW(s.foodTotal);
-      document.getElementById('activityCalcHint').textContent = s.days + '일 × ' + s.localPax + '명(성인·아동) = ' + formatKRW(s.activityTotal);
+    // 5. 오른쪽 요약 및 600만 원 초과 정산 렌더링
+    function renderSummary(s) {
+      var localPax = s.totalAdult + s.totalChild;
+      document.getElementById('hotelCalcHint').textContent = state.nights + '박 × 총 ' + s.totalRooms + '실 = ' + formatKRW(s.totalHotel);
+      document.getElementById('foodCalcHint').textContent = s.days + '일 × ' + localPax + '명(성인·아동) = ' + formatKRW(s.totalFood);
+      document.getElementById('activityCalcHint').textContent = s.days + '일 × ' + localPax + '명(성인·아동) = ' + formatKRW(s.totalActivity);
+      document.getElementById('extraCalcHint').textContent = '총 ' + s.totalPax + '명 × ' + formatKRW(state.extraPerPax) + ' = ' + formatKRW(s.totalExtra);
 
       document.getElementById('summaryCountryBadge').textContent = s.city.flag + ' ' + s.city.countryName;
       document.getElementById('summaryCityName').textContent = s.city.name;
-      document.getElementById('summaryTripMeta').textContent = state.nights + '박 ' + s.days + '일 · 총 ' + s.totalPax + '명';
+      document.getElementById('summaryTripMeta').textContent = state.nights + '박 ' + s.days + '일 · ' + s.activeFamilies.length + '가족 ' + s.totalPax + '명';
       document.getElementById('summaryFlightMeta').textContent = s.flight.airline + ' (' + s.flight.depTime + ' 출발)';
 
       document.getElementById('summaryGrandTotal').textContent = formatKRW(s.grandTotal);
       document.getElementById('summaryPerPerson').textContent = '1인 평균 약 ' + formatKRW(s.perPersonAvg) + ' (총 ' + s.totalPax + '명 기준)';
 
-      document.getElementById('breakdownFlight').textContent = formatKRW(s.flightCost.total);
-      var fDet = '성인 ' + state.adult + '(' + formatKRW(s.flightCost.adultPrice) + ')';
-      if (state.child > 0) fDet += ' · 아동 ' + state.child + '(' + formatKRW(s.flightCost.childPrice) + ')';
-      if (state.infant > 0) fDet += ' · 유아 ' + state.infant + '(' + formatKRW(s.flightCost.infantPrice) + ')';
-      document.getElementById('breakdownFlightDetail').textContent = fDet;
+      // 600만 원 예산 초과 / 잔액 상태 박스 업데이트
+      var statusBox = document.getElementById('budgetStatusBox');
+      var bsTitle = document.getElementById('bsTitle');
+      var bsBudgetLabel = document.getElementById('bsBudgetLabel');
+      var bsDiffAmount = document.getElementById('bsDiffAmount');
+      var bsSubGuide = document.getElementById('bsSubGuide');
 
-      document.getElementById('breakdownHotel').textContent = formatKRW(s.hotelTotal);
-      document.getElementById('breakdownHotelDetail').textContent = state.selectedHotelName + ' (' + state.nights + '박 ' + state.rooms + '실)';
-      document.getElementById('breakdownFood').textContent = formatKRW(s.foodTotal);
-      document.getElementById('breakdownActivity').textContent = formatKRW(s.activityTotal);
-      document.getElementById('breakdownExtra').textContent = formatKRW(s.extraTotal);
+      bsBudgetLabel.textContent = '공동 예산 ' + formatKRW(state.sharedBudget);
 
-      var tot = Math.max(1, s.grandTotal);
-      var pf = Math.round((s.flightCost.total / tot) * 100);
-      var ph = Math.round((s.hotelTotal / tot) * 100);
-      var pl = Math.max(0, 100 - pf - ph);
-      document.getElementById('ratioText').textContent = '항공 ' + pf + '% · 숙박 ' + ph + '% · 현지 ' + pl + '%';
-      document.getElementById('barFlight').style.width = pf + '%';
-      document.getElementById('barHotel').style.width = ph + '%';
-      document.getElementById('barLocal').style.width = pl + '%';
+      if (s.diff > 0) {
+        statusBox.className = 'budget-status-box over';
+        bsTitle.textContent = '🚨 공동 예산 초과 발생';
+        bsTitle.style.color = '#fda4af';
+        bsDiffAmount.textContent = '+' + formatKRW(s.diff) + ' 초과';
+        bsDiffAmount.style.color = '#fda4af';
+        bsSubGuide.textContent = '공동 예산(' + formatKRW(state.sharedBudget) + ')을 초과하여 아래 금액만큼 가족별 추가 부담이 필요합니다.';
+      } else {
+        statusBox.className = 'budget-status-box under';
+        bsTitle.textContent = '✅ 공동 예산 범위 내 가능!';
+        bsTitle.style.color = '#6ee7b7';
+        bsDiffAmount.textContent = formatKRW(Math.abs(s.diff)) + ' 여유';
+        bsDiffAmount.style.color = '#6ee7b7';
+        bsSubGuide.textContent = '공동 예산 ' + formatKRW(state.sharedBudget) + ' 안에서 추가 부담금 없이 여행 가능합니다.';
+      }
+
+      // 가족별 부담금 리스트 렌더링
+      var shareHtml = '';
+      if (s.activeFamilies.length === 0) {
+        shareHtml = '<div style="font-size:12px; color:#94a3b8; text-align:center; padding:8px;">최소 1개 가족 이상 선택해 주세요.</div>';
+      } else {
+        for (var i = 0; i < s.activeFamilies.length; i++) {
+          var af = s.activeFamilies[i];
+          var burdenText = s.diff > 0
+            ? ('<strong style="color:#fda4af;">+' + formatKRW(af.extraBurden) + '</strong>')
+            : ('<strong style="color:#6ee7b7;">0원 (예산 내)</strong>');
+
+          shareHtml += '<div class="fam-share-row">' +
+            '<div>' +
+              '<div style="font-weight:800; color:#ffffff;">' + af.name + ' <span style="font-weight:400; color:#94a3b8;">(' + af.pax + '명·' + af.rooms + '실)</span></div>' +
+              '<div style="font-size:10.5px; color:#94a3b8;">총 발생액 ' + formatKRW(af.rawCost) + '</div>' +
+            '</div>' +
+            '<div style="text-align:right;">' +
+              '<div style="font-size:10px; color:#cbd5e1;">추가 부담금</div>' +
+              burdenText +
+            '</div>' +
+          '</div>';
+        }
+      }
+      document.getElementById('famShareList').innerHTML = shareHtml;
+
+      // 항목별 세부 합계
+      document.getElementById('breakdownFlight').textContent = formatKRW(s.totalFlight);
+      document.getElementById('breakdownFlightDetail').textContent =
+        '성인 ' + s.totalAdult + '(' + formatKRW(s.adultUnit) + ') · 아동 ' + s.totalChild + '(' + formatKRW(s.childUnit) + ')' +
+        (s.totalInfant > 0 ? ' · 유아 ' + s.totalInfant : '');
+      document.getElementById('breakdownHotel').textContent = formatKRW(s.totalHotel);
+      document.getElementById('breakdownHotelDetail').textContent = state.selectedHotelName + ' (' + state.nights + '박 × ' + s.totalRooms + '실)';
+      document.getElementById('breakdownFood').textContent = formatKRW(s.totalFood);
+      document.getElementById('breakdownActivity').textContent = formatKRW(s.totalActivity);
+      document.getElementById('breakdownExtra').textContent = formatKRW(s.totalExtra);
     }
 
     function renderCompareModal() {
       document.getElementById('compareBadge').textContent = state.compareList.length;
       var body = document.getElementById('compareModalBody');
       if (state.compareList.length === 0) {
-        body.innerHTML = '<div style="padding:40px 16px; text-align:center; color:#64748b;">아직 비교함에 담긴 여행지가 없습니다.<br>도시와 숙소·항공권을 고른 뒤 <strong>[➕ 현재 견적 비교함에 담기]</strong>를 눌러보세요.</div>';
+        body.innerHTML = '<div style="padding:40px 16px; text-align:center; color:#64748b;">아직 비교함에 담긴 여행지가 없습니다.<br>도시를 선택한 뒤 우측의 <strong>[➕ 현재 견적 비교함에 담기]</strong>를 눌러보세요.</div>';
         return;
       }
       var rows = '';
       for (var i = 0; i < state.compareList.length; i++) {
         var it = state.compareList[i];
+        var overStr = it.diff > 0
+          ? ('<span style="color:#be123c; font-weight:800;">+' + formatKRW(it.diff) + ' 초과</span>')
+          : ('<span style="color:#047857; font-weight:800;">예산 내 가능</span>');
+
         rows += '<tr>' +
-          '<td><strong>' + it.flag + ' ' + it.cityName + '</strong></td>' +
-          '<td>' + it.nights + '박 ' + it.days + '일<br><span style="font-size:11px; color:#64748b;">총 ' + it.totalPax + '명 (객실 ' + it.rooms + ')</span></td>' +
-          '<td>' + it.hotelName + '<br><span style="font-size:11px; color:#64748b;">숙박 ' + formatKRW(it.hotelTotal) + '</span></td>' +
-          '<td>' + it.airline + '<br><span style="font-size:11px; color:#64748b;">항공 ' + formatKRW(it.flightTotal) + '</span></td>' +
-          '<td><strong style="color:#2563eb;">' + formatKRW(it.grandTotal) + '</strong><br><span style="font-size:11px; color:#64748b;">1인 ' + formatKRW(it.perPersonAvg) + '</span></td>' +
+          '<td><strong>' + it.flag + ' ' + it.cityName + '</strong><br><span style="font-size:11px; color:#64748b;">' + it.nights + '박 ' + it.days + '일 · ' + it.totalPax + '명</span></td>' +
+          '<td>' + it.hotelName + '<br><span style="font-size:11px; color:#64748b;">' + it.airline + '</span></td>' +
+          '<td><strong>' + formatKRW(it.grandTotal) + '</strong><br>' + overStr + '</td>' +
+          '<td style="font-size:11.5px; line-height:1.45;">' + it.familySummary + '</td>' +
           '<td><button type="button" data-action="remove-compare" data-idx="' + i + '" style="padding:4px 8px; border-radius:6px; background:#ffe4e6; color:#be123c; font-weight:700; font-size:11px;">삭제</button></td>' +
         '</tr>';
       }
       body.innerHTML = '<div style="overflow-x:auto;"><table class="cmp-table"><thead><tr>' +
-        '<th>후보 도시</th><th>일정/인원</th><th>선택 숙소</th><th>선택 항공</th><th>예상 총 경비</th><th>삭제</th>' +
+        '<th>후보 도시</th><th>숙소 / 항공</th><th>총 경비 / 초과액</th><th>가족별 추가 부담금</th><th>삭제</th>' +
       '</tr></thead><tbody>' + rows + '</tbody></table></div>';
     }
 
     function renderAll() {
+      var calc = calculateAll();
+      renderFamilies(calc);
       renderCities();
       renderGuide();
-      renderPax();
-      renderFlights();
-      syncTierButtons();
-      renderSummary();
+      renderFlights(calc);
+      renderSummary(calc);
       document.getElementById('compareBadge').textContent = state.compareList.length;
     }
 
@@ -1668,9 +1826,7 @@
       state.selectedHotelName = ht.name;
       state.hotelPricePerNight = ht.rate;
       document.getElementById('inputHotelPrice').value = ht.rate;
-      renderGuide();
-      syncTierButtons();
-      renderSummary();
+      renderAll();
     }
 
     // 전역 클릭 이벤트 위임
@@ -1685,7 +1841,39 @@
 
       var action = target.getAttribute('data-action');
 
-      if (action === 'filter-country') {
+      if (action === 'toggle-family') {
+        var fidx = parseInt(target.getAttribute('data-fidx'), 10);
+        state.families[fidx].enabled = !state.families[fidx].enabled;
+        renderAll();
+      }
+      else if (action === 'fam-step') {
+        var idx = parseInt(target.getAttribute('data-fidx'), 10);
+        var field = target.getAttribute('data-field');
+        var delta = parseInt(target.getAttribute('data-delta'), 10);
+        var fam = state.families[idx];
+
+        if (field === 'adult') fam.adult = Math.max(1, Math.min(8, fam.adult + delta));
+        if (field === 'child') fam.child = Math.max(0, Math.min(6, fam.child + delta));
+        if (field === 'infant') fam.infant = Math.max(0, Math.min(4, fam.infant + delta));
+        if (field === 'rooms') fam.rooms = Math.max(1, Math.min(4, fam.rooms + delta));
+
+        var newTotal = fam.adult + fam.child + fam.infant;
+        fam.name = (idx + 1) + '가족 (' + newTotal + '인)';
+        renderAll();
+      }
+      else if (action === 'step-nights') {
+        var d = parseInt(target.getAttribute('data-delta'), 10);
+        state.nights = Math.max(1, Math.min(14, state.nights + d));
+        renderAll();
+      }
+      else if (action === 'split-mode') {
+        state.splitMode = target.getAttribute('data-smode');
+        var sBtns = document.querySelectorAll('[data-action="split-mode"]');
+        for (var sb = 0; sb < sBtns.length; sb++) sBtns[sb].classList.remove('active');
+        target.classList.add('active');
+        renderAll();
+      }
+      else if (action === 'filter-country') {
         state.countryFilter = target.getAttribute('data-country');
         var btns = document.querySelectorAll('[data-action="filter-country"]');
         for (var i = 0; i < btns.length; i++) btns[i].classList.remove('active');
@@ -1702,87 +1890,79 @@
         target.classList.add('active');
         renderGuide();
       }
-      else if (action === 'apply-hotel-card' || action === 'hotel-tier') {
+      else if (action === 'apply-hotel-card') {
         var tier = target.getAttribute('data-tier');
         applyHotelTier(tier);
         showToast('🏨 [' + state.selectedHotelName + '] 요금이 견적에 반영되었습니다.');
-      }
-      else if (action === 'step') {
-        var field = target.getAttribute('data-field');
-        var delta = parseInt(target.getAttribute('data-delta'), 10);
-        if (field === 'adult') state.adult = Math.max(1, Math.min(15, state.adult + delta));
-        if (field === 'child') state.child = Math.max(0, Math.min(10, state.child + delta));
-        if (field === 'infant') state.infant = Math.max(0, Math.min(5, state.infant + delta));
-        if (field === 'nights') state.nights = Math.max(1, Math.min(14, state.nights + delta));
-        if (field === 'rooms') state.rooms = Math.max(1, Math.min(8, state.rooms + delta));
-        renderAll();
       }
       else if (action === 'price-mode') {
         state.priceDisplayMode = target.getAttribute('data-mode');
         var mBtns = document.querySelectorAll('[data-action="price-mode"]');
         for (var m = 0; m < mBtns.length; m++) mBtns[m].classList.remove('active');
         target.classList.add('active');
-        renderFlights();
+        renderFlights(calculateAll());
       }
       else if (action === 'filter-time') {
         state.timeFilter = target.getAttribute('data-time');
         var tBtns = document.querySelectorAll('[data-action="filter-time"]');
         for (var t = 0; t < tBtns.length; t++) tBtns[t].classList.remove('active');
         target.classList.add('active');
-        renderFlights();
+        renderFlights(calculateAll());
       }
       else if (action === 'select-flight') {
         state.selectedFlightId = target.getAttribute('data-flight');
-        renderFlights();
-        renderSummary();
+        renderAll();
       }
       else if (action === 'copy-share') {
-        var s = getSummary();
-        var topFoods = [];
-        for (var f = 0; f < s.city.foods.length; f++) topFoods.push(s.city.foods[f].name);
-        var topCourses = [];
-        for (var cr = 0; cr < s.city.courses.length; cr++) topCourses.push(s.city.courses[cr].title);
+        var s = calculateAll();
+        var splitLabel = state.splitMode === 'ACTUAL' ? '실제 비용 비례 배분' : '초과금 가족수 1/N 균등';
+        var famLines = [];
+        for (var afi = 0; afi < s.activeFamilies.length; afi++) {
+          var af = s.activeFamilies[afi];
+          var bText = s.diff > 0 ? ('추가 부담 +' + formatKRW(af.extraBurden)) : '추가 부담 0원';
+          famLines.push('  • ' + af.name + ' (' + af.rooms + '실): 총 발생 ' + formatKRW(af.rawCost) + ' → ' + bText);
+        }
 
         var msg = [
-          '✈️ [우리 가족 여행 견적 & 상세 코스 - ' + s.city.flag + ' ' + s.city.name + ']',
-          '• 일정/인원: ' + state.nights + '박 ' + s.days + '일 / 총 ' + s.totalPax + '명 (성인 ' + state.adult + ', 아동 ' + state.child + ', 유아 ' + state.infant + ')',
-          '• 추천 숙소: ' + state.selectedHotelName + ' (' + state.rooms + '실)',
+          '✈️ [3가족 공동 여행 정산표 - ' + s.city.flag + ' ' + s.city.name + ']',
+          '• 일정/인원: ' + state.nights + '박 ' + s.days + '일 / ' + s.activeFamilies.length + '가족 총 ' + s.totalPax + '명 (객실 ' + s.totalRooms + '실)',
+          '• 선택 숙소: ' + state.selectedHotelName,
           '• 선택 항공: ' + s.flight.airline + ' (출국 ' + s.flight.depTime + ' / 귀국 ' + s.flight.retDep + ')',
           '──────────────────',
-          '💰 예상 총 경비: ' + formatKRW(s.grandTotal) + ' (1인 평균 ' + formatKRW(s.perPersonAvg) + ')',
-          '  - 왕복 항공권: ' + formatKRW(s.flightCost.total),
-          '  - 숙박비(' + state.nights + '박 ' + state.rooms + '실): ' + formatKRW(s.hotelTotal),
-          '  - 식비·카페: ' + formatKRW(s.foodTotal),
-          '  - 교통·관광: ' + formatKRW(s.activityTotal),
-          '  - 예비비·보험: ' + formatKRW(s.extraTotal),
+          '💰 전체 예상 총 경비: ' + formatKRW(s.grandTotal),
+          '🏦 공동 여행 예산: ' + formatKRW(state.sharedBudget),
+          s.diff > 0
+            ? ('🚨 예산 초과 금액: +' + formatKRW(s.diff) + ' (' + splitLabel + ')')
+            : ('✅ 공동 예산 내 여행 가능 (' + formatKRW(Math.abs(s.diff)) + ' 여유)'),
           '──────────────────',
-          '🗺️ 추천 코스: ' + topCourses.join(' / '),
-          '🍽️ 검증 맛집: ' + topFoods.join(', '),
+          '👨‍👩‍👧‍👦 가족별 정산 내역:',
+          famLines.join('\n'),
           '──────────────────',
-          '이 지역으로 어떨까요? 의견 주세요! 😊'
+          '이 일정과 분담금으로 진행할까요? 의견 주세요! 😊'
         ].join('\n');
         copyText(msg);
       }
       else if (action === 'add-compare') {
-        var sum = getSummary();
+        var sum = calculateAll();
+        var fSumList = [];
+        for (var k = 0; k < sum.activeFamilies.length; k++) {
+          var itemF = sum.activeFamilies[k];
+          fSumList.push(itemF.name + ': ' + (sum.diff > 0 ? ('+' + formatKRW(itemF.extraBurden)) : '0원'));
+        }
         state.compareList.push({
           flag: sum.city.flag,
           cityName: sum.city.name,
           nights: state.nights,
           days: sum.days,
-          rooms: state.rooms,
           totalPax: sum.totalPax,
           hotelName: state.selectedHotelName,
           airline: sum.flight.airline,
-          depTime: sum.flight.depTime,
-          flightTotal: sum.flightCost.total,
-          hotelTotal: sum.hotelTotal,
-          localTotal: sum.foodTotal + sum.activityTotal + sum.extraTotal,
           grandTotal: sum.grandTotal,
-          perPersonAvg: sum.perPersonAvg
+          diff: sum.diff,
+          familySummary: fSumList.join('<br>')
         });
         document.getElementById('compareBadge').textContent = state.compareList.length;
-        showToast('📋 [' + sum.city.name + '] 견적이 비교함에 담겼습니다!');
+        showToast('📋 [' + sum.city.name + '] 정산 내역이 비교함에 담겼습니다!');
       }
       else if (action === 'open-compare') {
         renderCompareModal();
@@ -1792,8 +1972,8 @@
         document.getElementById('compareModal').classList.remove('open');
       }
       else if (action === 'remove-compare') {
-        var idx = parseInt(target.getAttribute('data-idx'), 10);
-        state.compareList.splice(idx, 1);
+        var rIdx = parseInt(target.getAttribute('data-idx'), 10);
+        state.compareList.splice(rIdx, 1);
         renderCompareModal();
       }
       else if (action === 'clear-compare') {
@@ -1806,54 +1986,53 @@
           showToast('비교함에 담긴 여행지가 없습니다.');
           return;
         }
-        var lines = ['📊 [우리 가족 여행 후보지 총정리 비교]', '──────────────────'];
+        var lines = ['📊 [3가족 여행 후보지별 총 경비 & 추가 부담금 비교]', '공동 예산: ' + formatKRW(state.sharedBudget), '──────────────────'];
         for (var c = 0; c < state.compareList.length; c++) {
-          var item = state.compareList[c];
-          lines.push((c + 1) + '. ' + item.flag + ' ' + item.cityName + ' (' + item.nights + '박 ' + item.days + '일 / ' + item.totalPax + '명)');
-          lines.push('   · 숙소: ' + item.hotelName + ' (' + formatKRW(item.hotelTotal) + ')');
-          lines.push('   · 항공: ' + item.airline + ' (' + item.depTime + ' 출발) / ' + formatKRW(item.flightTotal));
-          lines.push('   · 총 경비: ' + formatKRW(item.grandTotal) + ' (1인 평균 ' + formatKRW(item.perPersonAvg) + ')');
+          var it = state.compareList[c];
+          lines.push((c + 1) + '. ' + it.flag + ' ' + it.cityName + ' (' + it.nights + '박 ' + it.days + '일 / ' + it.totalPax + '명)');
+          lines.push('   · 총 경비: ' + formatKRW(it.grandTotal) + (it.diff > 0 ? (' (초과 +' + formatKRW(it.diff) + ')') : ' (예산 내 가능)'));
+          lines.push('   · 가족별 추가 부담: ' + it.familySummary.replace(/<br>/g, ' / '));
         }
         lines.push('──────────────────');
-        lines.push('어느 도시가 가장 마음에 드시나요? 투표해 주세요! 🗳️');
+        lines.push('어느 도시로 갈지 투표해 주세요! 🗳️');
         copyText(lines.join('\n'));
       }
       else if (action === 'reset-all') {
+        state.families = getDefaultFamilies();
+        state.sharedBudget = 6000000;
+        state.splitMode = 'ACTUAL';
         state.countryFilter = 'ALL';
         state.guideTab = 'ALL';
-        state.adult = 2;
-        state.child = 1;
-        state.infant = 0;
         state.nights = 3;
-        state.rooms = 1;
         state.timeFilter = 'ALL';
         state.sortBy = 'PRICE_ASC';
         state.priceDisplayMode = 'TOTAL';
-        state.hotelTier = 'standard';
+        state.hotelTier = 'budget';
         document.getElementById('flightSortSelect').value = 'PRICE_ASC';
         selectCity('fukuoka');
-        showToast('기본값으로 초기화되었습니다.');
+        showToast('3가족(4인/4인/3인) · 600만 원 기본값으로 초기화되었습니다.');
       }
     });
 
     document.addEventListener('change', function(e) {
       if (e.target.id === 'flightSortSelect') {
         state.sortBy = e.target.value;
-        renderFlights();
+        renderFlights(calculateAll());
       }
     });
 
     document.addEventListener('input', function(e) {
       var id = e.target.id;
       var val = Math.max(0, Number(e.target.value) || 0);
+      if (id === 'inputSharedBudget') { state.sharedBudget = val; renderAll(); }
       if (id === 'inputHotelPrice') {
         state.hotelPricePerNight = val;
         state.selectedHotelName = '직접 입력 숙소';
-        renderSummary();
+        renderAll();
       }
-      if (id === 'inputFoodPrice') { state.foodPricePerDay = val; renderSummary(); }
-      if (id === 'inputActivityPrice') { state.activityPricePerDay = val; renderSummary(); }
-      if (id === 'inputExtraPrice') { state.extraPriceTotal = val; renderSummary(); }
+      if (id === 'inputFoodPrice') { state.foodPricePerDay = val; renderAll(); }
+      if (id === 'inputActivityPrice') { state.activityPricePerDay = val; renderAll(); }
+      if (id === 'inputExtraPrice') { state.extraPerPax = val; renderAll(); }
     });
 
     syncInputs();

@@ -524,20 +524,33 @@
       border: 1px solid #cbd5e1;
     }
 
-    /* 항공권 필터 & 리스트 */
-    .filter-bar {
+    /* 항공권 필터 & 리스트 (출국 + 귀국 시간 필터 2단 구성) */
+    .filter-panel {
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      border-radius: 12px;
+      padding: 12px 14px;
+      margin-bottom: 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .filter-row {
       display: flex;
       flex-wrap: wrap;
       align-items: center;
       justify-content: space-between;
-      gap: 10px;
-      padding-bottom: 12px;
-      margin-bottom: 12px;
-      border-bottom: 1px solid #f1f5f9;
+      gap: 8px;
     }
-    .time-btns { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; }
+    .time-btns { display: flex; flex-wrap: wrap; align-items: center; gap: 5px; }
+    .filter-label-tag {
+      font-size: 12px;
+      font-weight: 800;
+      min-width: 92px;
+      display: inline-block;
+    }
     .time-btn {
-      padding: 6px 10px;
+      padding: 5px 10px;
       border-radius: 8px;
       font-size: 12px;
       font-weight: 700;
@@ -546,6 +559,16 @@
       color: #475569;
     }
     .time-btn.active { background: #2563eb; color: #ffffff; border-color: #2563eb; }
+    .ret-time-btn {
+      padding: 5px 10px;
+      border-radius: 8px;
+      font-size: 12px;
+      font-weight: 700;
+      border: 1px solid #cbd5e1;
+      background: #ffffff;
+      color: #475569;
+    }
+    .ret-time-btn.active { background: #059669; color: #ffffff; border-color: #059669; }
     .sort-select {
       padding: 6px 10px;
       border-radius: 8px;
@@ -576,11 +599,12 @@
       border-radius: 6px;
       background: #e2e8f0;
       color: #334155;
-      margin-left: 6px;
+      margin-left: 5px;
     }
     .flight-badge-fsc { background: #dbeafe; color: #1d4ed8; }
     .flight-badge-lcc { background: #fef3c7; color: #92400e; }
-    .flight-times { font-size: 12px; color: #475569; margin-top: 6px; }
+    .flight-badge-ret { background: #dcfce7; color: #166534; }
+    .flight-times { font-size: 12.5px; color: #334155; margin-top: 7px; line-height: 1.5; }
     .flight-price-box { text-align: right; margin-left: auto; }
     .flight-total { font-size: 17px; font-weight: 800; color: #2563eb; }
     .flight-sub { font-size: 11px; color: #64748b; }
@@ -1006,31 +1030,47 @@
         </ul>
       </div>
 
-      <div class="filter-bar">
-        <div class="time-btns">
-          <span style="font-size:12px; font-weight:800; color:#64748b;">⏰ 출발시간:</span>
-          <button type="button" data-action="filter-time" data-time="ALL" class="time-btn active">전체</button>
-          <button type="button" data-action="filter-time" data-time="MORNING" class="time-btn">오전</button>
-          <button type="button" data-action="filter-time" data-time="AFTERNOON" class="time-btn">오후</button>
-          <button type="button" data-action="filter-time" data-time="EVENING" class="time-btn">저녁</button>
-        </div>
-        <div style="display:flex; gap:6px; align-items:center;">
-          <div class="tab-group">
-            <button type="button" data-action="price-mode" data-mode="TOTAL" class="tab-btn active">전체 총액</button>
-            <button type="button" data-action="price-mode" data-mode="PER_PAX" class="tab-btn">인원별 단가</button>
+      <!-- 출국 시간대 + 귀국 시간대 + 정렬 컨트롤 패널 -->
+      <div class="filter-panel">
+        <div class="filter-row">
+          <div class="time-btns">
+            <span class="filter-label-tag" style="color:#1d4ed8;">🛫 출국 출발:</span>
+            <button type="button" data-action="filter-time" data-time="ALL" class="time-btn active">전체</button>
+            <button type="button" data-action="filter-time" data-time="MORNING" class="time-btn">오전(06~12시)</button>
+            <button type="button" data-action="filter-time" data-time="AFTERNOON" class="time-btn">오후(12~18시)</button>
+            <button type="button" data-action="filter-time" data-time="EVENING" class="time-btn">저녁(18~24시)</button>
           </div>
-          <select id="flightSortSelect" class="sort-select">
-            <option value="PRICE_ASC">💰 가격 낮은순</option>
-            <option value="TIME_ASC">🛫 출발 시간순</option>
-            <option value="DURATION_ASC">⚡ 비행시간순</option>
-          </select>
+          <div style="display:flex; gap:6px; align-items:center;">
+            <div class="tab-group">
+              <button type="button" data-action="price-mode" data-mode="TOTAL" class="tab-btn active">전체 총액</button>
+              <button type="button" data-action="price-mode" data-mode="PER_PAX" class="tab-btn">인원별 단가</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="filter-row" style="padding-top:8px; border-top:1px dashed #cbd5e1;">
+          <div class="time-btns">
+            <span class="filter-label-tag" style="color:#047857;">🛬 귀국 출발:</span>
+            <button type="button" data-action="filter-ret-time" data-rettime="ALL" class="ret-time-btn active">전체</button>
+            <button type="button" data-action="filter-ret-time" data-rettime="MORNING" class="ret-time-btn">오전(06~12시)</button>
+            <button type="button" data-action="filter-ret-time" data-rettime="AFTERNOON" class="ret-time-btn">오후(12~18시)</button>
+            <button type="button" data-action="filter-ret-time" data-rettime="EVENING" class="ret-time-btn">저녁·심야(18~06시)</button>
+          </div>
+          <div>
+            <select id="flightSortSelect" class="sort-select">
+              <option value="PRICE_ASC">💰 가격 낮은순</option>
+              <option value="TIME_ASC">🛫 출국 시간 빠른순</option>
+              <option value="RET_TIME_ASC">🛬 귀국 시간 빠른순</option>
+              <option value="DURATION_ASC">⚡ 비행시간 짧은순</option>
+            </select>
+          </div>
         </div>
       </div>
 
       <div id="flightList" class="flight-list"></div>
 
       <div class="step-footer">
-        <span class="step-hint" id="step3SelectedHint">💡 항공편을 선택하거나 실가격을 입력한 후 다음 단계를 눌러주세요.</span>
+        <span class="step-hint" id="step3SelectedHint">💡 출국·귀국 시간을 비교해 항공편을 선택한 후 다음 단계를 눌러주세요.</span>
         <button type="button" data-action="unlock-step" data-next="4" class="btn-next-step">
           다음: 4단계 인기 숙소 · 맛집 · 즐길거리 선택 →
         </button>
@@ -1188,8 +1228,8 @@
         </div>
 
         <div class="kpi-box">
-          <div class="kpi-label">선택 항공 · 숙소 요약</div>
-          <div style="font-size:14px; font-weight:800; color:#93c5fd; margin-top:5px;" id="finalFlightSummary">진에어</div>
+          <div class="kpi-label">선택 항공(출국/귀국) · 숙소 요약</div>
+          <div style="font-size:13.5px; font-weight:800; color:#93c5fd; margin-top:5px;" id="finalFlightSummary">진에어</div>
           <div style="font-size:12.5px; color:#e2e8f0; margin-top:3px;" id="finalHotelSummary">도미 인 하카타 기온</div>
         </div>
       </div>
@@ -1310,11 +1350,12 @@
           { day: '3일차 · 쇼핑·체험', title: '라라포트 건담 & 텐진 쇼핑', route: '라라포트 후쿠오카(건담·점심) → 오호리공원 산책 → 텐진 지하상가·돈키호테', tip: '평지 위주 동선과 대형 쇼핑몰이 연결되어 아이 동반 이동이 수월합니다.' }
         ],
         flights: [
-          { id: 'fuk-5', airline: '진에어', carrierType: 'LCC', type: 'LCC · 수하물 15kg', depTime: '18:30', arrTime: '19:50', retDep: '20:45', retArr: '22:05', slot: 'EVENING', durationMin: 80, adultPrice: 198000 },
-          { id: 'fuk-3', airline: '티웨이항공', carrierType: 'LCC', type: 'LCC · 수하물 15kg', depTime: '13:40', arrTime: '15:00', retDep: '16:00', retArr: '17:25', slot: 'AFTERNOON', durationMin: 80, adultPrice: 215000 },
-          { id: 'fuk-1', airline: '제주항공', carrierType: 'LCC', type: 'LCC · 수하물 15kg', depTime: '07:50', arrTime: '09:10', retDep: '10:10', retArr: '11:35', slot: 'MORNING', durationMin: 80, adultPrice: 235000 },
-          { id: 'fuk-4', airline: '아시아나항공', carrierType: 'FSC', type: 'FSC · 기내식/수하물 23kg', depTime: '15:20', arrTime: '16:40', retDep: '17:50', retArr: '19:15', slot: 'AFTERNOON', durationMin: 80, adultPrice: 325000 },
-          { id: 'fuk-2', airline: '대한항공', carrierType: 'FSC', type: 'FSC · 기내식/수하물 23kg', depTime: '09:05', arrTime: '10:25', retDep: '11:30', retArr: '12:55', slot: 'MORNING', durationMin: 80, adultPrice: 345000 }
+          { id: 'fuk-5', airline: '진에어', carrierType: 'LCC', type: 'LCC · 수하물 15kg', depTime: '18:30', arrTime: '19:50', retDep: '20:45', retArr: '22:05', slot: 'EVENING', retSlot: 'EVENING', durationMin: 80, adultPrice: 198000 },
+          { id: 'fuk-3', airline: '티웨이항공', carrierType: 'LCC', type: 'LCC · 수하물 15kg', depTime: '13:40', arrTime: '15:00', retDep: '16:00', retArr: '17:25', slot: 'AFTERNOON', retSlot: 'AFTERNOON', durationMin: 80, adultPrice: 215000 },
+          { id: 'fuk-1', airline: '제주항공', carrierType: 'LCC', type: 'LCC · 수하물 15kg', depTime: '07:50', arrTime: '09:10', retDep: '10:10', retArr: '11:35', slot: 'MORNING', retSlot: 'MORNING', durationMin: 80, adultPrice: 235000 },
+          { id: 'fuk-6', airline: '에어부산', carrierType: 'LCC', type: 'LCC · 오전출발/오후귀국', depTime: '08:30', arrTime: '09:50', retDep: '15:10', retArr: '16:35', slot: 'MORNING', retSlot: 'AFTERNOON', durationMin: 80, adultPrice: 248000 },
+          { id: 'fuk-4', airline: '아시아나항공', carrierType: 'FSC', type: 'FSC · 기내식/수하물 23kg', depTime: '15:20', arrTime: '16:40', retDep: '17:50', retArr: '19:15', slot: 'AFTERNOON', retSlot: 'AFTERNOON', durationMin: 80, adultPrice: 325000 },
+          { id: 'fuk-2', airline: '대한항공', carrierType: 'FSC', type: 'FSC · 기내식/수하물 23kg', depTime: '09:05', arrTime: '10:25', retDep: '14:30', retArr: '15:55', slot: 'MORNING', retSlot: 'AFTERNOON', durationMin: 80, adultPrice: 345000 }
         ]
       },
       osaka: {
@@ -1350,11 +1391,12 @@
           { day: '3일차 · 수족관·쇼핑', title: '가이유칸 수족관 & 우메다·신사이바시', route: '가이유칸 수족관 → 덴포잔 대관람차 → 신사이바시·돈키호테 쇼핑', tip: '실내 수족관과 지붕 있는 아케이드 쇼핑거리 위주라 날씨 걱정이 없습니다.' }
         ],
         flights: [
-          { id: 'osa-5', airline: '제주항공', carrierType: 'LCC', type: 'LCC · 수하물 15kg', depTime: '19:10', arrTime: '21:00', retDep: '21:50', retArr: '23:40', slot: 'EVENING', durationMin: 110, adultPrice: 235000 },
-          { id: 'osa-3', airline: '피치항공', carrierType: 'LCC', type: 'LCC · 수하물 별도', depTime: '13:10', arrTime: '15:00', retDep: '16:10', retArr: '18:05', slot: 'AFTERNOON', durationMin: 110, adultPrice: 245000 },
-          { id: 'osa-1', airline: '진에어', carrierType: 'LCC', type: 'LCC · 수하물 15kg', depTime: '08:15', arrTime: '10:05', retDep: '11:05', retArr: '13:00', slot: 'MORNING', durationMin: 110, adultPrice: 279000 },
-          { id: 'osa-4', airline: '아시아나항공', carrierType: 'FSC', type: 'FSC · 기내식/수하물 23kg', depTime: '14:20', arrTime: '16:10', retDep: '17:20', retArr: '19:15', slot: 'AFTERNOON', durationMin: 110, adultPrice: 389000 },
-          { id: 'osa-2', airline: '대한항공', carrierType: 'FSC', type: 'FSC · 기내식/수하물 23kg', depTime: '09:35', arrTime: '11:25', retDep: '12:40', retArr: '14:35', slot: 'MORNING', durationMin: 110, adultPrice: 410000 }
+          { id: 'osa-5', airline: '제주항공', carrierType: 'LCC', type: 'LCC · 수하물 15kg', depTime: '19:10', arrTime: '21:00', retDep: '21:50', retArr: '23:40', slot: 'EVENING', retSlot: 'EVENING', durationMin: 110, adultPrice: 235000 },
+          { id: 'osa-3', airline: '피치항공', carrierType: 'LCC', type: 'LCC · 수하물 별도', depTime: '13:10', arrTime: '15:00', retDep: '16:10', retArr: '18:05', slot: 'AFTERNOON', retSlot: 'AFTERNOON', durationMin: 110, adultPrice: 245000 },
+          { id: 'osa-1', airline: '진에어', carrierType: 'LCC', type: 'LCC · 수하물 15kg', depTime: '08:15', arrTime: '10:05', retDep: '11:05', retArr: '13:00', slot: 'MORNING', retSlot: 'MORNING', durationMin: 110, adultPrice: 279000 },
+          { id: 'osa-6', airline: '티웨이항공', carrierType: 'LCC', type: 'LCC · 오전출발/오후귀국', depTime: '08:50', arrTime: '10:40', retDep: '15:30', retArr: '17:25', slot: 'MORNING', retSlot: 'AFTERNOON', durationMin: 110, adultPrice: 295000 },
+          { id: 'osa-4', airline: '아시아나항공', carrierType: 'FSC', type: 'FSC · 기내식/수하물 23kg', depTime: '14:20', arrTime: '16:10', retDep: '17:20', retArr: '19:15', slot: 'AFTERNOON', retSlot: 'AFTERNOON', durationMin: 110, adultPrice: 389000 },
+          { id: 'osa-2', airline: '대한항공', carrierType: 'FSC', type: 'FSC · 기내식/수하물 23kg', depTime: '09:35', arrTime: '11:25', retDep: '14:15', retArr: '16:10', slot: 'MORNING', retSlot: 'AFTERNOON', durationMin: 110, adultPrice: 410000 }
         ]
       },
       tokyo: {
@@ -1390,11 +1432,11 @@
           { day: '3일차 · 디지털아트·쇼핑', title: '팀랩 플래닛 & 오다이바·시부야', route: '도요스 팀랩 플래닛 → 오다이바 건담·쇼핑 → 시부야 스카이 야경', tip: '시부야 스카이는 일몰 시간대 기준 3~4주 전 사전 예매가 필수입니다.' }
         ],
         flights: [
-          { id: 'tyo-5', airline: '티웨이항공 (나리타)', carrierType: 'LCC', type: 'LCC · 수하물 15kg', depTime: '18:20', arrTime: '20:50', retDep: '21:50', retArr: '00:30', slot: 'EVENING', durationMin: 150, adultPrice: 275000 },
-          { id: 'tyo-4', airline: '제주항공 (나리타)', carrierType: 'LCC', type: 'LCC · 수하물 15kg', depTime: '15:05', arrTime: '17:35', retDep: '18:45', retArr: '21:30', slot: 'AFTERNOON', durationMin: 150, adultPrice: 295000 },
-          { id: 'tyo-2', airline: '에어프레미아 (나리타)', carrierType: 'LCC', type: 'HSC · 넓은 좌석/23kg', depTime: '08:10', arrTime: '10:40', retDep: '12:00', retArr: '14:45', slot: 'MORNING', durationMin: 150, adultPrice: 335000 },
-          { id: 'tyo-3', airline: '아시아나항공 (나리타)', carrierType: 'FSC', type: 'FSC · 기내식/23kg', depTime: '12:30', arrTime: '14:55', retDep: '16:10', retArr: '18:50', slot: 'AFTERNOON', durationMin: 145, adultPrice: 430000 },
-          { id: 'tyo-1', airline: '대한항공 (하네다)', carrierType: 'FSC', type: 'FSC · 도심 초근접 공항', depTime: '08:40', arrTime: '10:55', retDep: '12:15', retArr: '14:45', slot: 'MORNING', durationMin: 135, adultPrice: 485000 }
+          { id: 'tyo-5', airline: '티웨이항공 (나리타)', carrierType: 'LCC', type: 'LCC · 수하물 15kg', depTime: '18:20', arrTime: '20:50', retDep: '21:50', retArr: '00:30', slot: 'EVENING', retSlot: 'EVENING', durationMin: 150, adultPrice: 275000 },
+          { id: 'tyo-4', airline: '제주항공 (나리타)', carrierType: 'LCC', type: 'LCC · 수하물 15kg', depTime: '15:05', arrTime: '17:35', retDep: '18:45', retArr: '21:30', slot: 'AFTERNOON', retSlot: 'EVENING', durationMin: 150, adultPrice: 295000 },
+          { id: 'tyo-2', airline: '에어프레미아 (나리타)', carrierType: 'LCC', type: 'HSC · 넓은 좌석/23kg', depTime: '08:10', arrTime: '10:40', retDep: '12:00', retArr: '14:45', slot: 'MORNING', retSlot: 'AFTERNOON', durationMin: 150, adultPrice: 335000 },
+          { id: 'tyo-3', airline: '아시아나항공 (나리타)', carrierType: 'FSC', type: 'FSC · 기내식/23kg', depTime: '12:30', arrTime: '14:55', retDep: '16:10', retArr: '18:50', slot: 'AFTERNOON', retSlot: 'AFTERNOON', durationMin: 145, adultPrice: 430000 },
+          { id: 'tyo-1', airline: '대한항공 (하네다)', carrierType: 'FSC', type: 'FSC · 도심 초근접 공항', depTime: '08:40', arrTime: '10:55', retDep: '15:30', retArr: '17:55', slot: 'MORNING', retSlot: 'AFTERNOON', durationMin: 135, adultPrice: 485000 }
         ]
       },
       danang: {
@@ -1430,11 +1472,11 @@
           { day: '3일차 · 체험·야경', title: '바구니배 & 호이안 올드타운', route: '코코넛 바구니배 체험 → 호이안 올드타운 산책 → 투본강 소원배 & 등불 야경', tip: '해 질 녘 5시쯤 입장하면 낮 풍경과 화려한 홍등 야경을 모두 볼 수 있습니다.' }
         ],
         flights: [
-          { id: 'dad-2', airline: '비엣젯항공', carrierType: 'LCC', type: 'LCC · 가성비 특가', depTime: '07:00', arrTime: '09:50', retDep: '11:10', retArr: '17:40', slot: 'MORNING', durationMin: 270, adultPrice: 310000 },
-          { id: 'dad-5', airline: '티웨이항공', carrierType: 'LCC', type: 'LCC · 저녁 출발/15kg', depTime: '21:15', arrTime: '00:10', retDep: '01:20', retArr: '07:50', slot: 'EVENING', durationMin: 275, adultPrice: 325000 },
-          { id: 'dad-4', airline: '제주항공', carrierType: 'LCC', type: 'LCC · 저녁 출발/15kg', depTime: '20:40', arrTime: '23:35', retDep: '00:50', retArr: '07:20', slot: 'EVENING', durationMin: 275, adultPrice: 335000 },
-          { id: 'dad-3', airline: '아시아나항공', carrierType: 'FSC', type: 'FSC · 오후 출발/23kg', depTime: '17:30', arrTime: '20:25', retDep: '22:10', retArr: '04:40', slot: 'AFTERNOON', durationMin: 275, adultPrice: 465000 },
-          { id: 'dad-1', airline: '대한항공', carrierType: 'FSC', type: 'FSC · 낮 비행기/23kg', depTime: '09:15', arrTime: '12:15', retDep: '13:45', retArr: '20:15', slot: 'MORNING', durationMin: 280, adultPrice: 495000 }
+          { id: 'dad-2', airline: '비엣젯항공', carrierType: 'LCC', type: 'LCC · 오전출발/오전귀국', depTime: '07:00', arrTime: '09:50', retDep: '11:10', retArr: '17:40', slot: 'MORNING', retSlot: 'MORNING', durationMin: 270, adultPrice: 310000 },
+          { id: 'dad-5', airline: '티웨이항공', carrierType: 'LCC', type: 'LCC · 저녁출발/심야귀국', depTime: '21:15', arrTime: '00:10', retDep: '01:20', retArr: '07:50', slot: 'EVENING', retSlot: 'EVENING', durationMin: 275, adultPrice: 325000 },
+          { id: 'dad-4', airline: '제주항공', carrierType: 'LCC', type: 'LCC · 저녁출발/심야귀국', depTime: '20:40', arrTime: '23:35', retDep: '00:50', retArr: '07:20', slot: 'EVENING', retSlot: 'EVENING', durationMin: 275, adultPrice: 335000 },
+          { id: 'dad-3', airline: '아시아나항공', carrierType: 'FSC', type: 'FSC · 오후출발/밤귀국', depTime: '17:30', arrTime: '20:25', retDep: '22:10', retArr: '04:40', slot: 'AFTERNOON', retSlot: 'EVENING', durationMin: 275, adultPrice: 465000 },
+          { id: 'dad-1', airline: '대한항공', carrierType: 'FSC', type: 'FSC · 오전출발/오후귀국', depTime: '09:15', arrTime: '12:15', retDep: '13:45', retArr: '20:15', slot: 'MORNING', retSlot: 'AFTERNOON', durationMin: 280, adultPrice: 495000 }
         ]
       },
       hanoi: {
@@ -1470,11 +1512,11 @@
           { day: '3일차 · 유적·쇼핑', title: '바딘광장 & 서호·롯데센터', route: '호치민 묘소·한기둥사원 → 서호 쩐꾸옥 사원 → 롯데센터 전망대 & 마트 쇼핑', tip: '마지막 날 롯데센터에서 기념품 쇼핑과 마사지를 묶으면 공항 이동이 편리합니다.' }
         ],
         flights: [
-          { id: 'han-4', airline: '비엣젯항공', carrierType: 'LCC', type: 'LCC · 가성비 특가', depTime: '11:05', arrTime: '13:50', retDep: '01:45', retArr: '07:55', slot: 'MORNING', durationMin: 265, adultPrice: 295000 },
-          { id: 'han-5', airline: '제주항공', carrierType: 'LCC', type: 'LCC · 저녁 출발/15kg', depTime: '21:10', arrTime: '23:55', retDep: '01:10', retArr: '07:20', slot: 'EVENING', durationMin: 265, adultPrice: 320000 },
-          { id: 'han-2', airline: '베트남항공', carrierType: 'FSC', type: 'FSC · 국적기/23kg', depTime: '10:35', arrTime: '13:20', retDep: '14:40', retArr: '20:50', slot: 'MORNING', durationMin: 265, adultPrice: 415000 },
-          { id: 'han-3', airline: '아시아나항공', carrierType: 'FSC', type: 'FSC · 오후 출발/23kg', depTime: '17:50', arrTime: '20:40', retDep: '22:30', retArr: '04:40', slot: 'AFTERNOON', durationMin: 270, adultPrice: 455000 },
-          { id: 'han-1', airline: '대한항공', carrierType: 'FSC', type: 'FSC · 오전 출발/23kg', depTime: '08:50', arrTime: '11:40', retDep: '13:10', retArr: '19:20', slot: 'MORNING', durationMin: 270, adultPrice: 480000 }
+          { id: 'han-4', airline: '비엣젯항공', carrierType: 'LCC', type: 'LCC · 오전출발/심야귀국', depTime: '11:05', arrTime: '13:50', retDep: '01:45', retArr: '07:55', slot: 'MORNING', retSlot: 'EVENING', durationMin: 265, adultPrice: 295000 },
+          { id: 'han-5', airline: '제주항공', carrierType: 'LCC', type: 'LCC · 저녁출발/심야귀국', depTime: '21:10', arrTime: '23:55', retDep: '01:10', retArr: '07:20', slot: 'EVENING', retSlot: 'EVENING', durationMin: 265, adultPrice: 320000 },
+          { id: 'han-2', airline: '베트남항공', carrierType: 'FSC', type: 'FSC · 오전출발/오후귀국', depTime: '10:35', arrTime: '13:20', retDep: '14:40', retArr: '20:50', slot: 'MORNING', retSlot: 'AFTERNOON', durationMin: 265, adultPrice: 415000 },
+          { id: 'han-3', airline: '아시아나항공', carrierType: 'FSC', type: 'FSC · 오후출발/밤귀국', depTime: '17:50', arrTime: '20:40', retDep: '22:30', retArr: '04:40', slot: 'AFTERNOON', retSlot: 'EVENING', durationMin: 270, adultPrice: 455000 },
+          { id: 'han-1', airline: '대한항공', carrierType: 'FSC', type: 'FSC · 오전출발/오후귀국', depTime: '08:50', arrTime: '11:40', retDep: '13:10', retArr: '19:20', slot: 'MORNING', retSlot: 'AFTERNOON', durationMin: 270, adultPrice: 480000 }
         ]
       },
       phuquoc: {
@@ -1510,10 +1552,10 @@
           { day: '3일차 · 남부·쇼핑', title: '혼똔섬 케이블카 & 선셋타운·킹콩마트', route: '혼똔섬 해상 케이블카 → 선셋타운 키스브릿지 노을 → 킹콩마트 쇼핑', tip: '해 질 녘 선셋타운과 키스브릿지의 핑크빛 노을은 대가족 단체사진 필수 코스입니다.' }
         ],
         flights: [
-          { id: 'pqc-2', airline: '비엣젯항공', carrierType: 'LCC', type: 'LCC · 오전 직항', depTime: '06:50', arrTime: '10:35', retDep: '11:45', retArr: '19:15', slot: 'MORNING', durationMin: 325, adultPrice: 365000 },
-          { id: 'pqc-3', airline: '제주항공', carrierType: 'LCC', type: 'LCC · 저녁 직항/15kg', depTime: '20:15', arrTime: '23:55', retDep: '01:05', retArr: '08:35', slot: 'EVENING', durationMin: 320, adultPrice: 395000 },
-          { id: 'pqc-4', airline: '진에어', carrierType: 'LCC', type: 'LCC · 저녁 직항/15kg', depTime: '20:55', arrTime: '00:35', retDep: '01:45', retArr: '09:15', slot: 'EVENING', durationMin: 320, adultPrice: 410000 },
-          { id: 'pqc-1', airline: '대한항공', carrierType: 'FSC', type: 'FSC · 오후 직항/23kg', depTime: '15:45', arrTime: '19:30', retDep: '21:00', retArr: '04:30', slot: 'AFTERNOON', durationMin: 330, adultPrice: 570000 }
+          { id: 'pqc-2', airline: '비엣젯항공', carrierType: 'LCC', type: 'LCC · 오전출발/오전귀국', depTime: '06:50', arrTime: '10:35', retDep: '11:45', retArr: '19:15', slot: 'MORNING', retSlot: 'MORNING', durationMin: 325, adultPrice: 365000 },
+          { id: 'pqc-3', airline: '제주항공', carrierType: 'LCC', type: 'LCC · 저녁출발/심야귀국', depTime: '20:15', arrTime: '23:55', retDep: '01:05', retArr: '08:35', slot: 'EVENING', retSlot: 'EVENING', durationMin: 320, adultPrice: 395000 },
+          { id: 'pqc-4', airline: '진에어', carrierType: 'LCC', type: 'LCC · 저녁출발/심야귀국', depTime: '20:55', arrTime: '00:35', retDep: '01:45', retArr: '09:15', slot: 'EVENING', retSlot: 'EVENING', durationMin: 320, adultPrice: 410000 },
+          { id: 'pqc-1', airline: '대한항공', carrierType: 'FSC', type: 'FSC · 오후출발/밤귀국', depTime: '15:45', arrTime: '19:30', retDep: '21:00', retArr: '04:30', slot: 'AFTERNOON', retSlot: 'EVENING', durationMin: 330, adultPrice: 570000 }
         ]
       }
     };
@@ -1557,6 +1599,7 @@
       depDate: getDefaultDepDate(),
       nights: 3,
       timeFilter: 'ALL',
+      retTimeFilter: 'ALL',
       sortBy: 'PRICE_ASC',
       priceDisplayMode: 'TOTAL',
       selectedFlightId: 'fuk-5',
@@ -1581,11 +1624,10 @@
       return m > 0 ? (h + '시간 ' + m + '분') : (h + '시간');
     }
 
-    // 항공사 유형(FSC/LCC)에 따른 성인/아동/유아 단가 산출
     function getFlightUnitPrices(flight) {
       var adultUnit = flight.adultPrice;
       var childRatio = (flight.carrierType === 'FSC') ? 0.75 : 0.90;
-      var infantRatio = 0.10; // 국제선 만 24개월 미만 유아 공시 운임 비율(성인 운임의 10%)
+      var infantRatio = 0.10;
       var childUnit = Math.round((adultUnit * childRatio) / 1000) * 1000;
       var infantUnit = Math.round((adultUnit * infantRatio) / 1000) * 1000;
       return {
@@ -1722,6 +1764,18 @@
       state.extraPerPax = city.extraPerPax;
       state.realFlightTotal = null;
       state.realHotelTotal = null;
+      state.timeFilter = 'ALL';
+      state.retTimeFilter = 'ALL';
+
+      var tBtns = document.querySelectorAll('[data-action="filter-time"]');
+      for (var t = 0; t < tBtns.length; t++) {
+        tBtns[t].classList.toggle('active', tBtns[t].getAttribute('data-time') === 'ALL');
+      }
+      var rtBtns = document.querySelectorAll('[data-action="filter-ret-time"]');
+      for (var r = 0; r < rtBtns.length; r++) {
+        rtBtns[r].classList.toggle('active', rtBtns[r].getAttribute('data-rettime') === 'ALL');
+      }
+
       var sortedFlights = city.flights.slice().sort(function(a, b) { return a.adultPrice - b.adultPrice; });
       state.selectedFlightId = sortedFlights[0].id;
       syncInputs();
@@ -1788,7 +1842,7 @@
       for (var f = 0; f < state.families.length; f++) {
         var fam = state.families[f];
         var famPax = fam.adult + fam.child + fam.infant;
-        var famLocalPax = fam.adult + fam.child; // 유아 제외 식비·입장료 기준
+        var famLocalPax = fam.adult + fam.child;
 
         var fFlightEst = (fam.adult * adultUnit) + (fam.child * childUnit) + (fam.infant * infantUnit);
         var fHotelEst = state.hotelPricePerNight * state.nights * fam.rooms;
@@ -1947,13 +2001,20 @@
       document.getElementById('step3CityTitle').textContent = city.flag + ' ' + city.name;
       var list = city.flights.slice();
 
+      // 출국 시간대 필터
       if (state.timeFilter !== 'ALL') {
         list = list.filter(function(f) { return f.slot === state.timeFilter; });
       }
+      // 귀국 시간대 필터
+      if (state.retTimeFilter !== 'ALL') {
+        list = list.filter(function(f) { return f.retSlot === state.retTimeFilter; });
+      }
 
+      // 정렬
       list.sort(function(a, b) {
         if (state.sortBy === 'PRICE_ASC') return a.adultPrice - b.adultPrice;
         if (state.sortBy === 'TIME_ASC') return a.depTime.localeCompare(b.depTime);
+        if (state.sortBy === 'RET_TIME_ASC') return a.retDep.localeCompare(b.retDep);
         if (state.sortBy === 'DURATION_ASC') return a.durationMin - b.durationMin;
         return 0;
       });
@@ -1968,11 +2029,12 @@
 
       var container = document.getElementById('flightList');
       if (list.length === 0) {
-        container.innerHTML = '<div style="padding:24px; text-align:center; background:#f8fafc; border-radius:12px; color:#64748b; font-size:13px;">해당 시간대 항공편이 없습니다.</div>';
+        container.innerHTML = '<div style="padding:24px; text-align:center; background:#f8fafc; border-radius:12px; color:#64748b; font-size:13px;">선택하신 출국·귀국 시간대 조합에 해당하는 항공편이 없습니다. 다른 시간대를 선택해 보세요.</div>';
         return;
       }
 
-      var slotNames = { MORNING: '오전 출발', AFTERNOON: '오후 출발', EVENING: '저녁 출발' };
+      var depSlotNames = { MORNING: '출국 오전', AFTERNOON: '출국 오후', EVENING: '출국 저녁' };
+      var retSlotNames = { MORNING: '귀국 오전', AFTERNOON: '귀국 오후', EVENING: '귀국 저녁·심야' };
       var html = '';
       for (var k = 0; k < list.length; k++) {
         var f = list[k];
@@ -2001,12 +2063,12 @@
               '<span style="font-weight:800; color:#2563eb; margin-right:6px;">' + (isSel ? '●' : '○') + '</span>' +
               '<span class="flight-airline">' + f.airline + '</span>' +
               '<span class="' + carrierBadgeCls + '">' + f.carrierType + ' (아동 ' + u.childPct + '%)</span>' +
-              '<span class="flight-badge">' + slotNames[f.slot] + '</span>' +
-              '<span style="font-size:12px; color:#64748b; margin-left:6px;">' + f.type + '</span>' +
+              '<span class="flight-badge">' + depSlotNames[f.slot] + '</span>' +
+              '<span class="flight-badge flight-badge-ret">' + retSlotNames[f.retSlot] + '</span>' +
             '</div>' +
             '<div class="flight-times">' +
-              '<strong>출국</strong> ' + f.depTime + '→' + f.arrTime + ' &nbsp;|&nbsp; ' +
-              '<strong>귀국</strong> ' + f.retDep + '→' + f.retArr + ' &nbsp;|&nbsp; ' +
+              '🛫 <strong>출국:</strong> ' + f.depTime + ' 출발 → ' + f.arrTime + ' 도착 &nbsp;|&nbsp; ' +
+              '🛬 <strong>귀국:</strong> ' + f.retDep + ' 출발 → ' + f.retArr + ' 도착 &nbsp;|&nbsp; ' +
               '<span style="color:#2563eb; font-weight:700;">직항 ' + formatDuration(f.durationMin) + '</span>' +
             '</div>' +
           '</div>' +
@@ -2015,10 +2077,15 @@
       }
       container.innerHTML = html;
 
+      var activeFl = list[0];
+      for (var m = 0; m < list.length; m++) {
+        if (list[m].id === state.selectedFlightId) activeFl = list[m];
+      }
+
       document.getElementById('step3SelectedHint').textContent =
         state.realFlightTotal !== null
           ? ('✅ 실조회 항공권 총액 ' + formatKRW(state.realFlightTotal) + ' 적용됨')
-          : ('✅ 선택 항공편: ' + calc.flight.airline + ' (' + formatKRW(calc.totalFlight) + ')');
+          : ('✅ 선택 항공편: ' + activeFl.airline + ' (출국 ' + activeFl.depTime + ' / 귀국 ' + activeFl.retDep + ' · ' + formatKRW(calc.totalFlight) + ')');
     }
 
     function renderGuide(calc) {
@@ -2172,7 +2239,9 @@
       }
 
       document.getElementById('finalFlightSummary').textContent =
-        state.realFlightTotal !== null ? '✈️ 스카이스캐너 실조회 총액' : ('✈️ ' + s.flight.airline + ' (' + s.flight.carrierType + ' · ' + s.flight.depTime + ')');
+        state.realFlightTotal !== null
+          ? '✈️ 스카이스캐너 실조회 총액'
+          : ('✈️ ' + s.flight.airline + ' (출국 ' + s.flight.depTime + ' / 귀국 ' + s.flight.retDep + ')');
       document.getElementById('finalHotelSummary').textContent =
         state.realHotelTotal !== null ? '🏨 아고다 실조회 총액' : ('🏨 ' + state.selectedHotelName);
 
@@ -2261,14 +2330,13 @@
       '</tr>';
       document.getElementById('familyBreakdownTbody').innerHTML = famRows;
 
-      // 산출 근거 도움말 요약
       var splitNote = state.splitMode === 'ACTUAL'
         ? '<strong>[실제 비용 비례 부담]</strong> 기준이 적용되어, 4인 가족과 3인 가족의 실제 발생한 항공·숙박·체류비 비율대로 초과금을 공정하게 배분했습니다.'
         : '<strong>[초과금 가족수 1/N 균등]</strong> 기준이 적용되어, 총 초과 금액을 참여한 ' + s.activeFamilies.length + '가족 수로 똑같이 나누었습니다.';
 
       document.getElementById('finalCalculationNote').innerHTML =
         '<strong>📌 정산 산출 근거 안내:</strong> ' +
-        '① 항공권은 ' + (state.realFlightTotal !== null ? '입력하신 실제 조회 총액' : (s.flight.airline + '(' + s.flight.carrierType + ') 기준 성인 100%, 만 24개월~11세 아동 ' + s.units.childPct + '%, 만 24개월 미만 유아 국제선 10%')) + '으로 산출되었습니다. ' +
+        '① 항공권은 ' + (state.realFlightTotal !== null ? '입력하신 실제 조회 총액' : (s.flight.airline + '(' + s.flight.carrierType + ', 출국 ' + s.flight.depTime + ' / 귀국 ' + s.flight.retDep + ') 기준 성인 100%, 만 24개월~11세 아동 ' + s.units.childPct + '%, 만 24개월 미만 유아 국제선 10%')) + '으로 산출되었습니다. ' +
         '② 현지 식비·입장료는 만 24개월 미만 유아를 제외한 ' + localPax + '명(성인·아동) 기준으로 계산되었습니다. ' +
         '③ ' + splitNote;
     }
@@ -2408,6 +2476,13 @@
         target.classList.add('active');
         renderFlights(calculateAll());
       }
+      else if (action === 'filter-ret-time') {
+        state.retTimeFilter = target.getAttribute('data-rettime');
+        var rtBtns = document.querySelectorAll('[data-action="filter-ret-time"]');
+        for (var rt = 0; rt < rtBtns.length; rt++) rtBtns[rt].classList.remove('active');
+        target.classList.add('active');
+        renderFlights(calculateAll());
+      }
       else if (action === 'guide-tab') {
         state.guideTab = target.getAttribute('data-gtab');
         var gBtns = document.querySelectorAll('[data-action="guide-tab"]');
@@ -2444,10 +2519,14 @@
           famLines.push('  • ' + af.name + ' (' + af.rooms + '실): 총 발생 ' + formatKRW(af.rawCost) + ' → ' + bText);
         }
 
+        var flightDesc = state.realFlightTotal !== null
+          ? '실조회 항공 총액'
+          : (s.flight.airline + ' (출국 ' + s.flight.depTime + ' / 귀국 ' + s.flight.retDep + ')');
+
         var msg = [
           '💰 [600만원 예산!! 현민·태라·로은 가족 여행 정산표 - ' + s.city.flag + ' ' + s.city.name + ']',
           '• 일정/인원: ' + state.depDate + ' 출발 (' + state.nights + '박 ' + s.days + '일) / ' + s.activeFamilies.length + '가족 총 ' + s.totalPax + '명',
-          '• 숙소/항공: ' + (state.realHotelTotal !== null ? '실조회 숙박 총액' : state.selectedHotelName) + ' / ' + (state.realFlightTotal !== null ? '실조회 항공 총액' : s.flight.airline),
+          '• 숙소/항공: ' + (state.realHotelTotal !== null ? '실조회 숙박 총액' : state.selectedHotelName) + ' / ' + flightDesc,
           '──────────────────',
           '💳 전체 예상 총 경비: ' + formatKRW(s.grandTotal),
           '🏦 공동 여행 예산: ' + formatKRW(state.sharedBudget),
@@ -2469,6 +2548,10 @@
           var itemF = sum.activeFamilies[k];
           fSumList.push(itemF.name + ': ' + (sum.diff > 0 ? ('+' + formatKRW(itemF.extraBurden)) : '0원'));
         }
+        var flightCmp = state.realFlightTotal !== null
+          ? '실조회 항공 적용'
+          : (sum.flight.airline + ' (' + sum.flight.depTime + '/' + sum.flight.retDep + ')');
+
         state.compareList.push({
           flag: sum.city.flag,
           cityName: sum.city.name,
@@ -2476,7 +2559,7 @@
           days: sum.days,
           totalPax: sum.totalPax,
           hotelName: state.realHotelTotal !== null ? '실조회 숙박 적용' : state.selectedHotelName,
-          airline: state.realFlightTotal !== null ? '실조회 항공 적용' : sum.flight.airline,
+          airline: flightCmp,
           grandTotal: sum.grandTotal,
           diff: sum.diff,
           familySummary: fSumList.join('<br>')
@@ -2510,6 +2593,7 @@
         for (var c = 0; c < state.compareList.length; c++) {
           var it = state.compareList[c];
           lines.push((c + 1) + '. ' + it.flag + ' ' + it.cityName + ' (' + it.nights + '박 ' + it.days + '일 / ' + it.totalPax + '명)');
+          lines.push('   · 항공/숙소: ' + it.airline + ' / ' + it.hotelName);
           lines.push('   · 총 경비: ' + formatKRW(it.grandTotal) + (it.diff > 0 ? (' (초과 +' + formatKRW(it.diff) + ')') : ' (예산 내 가능)'));
           lines.push('   · 가족별 추가 부담: ' + it.familySummary.replace(/<br>/g, ' / '));
         }
@@ -2528,6 +2612,7 @@
         state.depDate = getDefaultDepDate();
         state.nights = 3;
         state.timeFilter = 'ALL';
+        state.retTimeFilter = 'ALL';
         state.sortBy = 'PRICE_ASC';
         state.priceDisplayMode = 'TOTAL';
         state.hotelTier = 'budget';

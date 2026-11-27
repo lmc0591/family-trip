@@ -553,7 +553,7 @@
     .flight-total { font-size: 17px; font-weight: 800; color: #2563eb; }
     .flight-sub { font-size: 11px; color: #64748b; }
 
-    /* 숙소 · 맛집 · 코스 */
+    /* 숙소 · 맛집 · 즐길거리 · 코스 */
     .guide-subhead { display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px; gap: 8px; }
     .guide-badge {
       font-size: 11px;
@@ -845,7 +845,7 @@
       <span class="step-arrow">▶</span>
       <button type="button" data-action="goto-step" data-step="3" class="step-pill locked">3. 항공권 선택</button>
       <span class="step-arrow">▶</span>
-      <button type="button" data-action="goto-step" data-step="4" class="step-pill locked">4. 숙소·맛집·코스</button>
+      <button type="button" data-action="goto-step" data-step="4" class="step-pill locked">4. 숙소·맛집·즐길거리</button>
       <span class="step-arrow">▶</span>
       <button type="button" data-action="goto-step" data-step="5" class="step-pill locked">5. 현지 경비</button>
       <span class="step-arrow">▶</span>
@@ -970,22 +970,23 @@
       <div class="step-footer">
         <span class="step-hint" id="step3SelectedHint">💡 항공편을 선택하거나 실가격을 입력한 후 다음 단계를 눌러주세요.</span>
         <button type="button" data-action="unlock-step" data-next="4" class="btn-next-step">
-          다음: 4단계 추천 숙소 · 맛집 · 코스 선택 →
+          다음: 4단계 인기 숙소 · 맛집 · 즐길거리 선택 →
         </button>
       </div>
     </section>
 
-    <!-- ================= STEP 4: 추천 숙소 · 맛집 · 코스 (3단계 완료 후 노출) ================= -->
+    <!-- ================= STEP 4: 인기 숙소(6곳) · 맛집 · 즐길거리 · 코스 (3단계 완료 후 노출) ================= -->
     <section id="stepSection4" class="step-card" style="display:none;">
       <div class="section-head">
         <h2 class="section-title">
           <span class="step-num">4</span>
-          <span id="guideSectionTitle">후쿠오카 추천 숙소 · 맛집 · 코스</span>
+          <span id="guideSectionTitle">후쿠오카 추천 숙소 · 맛집 · 즐길거리 · 코스</span>
         </h2>
         <div class="tab-group">
           <button type="button" data-action="guide-tab" data-gtab="ALL" class="tab-btn active">전체 보기</button>
-          <button type="button" data-action="guide-tab" data-gtab="HOTEL" class="tab-btn">🏨 추천 숙소</button>
+          <button type="button" data-action="guide-tab" data-gtab="HOTEL" class="tab-btn">🏨 인기 숙소(6곳)</button>
           <button type="button" data-action="guide-tab" data-gtab="FOOD" class="tab-btn">🍽️ 검증 맛집</button>
+          <button type="button" data-action="guide-tab" data-gtab="SPOT" class="tab-btn">🎡 관광·쇼핑·즐길거리</button>
           <button type="button" data-action="guide-tab" data-gtab="COURSE" class="tab-btn">🗺️ 추천 코스</button>
         </div>
       </div>
@@ -1012,8 +1013,8 @@
 
       <div id="hotelGuideBlock" style="margin-bottom: 22px;">
         <div class="guide-subhead">
-          <strong style="font-size:14px; color:#1e293b;">🏨 등급별 가족 인기 숙소 (숙소 선택 시 견적에 즉시 반영)</strong>
-          <span class="guide-badge">위치·가족편의 검증</span>
+          <strong style="font-size:14px; color:#1e293b;">🏨 등급별 가족 인기 숙소 6선 (선택 시 1박 단가 즉시 반영)</strong>
+          <span class="guide-badge">가성비 · 4성급 · 5성급 각 2곳</span>
         </div>
         <div id="hotelGuideGrid" class="hotel-grid"></div>
       </div>
@@ -1026,6 +1027,14 @@
         <div id="foodGrid" class="food-grid"></div>
       </div>
 
+      <div id="spotBlock" style="margin-bottom: 22px;">
+        <div class="guide-subhead">
+          <strong style="font-size:14px; color:#1e293b;">🎡 아이·어른 모두 만족하는 핵심 관광지 · 쇼핑 · 즐길거리</strong>
+          <span class="guide-badge">테마파크 · 쇼핑 · 체험</span>
+        </div>
+        <div id="spotGrid" class="food-grid"></div>
+      </div>
+
       <div id="courseBlock">
         <div class="guide-subhead">
           <strong style="font-size:14px; color:#1e293b;">🗺️ 가족 맞춤형 3일 핵심 동선</strong>
@@ -1035,7 +1044,7 @@
       </div>
 
       <div class="step-footer">
-        <span class="step-hint" id="step4SelectedHint">💡 숙소와 코스를 확인하신 후 마지막 5단계 현지 경비를 확인하세요.</span>
+        <span class="step-hint" id="step4SelectedHint">💡 숙소와 즐길거리를 확인하신 후 마지막 5단계 현지 경비를 확인하세요.</span>
         <button type="button" data-action="unlock-step" data-next="5" class="btn-next-step">
           다음: 5단계 식비 · 현지 경비 조정 →
         </button>
@@ -1083,7 +1092,7 @@
     <section id="finalResultSection" class="final-result-card" style="display:none;">
       <div class="final-head">
         <div>
-          <div class="final-title" id="finalMainTitle">📊 [후쿠오카] 3가족 여행 최종 경비 정산표</div>
+          <div class="final-title" id="finalMainTitle">📊 [후쿠오카] 현민·태라·로은 가족 여행 최종 경비 정산표</div>
           <div class="final-sub" id="finalSubMeta">출발일 · 3박 4일 · 3가족 총 11명 (객실 3실)</div>
         </div>
         <div style="text-align:right;">
@@ -1197,13 +1206,16 @@
         id: 'fukuoka', country: 'JP', countryName: '일본', flag: '🇯🇵', name: '후쿠오카',
         iata: 'FUK', agodaCity: 'Fukuoka',
         flightTimeText: '약 1시간 20분', tag: '초단거리 · 대가족 이동 최적',
-        desc: '공항에서 시내까지 10분! 비행시간이 가장 짧고 이동 피로도가 적어 3가족(11명)이 함께 움직이기 가장 수월한 도시입니다.',
+        desc: '공항에서 시내까지 10분! 비행시간이 가장 짧고 이동 피로도가 적어 현민·태라·로은 3가족(11명)이 함께 움직이기 가장 수월한 도시입니다.',
         hotelRates: { budget: 135000, standard: 225000, luxury: 430000 },
         foodPerDay: 50000, activityPerDay: 25000, extraPerPax: 40000,
         hotels: [
-          { tier: 'budget', tierLabel: '가성비 3성급', name: '도미 인 하카타 기온', area: '기온역 도보 1분 · 하카타역 도보 7분', features: '천연 온천 대욕장 무료, 밤 9시 반 무료 야식 라멘 제공, 3가족 연박 가성비 우수', rate: 135000, query: 'Dormy Inn Hakata Gion Fukuoka' },
-          { tier: 'standard', tierLabel: '4성급 가족호텔', name: 'JR 큐슈 호텔 블로섬 하카타 중앙', area: '하카타역 하카타출구 도보 2분', features: '유후인·다자이후 전세버스/투어 집결지 초근접, 3~4인 패밀리룸 보유, 조식 우수', rate: 225000, query: 'JR Kyushu Hotel Blossom Hakata Central' },
-          { tier: 'luxury', tierLabel: '5성급 리조트', name: '힐튼 후쿠오카 씨호크', area: '모모치 해변 · 후쿠오카 타워 바로 옆', features: '전 객실 오션뷰, 대형 실내외 수영장·온천 시설 완비, 대가족 리조트형 휴양 최적', rate: 430000, query: 'Hilton Fukuoka Sea Hawk' }
+          { id: 'fuk-h1', tier: 'budget', tierLabel: '가성비 3성급', name: '도미 인 하카타 기온', area: '기온역 도보 1분 · 하카타역 도보 7분', features: '천연 온천 대욕장 무료, 밤 9시 반 무료 야식 라멘 제공, 3가족 연박 가성비 우수', rate: 135000, query: 'Dormy Inn Hakata Gion Fukuoka' },
+          { id: 'fuk-h2', tier: 'budget', tierLabel: '가성비 3.5성급', name: '토큐 스테이 하카타', area: '하카타역 치쿠시출구 도보 7분', features: '전 객실 세탁기·전자레인지 완비로 아이 동반 가족 빨래·간식 해결에 최적', rate: 145000, query: 'Tokyu Stay Hakata' },
+          { id: 'fuk-h3', tier: 'standard', tierLabel: '4성급 가족호텔', name: 'JR 큐슈 호텔 블로섬 하카타 중앙', area: '하카타역 하카타출구 도보 2분', features: '유후인·다자이후 투어 집결지 초근접, 3~4인 패밀리룸 보유, 조식 퀄리티 우수', rate: 225000, query: 'JR Kyushu Hotel Blossom Hakata Central' },
+          { id: 'fuk-h4', tier: 'standard', tierLabel: '4성급 쇼핑연결', name: '캐널시티 후쿠오카 워싱턴 호텔', area: '캐널시티 쇼핑몰 내부 연결 · 나카스 인접', features: '쇼핑몰·분수쇼·식당가가 호텔과 바로 이어져 비가 오거나 더워도 쾌적한 동선', rate: 215000, query: 'Canal City Fukuoka Washington Hotel' },
+          { id: 'fuk-h5', tier: 'luxury', tierLabel: '5성급 리조트', name: '힐튼 후쿠오카 씨호크', area: '모모치 해변 · 후쿠오카 타워 바로 옆', features: '전 객실 오션뷰, 대형 실내외 수영장·온천 시설 완비, 대가족 리조트형 휴양 최적', rate: 430000, query: 'Hilton Fukuoka Sea Hawk' },
+          { id: 'fuk-h6', tier: 'luxury', tierLabel: '5성급 시티뷰', name: '그랜드 하얏트 후쿠오카', area: '하카타·텐진 중간 캐널시티 내 위치', features: '넓은 객실 크기와 고급 라운지·피트니스·수영장 완비, 품격 있는 가족 호캉스', rate: 460000, query: 'Grand Hyatt Fukuoka' }
         ],
         foods: [
           { name: '이치란 본점 (나카스)', cat: '돈코츠 라멘', menu: '천연 돈코츠 라멘 + 반숙계란 (1인 약 1,200엔)', area: '나카스카와바타역 2번 출구 도보 2분', reason: '맵기·마늘 조절 가능해 아이부터 어른까지 호불호 없는 후쿠오카 대표 메뉴', tip: '24시간 영업하므로 식사 피크타임을 살짝 피하면 11명도 빠르게 순차 입장 가능합니다.', mapQuery: 'Ichiran Main Shop Fukuoka' },
@@ -1211,10 +1223,16 @@
           { name: '효탄스시 (텐진점)', cat: '초밥·해산물', menu: '점심 특선 스시 세트 & 게살 크림고로케 (약 2,500엔)', area: '니시테츠 후쿠오카(텐진)역 도보 3분', reason: '두툼한 활어 네타와 합리적 가격으로 한국 여행자·현지인 모두 검증한 초밥집', tip: '오전 11시 30분 오픈 전 11시쯤 미리 줄을 서면 1회차로 착석할 수 있습니다.', mapQuery: 'Hyotan Sushi Tenjin Fukuoka' },
           { name: '키와미야 함바그 (하카타점)', cat: '철판 와규함바그', menu: '와규 함바그 M사이즈 + 밥·국 세트 (약 2,200엔)', area: '하카타 버스터미널 1층', reason: '뜨거운 개인 돌판에 구워 먹는 재미가 있어 초등학생 이상 자녀 만족도 1위', tip: '옷에 냄새가 밸 수 있으니 비치된 앞치마를 착용하세요.', mapQuery: 'Kiwamiya Hamburg Hakata' }
         ],
+        spots: [
+          { name: '라라포트 후쿠오카 (실물 건담)', cat: '쇼핑·체험몰', highlight: '실물 크기 뉴건담 입상 + 키자니아(어린이 직업체험) + 대형 푸드코트', area: '하카타역에서 버스 15분 (다케시타역 도보 9분)', tip: '아이들이 좋아하는 키자니아와 어른들 쇼핑·식사를 한 건물에서 모두 해결할 수 있습니다.', mapQuery: 'LaLaport Fukuoka' },
+          { name: '캐널시티 하카타 & 돈키호테', cat: '분수쇼·쇼핑', highlight: '매시 정각 음악 분수쇼 + 3D 프로젝션 맵핑 + 무인양품·프랑프랑 쇼핑', area: '하카타역 도보 10분 · 나카스 인접', tip: '저녁 시간대 원피스·건담 테마 분수쇼가 특히 화려해 아이들 반응이 좋습니다.', mapQuery: 'Canal City Hakata' },
+          { name: '마린월드 우미노나카미치', cat: '대형 수족관', highlight: '돌고래·바다사자 쇼 & 하카타만을 배경으로 한 초대형 수조', area: '하카타항 페리 20분 또는 JR 열차 35분', tip: '페리를 타고 이동하면 배 타는 재미까지 더해져 아이들이 매우 좋아합니다.', mapQuery: 'Marine World Uminonakamichi' },
+          { name: '텐진 지하상가 & 파르코·돈키호테', cat: '핵심 쇼핑거리', highlight: '590m 길이의 쾌적한 지하 아케이드 + 캐릭터샵·드럭스토어·백화점 집결', area: '텐진역 직결 (비 오는 날에도 우산 불필요)', tip: '돈키호테 나카스점·텐진 본점은 24시간 운영하며 면세 카운터가 넉넉합니다.', mapQuery: 'Tenjin Underground Shopping Center' }
+        ],
         courses: [
           { day: '1일차 · 시내 핵심', title: '하카타 & 캐널시티 코스', route: '후쿠오카 공항 → 하카타역 → 캐널시티 분수쇼 → 나카스 강변 산책', tip: '공항에서 시내까지 10분 거리라 도착 첫날 체력 부담이 전혀 없습니다.' },
           { day: '2일차 · 근교 힐링', title: '다자이후 & 유후인 전용차량 투어', route: '다자이후 텐만구 → 유후인 긴린코 호수 → 벳푸 지옥온천', tip: '11명 대가족이라면 점보택시나 단독 미니밴 투어를 이용하면 훨씬 편합니다.' },
-          { day: '3일차 · 공원·쇼핑', title: '오호리공원 & 텐진 쇼핑', route: '오호리공원 산책 → 후쿠오카 타워 야경 → 텐진 지하상가·돈키호테', tip: '평지 위주 산책 코스와 대형 쇼핑몰이 연결되어 아이 동반 이동이 수월합니다.' }
+          { day: '3일차 · 쇼핑·체험', title: '라라포트 건담 & 텐진 쇼핑', route: '라라포트 후쿠오카(건담·점심) → 오호리공원 산책 → 텐진 지하상가·돈키호테', tip: '평지 위주 동선과 대형 쇼핑몰이 연결되어 아이 동반 이동이 수월합니다.' }
         ],
         flights: [
           { id: 'fuk-5', airline: '진에어', type: 'LCC · 수하물 15kg', depTime: '18:30', arrTime: '19:50', retDep: '20:45', retArr: '22:05', slot: 'EVENING', durationMin: 80, adultPrice: 198000 },
@@ -1232,9 +1250,12 @@
         hotelRates: { budget: 155000, standard: 260000, luxury: 490000 },
         foodPerDay: 60000, activityPerDay: 40000, extraPerPax: 45000,
         hotels: [
-          { tier: 'budget', tierLabel: '가성비 3성급', name: '소테츠 프레사 인 오사카 난바', area: '난바역 도보 2분 · 도톤보리 도보 5분', features: '간사이 공항 라피트 특급열차 종점 바로 앞, 대가족 공항 이동 및 먹방 동선 최강', rate: 155000, query: 'Sotetsu Fresa Inn Osaka Namba' },
-          { tier: 'standard', tierLabel: '4성급 가족호텔', name: '크로스 호텔 오사카', area: '도톤보리 글리코상 도보 2분', features: '욕실과 화장실이 분리된 쾌적한 패밀리룸, 쇼핑 중 짐 두고 쉬기 완벽한 위치', rate: 260000, query: 'Cross Hotel Osaka' },
-          { tier: 'luxury', tierLabel: '5성급 테마파크', name: '더 파크 프론트 호텔 앳 USJ', area: '유니버설 스튜디오 정문 도보 1분', features: 'USJ 공식 파트너 호텔로 오픈런 및 퍼레이드 후 즉시 휴식 가능, 가족 테마룸 인기', rate: 490000, query: 'The Park Front Hotel at Universal Studios Japan' }
+          { id: 'osa-h1', tier: 'budget', tierLabel: '가성비 3성급', name: '소테츠 프레사 인 오사카 난바', area: '난바역 도보 2분 · 도톤보리 도보 5분', features: '간사이 공항 라피트 특급열차 종점 바로 앞, 대가족 공항 이동 및 먹방 동선 최강', rate: 155000, query: 'Sotetsu Fresa Inn Osaka Namba' },
+          { id: 'osa-h2', tier: 'budget', tierLabel: '가성비 레지던스', name: '미마루(MIMARU) 오사카 난바 북쪽', area: '신사이바시역 도보 4분 · 도톤보리 인근', features: '4인~6인 한 방에 투숙 가능한 주방·거실형 아파트 호텔, 가족 단위 만족도 최고', rate: 185000, query: 'MIMARU Osaka Namba North' },
+          { id: 'osa-h3', tier: 'standard', tierLabel: '4성급 가족호텔', name: '크로스 호텔 오사카', area: '도톤보리 글리코상 도보 2분', features: '욕실과 화장실이 분리된 쾌적한 패밀리룸, 쇼핑 중 짐 두고 쉬기 완벽한 위치', rate: 260000, query: 'Cross Hotel Osaka' },
+          { id: 'osa-h4', tier: 'standard', tierLabel: '4성급 역직결', name: '호텔 몬테레이 그라스미어 오사카', area: 'JR 난바역 직결 · 공항 리무진 터미널 연결', features: '고층 시티뷰 전망과 영국풍 인테리어, 비를 맞지 않고 역·마트·식당가 이동 가능', rate: 245000, query: 'Hotel Monterey Grasmere Osaka' },
+          { id: 'osa-h5', tier: 'luxury', tierLabel: '5성급 테마파크', name: '더 파크 프론트 호텔 앳 USJ', area: '유니버설 스튜디오 정문 도보 1분', features: 'USJ 공식 파트너 호텔로 오픈런 및 퍼레이드 후 즉시 휴식 가능, 가족 테마룸 인기', rate: 490000, query: 'The Park Front Hotel at Universal Studios Japan' },
+          { id: 'osa-h6', tier: 'luxury', tierLabel: '5성급 랜드마크', name: '스위소텔 난카이 오사카', area: '난카이 난바역 바로 위 (난바 파크스 연결)', features: '간사이 공항에서 환승 없이 엘리베이터로 바로 체크인, 실내 수영장 및 최고급 조식', rate: 470000, query: 'Swissotel Nankai Osaka' }
         ],
         foods: [
           { name: '치보 (도톤보리 본점)', cat: '오코노미야키', menu: '도톤보리야키 & 철판 야키소바 (1인 약 2,000엔)', area: '도톤보리 중심가 (난바역 도보 5분)', reason: '직원이 철판에서 구워주며 대형 매장이 있어 3가족 단체 외식에 적합', tip: '공식 사이트에서 사전 좌석 예약을 하면 대기 없이 바로 입장합니다.', mapQuery: 'Chibo Okonomiyaki Dotonbori' },
@@ -1242,10 +1263,16 @@
           { name: '카무쿠라 라멘 (도톤보리점)', cat: '배추 간장라멘', menu: '오이시이 라멘 + 반숙계란·차슈 토핑 (약 1,100엔)', area: '도톤보리·신사이바시 인근', reason: '배추로 우려낸 시원하고 달큰한 국물이라 아이들과 어른 입맛에 모두 잘 맞음', tip: '매장 규모가 크고 회전율이 빨라 단체 인원도 금방 착석합니다.', mapQuery: 'Kamukura Ramen Dotonbori' },
           { name: '하루코마 스시 (텐진바시 본점)', cat: '가성비 초밥', menu: '두툼한 연어·참치·장어 니기리 스시 (약 2,200엔)', area: '텐진바시스지 로쿠초메역 도보 2분', reason: '오사카 현지인과 유튜버 모두가 꼽는 압도적 가성비·두께감의 스시 맛집', tip: '오사카 주택박물관과 도보 3분 거리라 묶어서 가기 좋습니다.', mapQuery: 'Harukoma Sushi Osaka' }
         ],
+        spots: [
+          { name: '유니버설 스튜디오 재팬 (USJ)', cat: '글로벌 테마파크', highlight: '슈퍼 닌텐도 월드(마리오카트) + 해리포터 호그와트 성 + 미니언 파크', area: '유니버설시티역 도보 3분', tip: '어린 아이 키 제한(92cm/102cm)을 미리 확인하면 대기 없이 알차게 즐길 수 있습니다.', mapQuery: 'Universal Studios Japan' },
+          { name: '가이유칸 수족관 & 덴포잔 대관람차', cat: '해양 테마·전망', highlight: '세계 최대급 고래상어 수조와 112m 높이 대관람차 오사카항 파노라마 뷰', area: '오사카코역 도보 5분', tip: '오사카 주유패스 소지 시 대관람차 및 산타마리아 유람선을 무료로 탑승합니다.', mapQuery: 'Osaka Aquarium Kaiyukan' },
+          { name: '도톤보리 리버크루즈 & 신사이바시 쇼핑', cat: '야경·쇼핑거리', highlight: '글리코상 네온사인 인증샷 + 20분 야경 크루즈 + 아케이드 쇼핑천국', area: '난바역·신사이바시역 사이', tip: '리버크루즈는 낮에 미리 티켓을 교환해 두면 원하는 저녁 시간대에 탑승 가능합니다.', mapQuery: 'Dotonbori River Cruise' },
+          { name: '나라 사슴공원 & 교토 아라시야마', cat: '근교 자연·문화', highlight: '아이들이 좋아하는 사슴 센베이 먹이주기 체험 & 교토 대나무 숲길 산책', area: '난바역에서 긴테츠/한큐 전철 40~50분', tip: '3가족(11명)이라면 한국어 가이드 일일 버스투어를 이용하면 환승 없이 편합니다.', mapQuery: 'Nara Park' }
+        ],
         courses: [
           { day: '1일차 · 먹방·야경', title: '도톤보리 & 오사카성', route: '난바 체크인 → 오사카성 천수각 → 도톤보리 글리코상 & 리버크루즈', tip: '주유패스 활용 시 리버크루즈·오사카성 무료 입장으로 경비를 아낄 수 있습니다.' },
           { day: '2일차 · 테마파크', title: '유니버설 스튜디오(USJ) 종일', route: '슈퍼 닌텐도 월드 → 해리포터 존 → 미니언 파크 → 시티워크 저녁', tip: '가족별 취향에 따라 USJ 팀과 교토 관광 팀으로 나뉘어 움직이기도 좋습니다.' },
-          { day: '3일차 · 수족관·전망', title: '가이유칸 수족관 & 우메다', route: '텐포잔 대관람차 & 가이유칸 수족관 → 우메다 공중정원 야경', tip: '실내 수족관 위주라 날씨에 구애받지 않고 아이들이 즐거워합니다.' }
+          { day: '3일차 · 수족관·쇼핑', title: '가이유칸 수족관 & 우메다·신사이바시', route: '가이유칸 수족관 → 덴포잔 대관람차 → 신사이바시·돈키호테 쇼핑', tip: '실내 수족관과 지붕 있는 아케이드 쇼핑거리 위주라 날씨 걱정이 없습니다.' }
         ],
         flights: [
           { id: 'osa-5', airline: '제주항공', type: 'LCC · 수하물 15kg', depTime: '19:10', arrTime: '21:00', retDep: '21:50', retArr: '23:40', slot: 'EVENING', durationMin: 110, adultPrice: 235000 },
@@ -1263,9 +1290,12 @@
         hotelRates: { budget: 175000, standard: 295000, luxury: 580000 },
         foodPerDay: 65000, activityPerDay: 45000, extraPerPax: 50000,
         hotels: [
-          { tier: 'budget', tierLabel: '가성비 3성급', name: '소테츠 그랜드 프레사 도쿄베이 아리아케', area: '오다이바·디즈니 무료 셔틀버스 운행', features: '도쿄 디즈니 리조트 무료 셔틀 운영, 가족 3~4인 트리플룸 가성비 최고', rate: 175000, query: 'Sotetsu Grand Fresa Tokyo-Bay Ariake' },
-          { tier: 'standard', tierLabel: '4성급 가족호텔', name: '호텔 그레이서리 신주쿠 (고질라 호텔)', area: '신주쿠역 동쪽 출구 도보 5분', features: '테라스 실물 크기 고질라 조형물로 아이들에게 인기, 공항 리무진 정류장 인접', rate: 295000, query: 'Hotel Gracery Shinjuku' },
-          { tier: 'luxury', tierLabel: '5성급 리조트', name: '힐튼 도쿄 베이', area: '도쿄 디즈니 리조트 공식 호텔', features: '디즈니 모노레일 역 바로 앞, 키즈 테마 객실(해피 매직룸)과 실내외 수영장 완비', rate: 580000, query: 'Hilton Tokyo Bay' }
+          { id: 'tyo-h1', tier: 'budget', tierLabel: '가성비 3성급', name: '소테츠 그랜드 프레사 도쿄베이 아리아케', area: '오다이바·디즈니 무료 셔틀버스 운행', features: '도쿄 디즈니 리조트 무료 셔틀 운영, 가족 3~4인 트리플룸 가성비 최고', rate: 175000, query: 'Sotetsu Grand Fresa Tokyo-Bay Ariake' },
+          { id: 'tyo-h2', tier: 'budget', tierLabel: '가성비 가족형', name: '도미 인 프리미엄 시부야 진구마에', area: '시부야·하라주쿠 도보 8분', features: '도쿄 도심 속 천연 온천 대욕장과 무료 야식 라멘·아이스크림 제공으로 가족 인기', rate: 195000, query: 'Dormy Inn Premium Shibuya Jingumae' },
+          { id: 'tyo-h3', tier: 'standard', tierLabel: '4성급 가족호텔', name: '호텔 그레이서리 신주쿠 (고질라 호텔)', area: '신주쿠역 동쪽 출구 도보 5분', features: '테라스 실물 크기 고질라 조형물로 아이들에게 인기, 공항 리무진 정류장 인접', rate: 295000, query: 'Hotel Gracery Shinjuku' },
+          { id: 'tyo-h4', tier: 'standard', tierLabel: '4성급 베이뷰', name: '그랜드 닛코 도쿄 다이바', area: '오다이바 다이바역 직결 (디즈니 셔틀 운영)', features: '레인보우 브릿지 오션뷰와 넓은 객실 면적, 아쿠아시티·다이버시티 쇼핑몰 바로 앞', rate: 315000, query: 'Grand Nikko Tokyo Daiba' },
+          { id: 'tyo-h5', tier: 'luxury', tierLabel: '5성급 리조트', name: '힐튼 도쿄 베이', area: '도쿄 디즈니 리조트 공식 호텔', features: '디즈니 모노레일 역 바로 앞, 키즈 테마 객실(해피 매직룸)과 실내외 수영장 완비', rate: 580000, query: 'Hilton Tokyo Bay' },
+          { id: 'tyo-h6', tier: 'luxury', tierLabel: '5성급 초고층', name: '게이오 플라자 호텔 도쿄', area: '신주쿠역 도보 5분 · 도쿄도청 전망대 옆', features: '헬로키티 테마룸, 야외 수영장, 나리타·하네다 공항 리무진 정문 직통 정차', rate: 540000, query: 'Keio Plaza Hotel Tokyo' }
         ],
         foods: [
           { name: '아사쿠사 이마한 (국제거리 본점)', cat: '와규 스키야키', menu: '구로게와규 스키야키 런치 코스 (약 5,500엔~)', area: '아사쿠사역 도보 3분', reason: '130년 전통의 부드러운 최고급 소고기 전골로 가족 기념 식사 1순위 명가', tip: '런치 세트가 훨씬 합리적이며 공식 홈페이지 사전 예약을 추천합니다.', mapQuery: 'Asakusa Imahan Kokusai Dori' },
@@ -1273,10 +1303,16 @@
           { name: '규카츠 모토무라', cat: '소고기 규카츠', menu: '규카츠 정식 + 명란·마 세트 (약 2,100엔)', area: '신주쿠역·시부야역·도쿄역 다수 지점', reason: '겉바속촉 소고기 커틀릿을 개인 화로에 구워 먹는 재미로 아이·어른 모두 좋아함', tip: '지점이 여러 곳이므로 메인 거리에서 살짝 떨어진 지점을 추천합니다.', mapQuery: 'Gyukatsu Motomura Shinjuku' },
           { name: '도쿄 라멘 스트리트 (도쿄역)', cat: '라멘 명가 집결', menu: '로쿠린샤 츠케멘 / 소라노이로 베지라멘 (약 1,200엔)', area: '도쿄역 야에스 지하 1층', reason: '유명 라멘집 10곳이 모여 있어 3가족이 각자 취향대로 흩어져 먹기 편리', tip: '캐릭터 스트리트(포켓몬·지브리 굿즈샵)와 바로 연결됩니다.', mapQuery: 'Tokyo Ramen Street' }
         ],
+        spots: [
+          { name: '도쿄 디즈니랜드 & 디즈니씨', cat: '대표 테마파크', highlight: '신규 판타지 스프링스(겨울왕국·라푼젤) + 퍼레이드 + 야간 불꽃놀이', area: '마이하마역 도보 5분', tip: '초등 저학년 이하 동반이면 디즈니랜드, 초등 고학년·어른 중심이면 디즈니씨를 추천합니다.', mapQuery: 'Tokyo Disney Resort' },
+          { name: '해리포터 스튜디오 투어 도쿄', cat: '체험형 실내스튜디오', highlight: '실물 호그와트 대연회장·9와 4분의 3 승강장·버터맥주 체험', area: '도시마엔역 도보 2분', tip: '100% 사전 예약제이며 실내 관람이라 날씨와 무관하게 3~4시간 즐기기 좋습니다.', mapQuery: 'Warner Bros Studio Tour Tokyo' },
+          { name: '오다이바 다이버시티 & 팀랩 플래닛', cat: '쇼핑·디지털아트', highlight: '실물 유니콘 건담 + 맨발로 걷는 물의 디지털 아트 뮤지엄 + 아쿠아시티 쇼핑', area: '오다이바·도요스 베이 구역', tip: '팀랩 플래닛은 물에 발을 담그는 코스가 있어 반바지나 걷어 올리기 편한 바지가 좋습니다.', mapQuery: 'teamLab Planets TOKYO' },
+          { name: '시부야 스카이 & 긴자 쇼핑거리', cat: '전망대·백화점', highlight: '지상 229m 루프탑 360도 도쿄 야경 + 긴자 유니클로 플래그십·이토야 문구점', area: '시부야 스크램블 스퀘어 / 긴자역', tip: '시부야 스카이는 4주 전 자정 오픈 시 예매해야 인기 시간대(일몰 전후) 확보가 가능합니다.', mapQuery: 'SHIBUYA SKY' }
+        ],
         courses: [
           { day: '1일차 · 전통·야경', title: '아사쿠사 & 스카이트리', route: '아사쿠사 센소지 → 스미다강 산책 → 도쿄 스카이트리 소라마치', tip: '평지 위주 동선과 소라마치 실내 식당가·쇼핑몰이 연결되어 쾌적합니다.' },
           { day: '2일차 · 꿈의 나라', title: '도쿄 디즈니랜드 or 디즈니씨', route: '마이하마역 → 디즈니랜드 퍼레이드 & 어트랙션 → 불꽃놀이 관람', tip: '어린 자녀는 디즈니랜드, 초등 고학년·성인은 디즈니씨 만족도가 높습니다.' },
-          { day: '3일차 · 숲길·전망', title: '메이지신궁 & 시부야·오다이바', route: '하라주쿠 메이지신궁 → 시부야 스카이 전망대 → 오다이바 자유의 여신상', tip: '시부야 스카이는 일몰 시간대 기준 3~4주 전 사전 예매가 필수입니다.' }
+          { day: '3일차 · 디지털아트·쇼핑', title: '팀랩 플래닛 & 오다이바·시부야', route: '도요스 팀랩 플래닛 → 오다이바 건담·쇼핑 → 시부야 스카이 야경', tip: '시부야 스카이는 일몰 시간대 기준 3~4주 전 사전 예매가 필수입니다.' }
         ],
         flights: [
           { id: 'tyo-5', airline: '티웨이항공 (나리타)', type: 'LCC · 수하물 15kg', depTime: '18:20', arrTime: '20:50', retDep: '21:50', retArr: '00:30', slot: 'EVENING', durationMin: 150, adultPrice: 275000 },
@@ -1294,9 +1330,12 @@
         hotelRates: { budget: 95000, standard: 175000, luxury: 350000 },
         foodPerDay: 30000, activityPerDay: 25000, extraPerPax: 30000,
         hotels: [
-          { tier: 'budget', tierLabel: '가성비 4성급', name: '살라 다낭 비치 호텔', area: '미케비치 해변 바로 앞', features: '루프탑 인피니티 풀과 오션뷰 조식, 10만 원 미만으로 누리는 최상급 가성비 가족 호텔', rate: 95000, query: 'Sala Danang Beach Hotel' },
-          { tier: 'standard', tierLabel: '4.5성급 리조트', name: 'TMS 호텔 다낭 비치', area: '미케비치 해변 중심가', features: '넓은 거실형 스위트 객실, 최상층 수영장과 키즈 시설 우수, 3가족 나란히 투숙 추천', rate: 175000, query: 'TMS Hotel Da Nang Beach' },
-          { tier: 'luxury', tierLabel: '5성급 풀빌라', name: '하얏트 리젠시 다낭 리조트 앤 스파', area: '논누억 비치 (다낭-호이안 중간)', features: '모래사장 수영장·워터슬라이드·키즈클럽 완비, 3베드룸 빌라로 3가족이 함께 모이기 최적', rate: 350000, query: 'Hyatt Regency Danang Resort and Spa' }
+          { id: 'dad-h1', tier: 'budget', tierLabel: '가성비 4성급', name: '살라 다낭 비치 호텔', area: '미케비치 해변 바로 앞', features: '루프탑 인피니티 풀과 오션뷰 조식, 10만 원 미만으로 누리는 최상급 가성비 가족 호텔', rate: 95000, query: 'Sala Danang Beach Hotel' },
+          { id: 'dad-h2', tier: 'budget', tierLabel: '가성비 스위트', name: '아라카르트 다낭 비치 호텔', area: '미케비치 공원 바로 맞은편', features: '2베드룸 가족 스위트 객실이 합리적 가격, 옥상 수영장 및 해변 산책로 접근성 최상', rate: 110000, query: 'A La Carte Da Nang Beach' },
+          { id: 'dad-h3', tier: 'standard', tierLabel: '4.5성급 리조트', name: 'TMS 호텔 다낭 비치', area: '미케비치 해변 중심가', features: '넓은 거실형 스위트 객실, 최상층 수영장과 키즈 시설 우수, 3가족 나란히 투숙 추천', rate: 175000, query: 'TMS Hotel Da Nang Beach' },
+          { id: 'dad-h4', tier: 'standard', tierLabel: '4.5성급 키즈리조트', name: '멜리아 빈펄 다낭 리버프론트', area: '한강변 · 용다리·빈컴플라자 쇼핑몰 옆', features: '야경 뷰와 대형 실내외 수영장·키즈클럽, 바로 옆 쇼핑몰에서 마트·식사 해결 편리', rate: 165000, query: 'Melia Vinpearl Danang Riverfront' },
+          { id: 'dad-h5', tier: 'luxury', tierLabel: '5성급 풀빌라', name: '하얏트 리젠시 다낭 리조트 앤 스파', area: '논누억 비치 (다낭-호이안 중간)', features: '모래사장 수영장·워터슬라이드·키즈클럽 완비, 3베드룸 빌라로 3가족이 함께 모이기 최적', rate: 350000, query: 'Hyatt Regency Danang Resort and Spa' },
+          { id: 'dad-h6', tier: 'luxury', tierLabel: '5성급 올인클루시브', name: '푸라마 리조트 다낭', area: '미케비치 남단 프라이빗 해변', features: '열대 정원 속 라군 수영장과 전통 베트남 건축미, 아이 동반 3대 대가족 휴양 명소', rate: 330000, query: 'Furama Resort Danang' }
         ],
         foods: [
           { name: '마담란 (Madame Lan)', cat: '베트남 가정식', menu: '반쎄오, 숯불 분짜, 모닝글로리, 파인애플 볶음밥', area: '다낭 한강변 중심가', reason: '위생적이고 쾌적한 대형 정원형 레스토랑으로 11명 대가족 단체 식사 만족도 1위', tip: '메뉴판에 한국어와 사진이 모두 있어 주문이 매우 쉽습니다.', mapQuery: 'Madame Lan Restaurant Da Nang' },
@@ -1304,10 +1343,16 @@
           { name: '벱꾸온 (Bep Cuon)', cat: '모던 베트남식', menu: '반쎄오 플래터, 분팃느엉, 코코넛 스무디 커피', area: '미케비치 인근 안트엉 거리', reason: '향신료 향이 강하지 않고 정갈하게 나와 아이들과 어른 모두 잘 먹는 맛집', tip: '주문 시 "노 고수(No Cilantro)"를 요청하면 고수를 빼줍니다.', mapQuery: 'Bep Cuon Da Nang' },
           { name: '콩카페 (한시장 앞 1호점)', cat: '디저트·카페', menu: '코코넛 스무디 커피, 코코넛 코코아 (약 3,000원)', area: '한시장·핑크성당 도보 2분', reason: '한시장 쇼핑 후 더위를 식히며 달콤고소한 코코넛 음료를 즐기는 필수 코스', tip: '아이들은 커피가 없는 코코넛 코코아나 망고 스무디를 추천합니다.', mapQuery: 'Cong Caphe Bach Dang Da Nang' }
         ],
+        spots: [
+          { name: '바나힐 테마파크 & 골든브릿지', cat: '케이블카·테마파크', highlight: '기네스 등재 초장거리 케이블카 + 거대한 손 다리 + 실내 놀이공원 판타지파크', area: '다낭 시내에서 차량 40분', tip: '해발 1,400m 고지대라 선선하며 입장권에 실내 놀이기구가 대부분 포함됩니다.', mapQuery: 'Sun World Ba Na Hills' },
+          { name: '호이안 올드타운 & 투본강 소원배', cat: '야경·감성투어', highlight: '형형색색 등불 거리 산책 + 촛불 소원배 띄우기 + 야시장 먹거리', area: '다낭 미케비치에서 차량 35분', tip: '오후 5시쯤 도착해 야경과 소원배를 즐긴 뒤 다낭으로 돌아오는 반나절 코스가 정석입니다.', mapQuery: 'Hoi An Ancient Town' },
+          { name: '한시장 & 롯데마트 다낭점', cat: '쇼핑·기념품', highlight: '라탄백·아오자이·망고젤리·커피·건망고 등 가족 기념품 원스톱 쇼핑', area: '다낭 시내 중심가 / 헬리오 야시장 옆', tip: '한시장에서 맞춤 아오자이를 맞추면 1~2시간 만에 완성되어 가족 단체사진에 좋습니다.', mapQuery: 'Han Market Da Nang' },
+          { name: '호이안 바구니배 & 스파 마사지', cat: '이색체험·힐링', highlight: '코코넛 숲 전통 바구니배 회전 쇼 + 성장기 아이 키즈 마사지·어른 전신 스파', area: '깜탄 코코넛 마을 / 미케비치 스파 거리', tip: '스파 샵은 11명 동시 예약 시 픽업·드롭 차량을 무료로 제공하는 곳이 많습니다.', mapQuery: 'Cam Thanh Coconut Village' }
+        ],
         courses: [
-          { day: '1일차 · 휴양·야경', title: '미케비치 & 한시장·용다리', route: '리조트 수영장 휴식 → 핑크성당 & 한시장 쇼핑 → 용다리 불쇼·야시장', tip: '11명 이동 시 그랩 7인승 SUV 2대 또는 16인승 단독 밴 대여가 매우 저렴합니다.' },
+          { day: '1일차 · 휴양·쇼핑', title: '미케비치 & 한시장·롯데마트', route: '리조트 수영장 휴식 → 핑크성당 & 한시장 쇼핑 → 롯데마트 기념품 & 용다리 야경', tip: '11명 이동 시 그랩 7인승 SUV 2대 또는 16인승 단독 밴 대여가 매우 저렴합니다.' },
           { day: '2일차 · 테마파크', title: '바나힐 케이블카 & 골든브릿지', route: '세계 최장 케이블카 → 골든브릿지(손가락 다리) → 프랑스 마을 & 판타지파크', tip: '산 정상이라 시내보다 선선하므로 얇은 긴팔 겉옷을 챙기면 좋습니다.' },
-          { day: '3일차 · 감성 야경', title: '호이안 올드타운 & 소원배', route: '바구니배 체험 → 호이안 올드타운 산책 → 투본강 소원배 & 등불 야경', tip: '해 질 녘 5시쯤 입장하면 낮 풍경과 화려한 홍등 야경을 모두 볼 수 있습니다.' }
+          { day: '3일차 · 체험·야경', title: '바구니배 & 호이안 올드타운', route: '코코넛 바구니배 체험 → 호이안 올드타운 산책 → 투본강 소원배 & 등불 야경', tip: '해 질 녘 5시쯤 입장하면 낮 풍경과 화려한 홍등 야경을 모두 볼 수 있습니다.' }
         ],
         flights: [
           { id: 'dad-2', airline: '비엣젯항공', type: 'LCC · 가성비 특가', depTime: '07:00', arrTime: '09:50', retDep: '11:10', retArr: '17:40', slot: 'MORNING', durationMin: 270, adultPrice: 310000 },
@@ -1325,15 +1370,24 @@
         hotelRates: { budget: 90000, standard: 155000, luxury: 300000 },
         foodPerDay: 28000, activityPerDay: 30000, extraPerPax: 30000,
         hotels: [
-          { tier: 'budget', tierLabel: '가성비 부티크', name: '라 시에스타 클래식 마 메이', area: '호안끼엠 구시가지 중심', features: '세심한 서비스, 도보로 호안끼엠 호수·맛집·수상인형극장 모두 이동 가능', rate: 90000, query: 'La Siesta Classic Ma May Hanoi' },
-          { tier: 'standard', tierLabel: '4.5성급 호텔', name: '롯데 호텔 하노이', area: '바딘 지구 (롯데센터 상층부)', features: '한국인 가족 만족도 최고 랜드마크 호텔, 지하 롯데마트·전망대·수영장 한 번에 이용', rate: 155000, query: 'Lotte Hotel Hanoi' },
-          { tier: 'luxury', tierLabel: '5성급 리조트형', name: '인터컨티넨탈 하노이 웨스트레이크', area: '서호(웨스트레이크) 호수 위 수상 파빌리온', features: '호수 위에 떠 있는 이국적 빌라형 객실과 고요한 휴양 분위기, 대가족 휴식 추천', rate: 300000, query: 'InterContinental Hanoi Westlake' }
+          { id: 'han-h1', tier: 'budget', tierLabel: '가성비 부티크', name: '라 시에스타 클래식 마 메이', area: '호안끼엠 구시가지 중심', features: '세심한 서비스, 도보로 호안끼엠 호수·맛집·수상인형극장 모두 이동 가능', rate: 90000, query: 'La Siesta Classic Ma May Hanoi' },
+          { id: 'han-h2', tier: 'budget', tierLabel: '가성비 신축', name: '솔라리아 호텔 하노이', area: '호안끼엠 성요셉 성당 도보 3분', features: '루프탑 스카이바 전망과 깔끔한 모던 인테리어, 3가족 연박 가성비 탁월', rate: 105000, query: 'Solaria Hotel Hanoi' },
+          { id: 'han-h3', tier: 'standard', tierLabel: '4.5성급 호텔', name: '롯데 호텔 하노이', area: '바딘 지구 (롯데센터 상층부)', features: '한국인 가족 만족도 최고 랜드마크 호텔, 지하 롯데마트·전망대·수영장 한 번에 이용', rate: 155000, query: 'Lotte Hotel Hanoi' },
+          { id: 'han-h4', tier: 'standard', tierLabel: '4.5성급 레지던스', name: '서머셋 그랜드 하노이', area: '호안끼엠 중심가 · 하노이 타워', features: '거실·주방·세탁기가 있는 2~3베드룸 아파트형 레지던스로 아이 동반 가족에 편리', rate: 165000, query: 'Somerset Grand Hanoi' },
+          { id: 'han-h5', tier: 'luxury', tierLabel: '5성급 리조트형', name: '인터컨티넨탈 하노이 웨스트레이크', area: '서호(웨스트레이크) 호수 위 수상 파빌리온', features: '호수 위에 떠 있는 이국적 빌라형 객실과 고요한 휴양 분위기, 대가족 휴식 추천', rate: 300000, query: 'InterContinental Hanoi Westlake' },
+          { id: 'han-h6', tier: 'luxury', tierLabel: '5성급 클래식', name: '소피텔 레전드 메트로폴 하노이', area: '호안끼엠 오페라 하우스 바로 옆', features: '120년 역사의 프랑스풍 최고급 헤리티지 호텔, 온수 야외 수영장 및 최상급 서비스', rate: 420000, query: 'Sofitel Legend Metropole Hanoi' }
         ],
         foods: [
           { name: '퍼 자 쭈옌 (백종원 쌀국수)', cat: '소고기 쌀국수', menu: '진한 양지·차돌 소고기 쌀국수 (약 3,500원)', area: '호안끼엠 구시가지 밧단 거리', reason: '방송과 수많은 여행 유튜버가 극찬한 깊고 진한 보양식 같은 국물 맛', tip: '오전 시간대(07~10시)에 방문해야 재료 소진 없이 가장 신선합니다.', mapQuery: 'Pho Gia Truyen Bat Dan Hanoi' },
           { name: '분짜 흐엉리엔 (오바마 분짜)', cat: '숯불 분짜', menu: '숯불 돼지고기 분짜 + 해물 넴(춘권) 세트 (약 5,000원)', area: '호안끼엠 남쪽 레반후 거리', reason: '달콤새콤한 육수에 숯불 불향 가득한 고기와 면을 적셔 먹는 하노이 국민 식사', tip: '에어컨이 나오는 위층 좌석을 이용하면 가족 모두 쾌적합니다.', mapQuery: 'Bun Cha Huong Lien Hanoi' },
           { name: '분보남보 (73 Hang Dieu)', cat: '비빔 쌀국수', menu: '소고기 샐러드 비빔 쌀국수 (약 4,000원)', area: '호안끼엠 구시가지 중심', reason: '상큼한 간장 소스에 고소한 땅콩·소고기를 비벼 먹어 남녀노소 호불호 제로', tip: '회전율이 빨라 줄이 길어도 금방 들어갑니다.', mapQuery: 'Bun Bo Nam Bo 73 Hang Dieu' },
           { name: '꽌 안 응온 (Quan An Ngon)', cat: '베트남 종합 미식', menu: '반쎄오, 월남쌈, 쌀국수, 볶음밥 (1인 약 1만 원)', area: '호안끼엠 판보이쩌우 거리', reason: '고풍스러운 저택에서 베트남 대표 요리를 위생적으로 한 번에 맛보는 대형 식당', tip: '11명 대가족이 한자리에 모여 쾌적하게 식사하기 가장 안전한 곳입니다.', mapQuery: 'Quan An Ngon Hanoi' }
+        ],
+        spots: [
+          { name: '하롱베이 럭셔리 데이 크루즈', cat: '유네스코 자연유산', highlight: '3,000여 개 기암괴석 해상 절경 + 선상 뷔페 + 승솟동굴·티톱섬 전망대', area: '하노이에서 고속도로 2시간 30분', tip: '11명 단독 16인승 리무진 밴 픽업 투어로 예약하면 대기 없이 편안합니다.', mapQuery: 'Ha Long Bay' },
+          { name: '탕롱 수상인형극장', cat: '전통 공연', highlight: '물 위에서 펼쳐지는 베트남 전통 인형극과 라이브 민속 악기 연주', area: '호안끼엠 호수 북동쪽 바로 앞', tip: '50분 공연으로 길지 않아 어린 아이들도 집중해서 관람할 수 있습니다.', mapQuery: 'Thang Long Water Puppet Theatre' },
+          { name: '롯데센터 하노이 전망대 & 롯데마트', cat: '전망·쇼핑', highlight: '65층 스카이워크 유리바닥 전망대 + 지하 대형 롯데마트 기념품 쇼핑', area: '바딘 지구 (롯데 호텔 하노이 건물)', tip: '해 질 녘 방문 시 하노이 시내 야경 감상과 저녁 식사·장보기를 한 번에 해결합니다.', mapQuery: 'Lotte Center Hanoi' },
+          { name: '메가그랜드월드 하노이 & 기찻길 마을', cat: '이색 명소·야경', highlight: '베네치아 운하 테마 야경 쇼핑거리 & 코앞으로 기차가 지나가는 카페 골목', area: '하노이 근교 오션파크 / 호안끼엠 인근', tip: '기찻길 마을은 열차 통과 시간표에 맞춰 카페 테라스에 앉으면 안전하게 관람 가능합니다.', mapQuery: 'Mega Grand World Hanoi' }
         ],
         courses: [
           { day: '1일차 · 시내·인형극', title: '호안끼엠 호수 & 수상인형극', route: '성요셉 성당 → 호안끼엠 호수 산책 → 탕롱 수상인형극 → 야시장', tip: '수상인형극은 언어를 몰라도 아이와 어른 모두가 흥미롭게 관람할 수 있습니다.' },
@@ -1356,9 +1410,12 @@
         hotelRates: { budget: 115000, standard: 215000, luxury: 440000 },
         foodPerDay: 38000, activityPerDay: 35000, extraPerPax: 40000,
         hotels: [
-          { tier: 'budget', tierLabel: '가성비 리조트', name: '빈홀리데이 피에스타 푸꾸옥', area: '북부 그랜드월드 바로 앞', features: '빈펄 사파리·빈원더스 무료 셔틀 및 도보 야경 관람 최적, 대형 야외 수영장 보유', rate: 115000, query: 'VinHolidays Fiesta Phu Quoc' },
-          { tier: 'standard', tierLabel: '4.5성급 비치리조트', name: '노보텔 푸꾸옥 리조트', area: '중부 쯔엉 비치 (공항 10분 거리)', features: '아이 동반 가족에 특화된 방갈로·패밀리룸, 키즈풀·프라이빗 비치·무료 공항 픽업 제공', rate: 215000, query: 'Novotel Phu Quoc Resort' },
-          { tier: 'luxury', tierLabel: '5성급 풀빌라', name: '빈펄 원더월드 푸꾸옥 (독채 풀빌라)', area: '북부 전용 해변 · 사파리/빈원더스 인접', features: '개인 수영장이 딸린 독채 풀빌라로 3가족(11명) 프라이빗 휴양에 압도적 인기', rate: 440000, query: 'Vinpearl Wonderworld Phu Quoc' }
+          { id: 'pqc-h1', tier: 'budget', tierLabel: '가성비 리조트', name: '빈홀리데이 피에스타 푸꾸옥', area: '북부 그랜드월드 바로 앞', features: '빈펄 사파리·빈원더스 무료 셔틀 및 도보 야경 관람 최적, 대형 야외 수영장 보유', rate: 115000, query: 'VinHolidays Fiesta Phu Quoc' },
+          { id: 'pqc-h2', tier: 'budget', tierLabel: '가성비 비치호텔', name: '시쉘 푸꾸옥 호텔 & 스파', area: '중부 즈엉동 시내 · 즈엉동 야시장 도보 5분', features: '야시장·맛집·킹콩마트 도보 이동이 가능하고 오션뷰 인피니티 풀을 갖춘 가성비 숙소', rate: 125000, query: 'Seashells Phu Quoc Hotel & Spa' },
+          { id: 'pqc-h3', tier: 'standard', tierLabel: '4.5성급 비치리조트', name: '노보텔 푸꾸옥 리조트', area: '중부 쯔엉 비치 (공항 10분 거리)', features: '아이 동반 가족에 특화된 방갈로·패밀리룸, 키즈풀·프라이빗 비치·무료 공항 픽업 제공', rate: 215000, query: 'Novotel Phu Quoc Resort' },
+          { id: 'pqc-h4', tier: 'standard', tierLabel: '4.5성급 가족리조트', name: '솔 바이 멜리아 푸꾸옥', area: '중부 쯔엉 비치 해안가', features: '해먹과 야자수가 어우러진 휴양지 감성, 키즈클럽 및 풀사이드 바가 잘 갖춰진 리조트', rate: 195000, query: 'SOL by Melia Phu Quoc' },
+          { id: 'pqc-h5', tier: 'luxury', tierLabel: '5성급 풀빌라', name: '빈펄 원더월드 푸꾸옥 (독채 풀빌라)', area: '북부 전용 해변 · 사파리/빈원더스 인접', features: '개인 수영장이 딸린 독채 풀빌라로 3가족(11명) 프라이빗 휴양에 압도적 인기', rate: 440000, query: 'Vinpearl Wonderworld Phu Quoc' },
+          { id: 'pqc-h6', tier: 'luxury', tierLabel: '5성급 럭셔리', name: '인터컨티넨탈 푸꾸옥 롱비치 리조트', area: '중부 롱비치 프라이빗 비치', features: '4개의 수영장과 키즈 워터슬라이드, 루프탑 스카이바까지 갖춘 최상급 가족 리조트', rate: 460000, query: 'InterContinental Phu Quoc Long Beach Resort' }
         ],
         foods: [
           { name: '분꿔이 끼엔싸이 (본점)', cat: '오징어 어묵 쌀국수', menu: '직접 뽑은 생면 쌀국수 + 오징어·새우 어묵탕 (약 4,000원)', area: '중부 즈엉동 시내 (야시장 인근)', reason: '푸꾸옥에서만 맛볼 수 있는 대표 향토 음식으로 시원하고 담백한 해물 육수가 일품', tip: '맵지 않아 어린 아이들도 아주 잘 먹습니다.', mapQuery: 'Bun Quay Kien Xay Phu Quoc' },
@@ -1366,10 +1423,16 @@
           { name: '쭈온쭈온 비스트로 & 스카이바', cat: '전망대 카페·식사', menu: '망고 스무디, 코코넛 커피, 파스타 & 수제버거', area: '즈엉동 언덕 전망대', reason: '푸꾸옥 시내와 에메랄드빛 바다가 파노라마로 내려다보이는 인플루언서 인생샷 성지', tip: '오전이나 늦은 오후에 방문하면 시원하게 풍경을 감상할 수 있습니다.', mapQuery: 'Chuon Chuon Bistro Sky Bar Phu Quoc' },
           { name: '온더락 레스토랑 (망고베이)', cat: '선셋 파인다이닝', menu: '해산물 플래터, 스테이크, 베트남 퓨전 요리', area: '중북부 옹랑 비치 해안가', reason: '자연 친화적인 바위 해변 위에서 파도 소리를 들으며 식사하는 가족 외식 명소', tip: '인기가 많아 최소 3~5일 전 사전 예약을 권장합니다.', mapQuery: 'On The Rock Restaurant Phu Quoc' }
         ],
+        spots: [
+          { name: '빈원더스 & 빈펄 사파리 푸꾸옥', cat: '테마파크·동물원', highlight: '기린 레스토랑 먹이주기 체험 + 놀이공원 + 초대형 거북이 아쿠아리움 + 워터파크', area: '푸꾸옥 북부 (빈버스 무료 셔틀 운행)', tip: '오전엔 사파리, 오후엔 빈원더스 실내 아쿠아리움·워터파크로 이동하면 완벽합니다.', mapQuery: 'VinWonders Phu Quoc' },
+          { name: '혼똔섬 해상 케이블카 & 아쿠아토피아', cat: '케이블카·워터파크', highlight: '바다 위를 가로지르는 세계 최장 7.9km 해상 케이블카 & 20여 종 워터슬라이드', area: '푸꾸옥 남부 안터이역 출발', tip: '케이블카 왕복권에 혼똔섬 워터파크 입장권이 기본 포함되어 가성비가 뛰어납니다.', mapQuery: 'Hon Thom Cable Car' },
+          { name: '선셋타운 & 키스브릿지·심포니쇼', cat: '노을·불꽃쇼 명소', highlight: '지중해풍 유럽 마을 산책 + 바다 위 키스브릿지 노을 + 야간 불꽃·레이저 쇼', area: '남부 혼똔섬 케이블카 승강장 바로 옆', tip: '케이블카 탑승 후 오후 5시쯤 내려와 선셋타운 야경과 불꽃쇼까지 즐기세요.', mapQuery: 'Sunset Town Phu Quoc' },
+          { name: '킹콩마트 & 즈엉동 야시장', cat: '쇼핑·야시장', highlight: '푸꾸옥 필수 쇼핑 성지(후추·진주·망고젤리·캐슈넛) + 해산물·철판아이스크림 야시장', area: '중부 즈엉동 시내 중심', tip: '킹콩마트는 정찰제에 한국어 안내가 잘 되어 있어 가족 기념품을 한 번에 사기 좋습니다.', mapQuery: 'King Kong Mart Phu Quoc' }
+        ],
         courses: [
           { day: '1일차 · 북부 테마', title: '빈펄 사파리 & 그랜드월드 야경', route: '빈펄 사파리(기린 먹이주기) → 그랜드월드 수상택시 → 21:30 무료 분수쇼', tip: '오전 일찍 사파리에 가야 동물들이 활발하고 날씨도 선선합니다.' },
           { day: '2일차 · 놀이·워터파크', title: '빈원더스 테마파크 & 아쿠아리움', route: '빈원더스 놀이기구 → 거북이 아쿠아리움 → 워터파크 물놀이', tip: '한 곳에서 놀이동산·수족관·워터파크를 모두 해결해 아이 동반 3가족에 최고입니다.' },
-          { day: '3일차 · 남부 절경', title: '혼똔섬 해상 케이블카 & 선셋타운', route: '세계 최장 8km 해상 케이블카 → 아쿠아토피아 워터파크 → 키스브릿지 노을', tip: '해 질 녘 선셋타운과 키스브릿지의 핑크빛 노을은 대가족 단체사진 필수 코스입니다.' }
+          { day: '3일차 · 남부·쇼핑', title: '혼똔섬 케이블카 & 선셋타운·킹콩마트', route: '혼똔섬 해상 케이블카 → 선셋타운 키스브릿지 노을 → 킹콩마트 쇼핑', tip: '해 질 녘 선셋타운과 키스브릿지의 핑크빛 노을은 대가족 단체사진 필수 코스입니다.' }
         ],
         flights: [
           { id: 'pqc-2', airline: '비엣젯항공', type: 'LCC · 오전 직항', depTime: '06:50', arrTime: '10:35', retDep: '11:45', retArr: '19:15', slot: 'MORNING', durationMin: 325, adultPrice: 365000 },
@@ -1867,16 +1930,18 @@
 
     function renderGuide(calc) {
       var city = CITIES[state.selectedCityId];
-      document.getElementById('guideSectionTitle').textContent = city.flag + ' ' + city.name + ' 추천 숙소 · 맛집 · 코스';
+      document.getElementById('guideSectionTitle').textContent = city.flag + ' ' + city.name + ' 추천 숙소 · 맛집 · 즐길거리 · 코스';
 
       document.getElementById('hotelGuideBlock').style.display = (state.guideTab === 'ALL' || state.guideTab === 'HOTEL') ? 'block' : 'none';
       document.getElementById('foodBlock').style.display = (state.guideTab === 'ALL' || state.guideTab === 'FOOD') ? 'block' : 'none';
+      document.getElementById('spotBlock').style.display = (state.guideTab === 'ALL' || state.guideTab === 'SPOT') ? 'block' : 'none';
       document.getElementById('courseBlock').style.display = (state.guideTab === 'ALL' || state.guideTab === 'COURSE') ? 'block' : 'none';
 
+      // 1. 숙소 6곳 렌더링
       var hHtml = '';
       for (var h = 0; h < city.hotels.length; h++) {
         var ht = city.hotels[h];
-        var isSel = (ht.tier === state.hotelTier && state.realHotelTotal === null);
+        var isSel = (ht.name === state.selectedHotelName && state.realHotelTotal === null);
         var tierCls = ht.tier === 'budget' ? 'tier-budget' : (ht.tier === 'standard' ? 'tier-standard' : 'tier-luxury');
         var agodaHotelUrl = 'https://www.agoda.com/ko-kr/search?textToSearch=' + encodeURIComponent(ht.query) +
           '&checkIn=' + state.depDate + '&los=' + state.nights + '&rooms=' + Math.max(1, calc.totalRooms) +
@@ -1895,7 +1960,7 @@
               '<span class="hotel-rate">' + formatKRW(ht.rate) + '</span>' +
             '</div>' +
             '<div class="hotel-actions">' +
-              '<button type="button" data-action="apply-hotel-card" data-tier="' + ht.tier + '" class="btn-apply-hotel' + (isSel ? ' active' : '') + '">' +
+              '<button type="button" data-action="apply-hotel-card" data-hidx="' + h + '" class="btn-apply-hotel' + (isSel ? ' active' : '') + '">' +
                 (isSel ? '✓ 선택됨' : '이 숙소 선택') +
               '</button>' +
               '<a href="' + agodaHotelUrl + '" target="_blank" rel="noopener noreferrer" class="btn-map-mini">아고다 ↗</a>' +
@@ -1905,6 +1970,7 @@
       }
       document.getElementById('hotelGuideGrid').innerHTML = hHtml;
 
+      // 2. 맛집 렌더링
       var fHtml = '';
       for (var j = 0; j < city.foods.length; j++) {
         var fd = city.foods[j];
@@ -1930,6 +1996,32 @@
       }
       document.getElementById('foodGrid').innerHTML = fHtml;
 
+      // 3. 관광지·쇼핑·즐길거리 렌더링
+      var sHtml = '';
+      for (var s = 0; s < city.spots.length; s++) {
+        var sp = city.spots[s];
+        var sMapUrl = 'https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent(sp.mapQuery);
+        sHtml += '<div class="food-card">' +
+          '<div>' +
+            '<div class="food-top">' +
+              '<div class="food-name">' + sp.name + '</div>' +
+              '<span class="food-cat" style="background:#dbeafe; color:#1d4ed8;">' + sp.cat + '</span>' +
+            '</div>' +
+            '<div class="food-detail-list">' +
+              '<div><strong>✨ 핵심 포인트:</strong> ' + sp.highlight + '</div>' +
+              '<div><strong>📍 위치/이동:</strong> ' + sp.area + '</div>' +
+            '</div>' +
+            '<div class="food-tip-box" style="margin-top:8px;">💡 <strong>가족 이용 팁:</strong> ' + sp.tip + '</div>' +
+          '</div>' +
+          '<div class="food-meta">' +
+            '<span>가족 인기 코스 명소</span>' +
+            '<a href="' + sMapUrl + '" target="_blank" rel="noopener noreferrer" class="map-link">구글맵 위치 보기 ↗</a>' +
+          '</div>' +
+        '</div>';
+      }
+      document.getElementById('spotGrid').innerHTML = sHtml;
+
+      // 4. 추천 코스 렌더링
       var cHtml = '';
       for (var i = 0; i < city.courses.length; i++) {
         var crs = city.courses[i];
@@ -1963,7 +2055,7 @@
     function renderFinalTable(s) {
       var retDate = addDays(state.depDate, state.nights);
       document.getElementById('finalMainTitle').textContent =
-        '📊 [' + s.city.flag + ' ' + s.city.name + '] 3가족 여행 최종 경비 정산표';
+        '📊 [' + s.city.flag + ' ' + s.city.name + '] 현민·태라·로은 가족 여행 최종 경비 정산표';
       document.getElementById('finalSubMeta').textContent =
         state.depDate + ' ~ ' + retDate + ' (' + state.nights + '박 ' + s.days + '일) · ' + s.activeFamilies.length + '가족 총 ' + s.totalPax + '명 (객실 ' + s.totalRooms + '실)';
       document.getElementById('finalBudgetDisplay').textContent = formatKRW(state.sharedBudget);
@@ -2116,18 +2208,6 @@
       document.getElementById('compareBadge').textContent = state.compareList.length;
     }
 
-    function applyHotelTier(tier) {
-      var city = CITIES[state.selectedCityId];
-      var ht = getHotelByTier(city, tier);
-      state.hotelTier = tier;
-      state.selectedHotelName = ht.name;
-      state.hotelPricePerNight = ht.rate;
-      state.realHotelTotal = null;
-      document.getElementById('inputHotelPrice').value = ht.rate;
-      document.getElementById('inputRealHotelTotal').value = '';
-      renderAll();
-    }
-
     document.addEventListener('click', function(e) {
       var target = e.target.closest('[data-action]');
       if (!target) {
@@ -2231,9 +2311,16 @@
         renderGuide(calculateAll());
       }
       else if (action === 'apply-hotel-card') {
-        var tier = target.getAttribute('data-tier');
-        applyHotelTier(tier);
-        showToast('🏨 [' + state.selectedHotelName + '] 요금이 적용되었습니다.');
+        var hIdx = parseInt(target.getAttribute('data-hidx'), 10);
+        var ht = CITIES[state.selectedCityId].hotels[hIdx];
+        state.hotelTier = ht.tier;
+        state.selectedHotelName = ht.name;
+        state.hotelPricePerNight = ht.rate;
+        state.realHotelTotal = null;
+        document.getElementById('inputHotelPrice').value = ht.rate;
+        document.getElementById('inputRealHotelTotal').value = '';
+        renderAll();
+        showToast('🏨 [' + ht.name + '] 요금이 적용되었습니다.');
       }
       else if (action === 'split-mode') {
         state.splitMode = target.getAttribute('data-smode');
@@ -2253,7 +2340,7 @@
         }
 
         var msg = [
-          '💰 [600만원 예산!! 3가족 여행 최종 정산표 - ' + s.city.flag + ' ' + s.city.name + ']',
+          '💰 [600만원 예산!! 현민·태라·로은 가족 여행 정산표 - ' + s.city.flag + ' ' + s.city.name + ']',
           '• 일정/인원: ' + state.depDate + ' 출발 (' + state.nights + '박 ' + s.days + '일) / ' + s.activeFamilies.length + '가족 총 ' + s.totalPax + '명',
           '• 숙소/항공: ' + (state.realHotelTotal !== null ? '실조회 숙박 총액' : state.selectedHotelName) + ' / ' + (state.realFlightTotal !== null ? '실조회 항공 총액' : s.flight.airline),
           '──────────────────',
@@ -2314,7 +2401,7 @@
           showToast('비교함에 담긴 여행지가 없습니다.');
           return;
         }
-        var lines = ['📊 [600만원 예산!! 3가족 여행 후보지 비교표]', '공동 예산: ' + formatKRW(state.sharedBudget), '──────────────────'];
+        var lines = ['📊 [600만원 예산!! 현민·태라·로은 가족 여행 후보지 비교표]', '공동 예산: ' + formatKRW(state.sharedBudget), '──────────────────'];
         for (var c = 0; c < state.compareList.length; c++) {
           var it = state.compareList[c];
           lines.push((c + 1) + '. ' + it.flag + ' ' + it.cityName + ' (' + it.nights + '박 ' + it.days + '일 / ' + it.totalPax + '명)');

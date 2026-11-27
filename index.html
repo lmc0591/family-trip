@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>우리 가족 여행 지역 & 비용 계산기</title>
+  <title>우리 가족 여행 지역 & 비용 계산기 (추천 코스·맛집 포함)</title>
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     body {
@@ -11,12 +11,12 @@
       background-color: #f1f5f9;
       color: #0f172a;
       line-height: 1.5;
-      padding-bottom: 60px;
+      padding-bottom: 64px;
     }
     button, select, input { font-family: inherit; }
     button { cursor: pointer; border: none; background: none; }
 
-    /* 레이아웃 */
+    /* 상단 헤더 */
     .header {
       background: #ffffff;
       border-bottom: 1px solid #e2e8f0;
@@ -25,7 +25,7 @@
       z-index: 30;
     }
     .header-inner {
-      max-width: 1140px;
+      max-width: 1160px;
       margin: 0 auto;
       padding: 14px 16px;
       display: flex;
@@ -35,7 +35,7 @@
       gap: 12px;
     }
     .header-title {
-      font-size: 20px;
+      font-size: 19px;
       font-weight: 800;
       color: #0f172a;
       display: flex;
@@ -43,7 +43,7 @@
       gap: 8px;
     }
     .header-sub {
-      font-size: 13px;
+      font-size: 12px;
       color: #64748b;
       margin-top: 2px;
     }
@@ -81,8 +81,9 @@
       border-radius: 999px;
     }
 
+    /* 메인 2단 그리드 */
     .container {
-      max-width: 1140px;
+      max-width: 1160px;
       margin: 20px auto 0;
       padding: 0 16px;
       display: grid;
@@ -132,7 +133,7 @@
       justify-content: center;
     }
 
-    /* 국가 탭 */
+    /* 탭 그룹 */
     .tab-group {
       display: inline-flex;
       background: #f1f5f9;
@@ -206,6 +207,129 @@
       color: #334155;
     }
 
+    /* 추천 코스 & 인기 맛집 섹션 */
+    .guide-badge {
+      font-size: 11px;
+      font-weight: 700;
+      padding: 3px 9px;
+      border-radius: 999px;
+      background: #eff6ff;
+      color: #1d4ed8;
+      border: 1px solid #bfdbfe;
+    }
+    .course-list {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 10px;
+    }
+    @media (min-width: 640px) {
+      .course-list { grid-template-columns: repeat(3, 1fr); }
+    }
+    .course-card {
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      border-radius: 12px;
+      padding: 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+    .course-day {
+      font-size: 11px;
+      font-weight: 800;
+      color: #2563eb;
+      text-transform: uppercase;
+    }
+    .course-title {
+      font-size: 14px;
+      font-weight: 800;
+      color: #0f172a;
+    }
+    .course-route {
+      font-size: 12px;
+      font-weight: 700;
+      color: #334155;
+      background: #ffffff;
+      padding: 6px 8px;
+      border-radius: 8px;
+      border: 1px solid #e2e8f0;
+    }
+    .course-tip {
+      font-size: 12px;
+      color: #64748b;
+      line-height: 1.45;
+    }
+
+    .food-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 10px;
+    }
+    @media (min-width: 640px) {
+      .food-grid { grid-template-columns: 1fr 1fr; }
+    }
+    .food-card {
+      background: #ffffff;
+      border: 1px solid #e2e8f0;
+      border-radius: 12px;
+      padding: 14px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 8px;
+    }
+    .food-card:hover { border-color: #cbd5e1; background: #fafafa; }
+    .food-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 8px;
+    }
+    .food-name {
+      font-size: 15px;
+      font-weight: 800;
+      color: #0f172a;
+    }
+    .food-cat {
+      font-size: 11px;
+      font-weight: 700;
+      padding: 2px 7px;
+      border-radius: 6px;
+      background: #fef3c7;
+      color: #92400e;
+      white-space: nowrap;
+    }
+    .food-menu {
+      font-size: 12px;
+      font-weight: 700;
+      color: #1e293b;
+    }
+    .food-reason {
+      font-size: 12px;
+      color: #475569;
+    }
+    .food-meta {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 6px;
+      padding-top: 8px;
+      border-top: 1px dashed #e2e8f0;
+      font-size: 11px;
+      color: #64748b;
+    }
+    .map-link {
+      font-size: 11px;
+      font-weight: 800;
+      color: #2563eb;
+      text-decoration: none;
+      padding: 3px 8px;
+      border-radius: 6px;
+      background: #eff6ff;
+    }
+    .map-link:hover { background: #dbeafe; }
+
     /* 인원 & 기간 2단 박스 */
     .two-col {
       display: grid;
@@ -264,7 +388,7 @@
       color: #475569;
     }
 
-    /* 항공권 필터 바 */
+    /* 항공권 필터 & 리스트 */
     .filter-bar {
       display: flex;
       flex-wrap: wrap;
@@ -298,8 +422,6 @@
       font-weight: 700;
       background: #ffffff;
     }
-
-    /* 항공편 카드 */
     .flight-list { display: flex; flex-direction: column; gap: 10px; }
     .flight-card {
       padding: 14px 16px;
@@ -520,9 +642,9 @@
       <div>
         <div class="header-title">
           <span>✈️ 우리 가족 여행 지역 & 비용 계산기</span>
-          <span id="jsStatusPill" class="status-pill">● 정상 작동 중</span>
+          <span class="status-pill">● 정상 작동 중</span>
         </div>
-        <div class="header-sub">일본 · 베트남 주요 도시별 항공권(인원/시간/가격)과 총 경비 비교</div>
+        <div class="header-sub">도시별 항공권(인원/시간/가격) · 추천 코스 · 검증 맛집 · 총 경비 비교</div>
       </div>
       <div class="header-actions">
         <button type="button" data-action="open-compare" class="btn-header">
@@ -550,10 +672,41 @@
         <div id="cityInfoBanner" class="city-desc-box"></div>
       </section>
 
-      <!-- 2. 가족 인원 및 여행 기간 -->
+      <!-- 2. 선택 도시 추천 코스 & 인기 맛집 가이드 -->
       <section class="card">
         <div class="section-head">
-          <h2 class="section-title"><span class="step-num">2</span> 가족 인원 및 여행 기간</h2>
+          <h2 class="section-title">
+            <span class="step-num">2</span>
+            <span id="guideSectionTitle">후쿠오카 가족 추천 코스 & 검증 맛집</span>
+          </h2>
+          <div class="tab-group">
+            <button type="button" data-action="guide-tab" data-gtab="ALL" class="tab-btn active">전체 보기</button>
+            <button type="button" data-action="guide-tab" data-gtab="COURSE" class="tab-btn">🗺️ 추천 코스</button>
+            <button type="button" data-action="guide-tab" data-gtab="FOOD" class="tab-btn">🍽️ 인기 맛집</button>
+          </div>
+        </div>
+
+        <div id="courseBlock" style="margin-bottom: 18px;">
+          <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:10px;">
+            <strong style="font-size:14px; color:#1e293b;">🗺️ 가족 맞춤형 추천 동선 (이동 피로도 최소화 코스)</strong>
+            <span class="guide-badge">인기 일정 베스트</span>
+          </div>
+          <div id="courseList" class="course-list"></div>
+        </div>
+
+        <div id="foodBlock">
+          <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:10px;">
+            <strong style="font-size:14px; color:#1e293b;">🍽️ 리뷰·조회수 검증 가족 추천 맛집</strong>
+            <span class="guide-badge">구글맵 바로 연동</span>
+          </div>
+          <div id="foodGrid" class="food-grid"></div>
+        </div>
+      </section>
+
+      <!-- 3. 가족 인원 및 여행 기간 -->
+      <section class="card">
+        <div class="section-head">
+          <h2 class="section-title"><span class="step-num">3</span> 가족 인원 및 여행 기간</h2>
         </div>
         <div class="two-col">
           <div class="sub-box">
@@ -627,10 +780,10 @@
         </div>
       </section>
 
-      <!-- 3. 항공권 조회 -->
+      <!-- 4. 항공권 조회 -->
       <section class="card">
         <div class="section-head">
-          <h2 class="section-title"><span class="step-num">3</span> 항공권 조회 (왕복 기준)</h2>
+          <h2 class="section-title"><span class="step-num">4</span> 항공권 조회 (왕복 기준)</h2>
           <div class="tab-group">
             <button type="button" data-action="price-mode" data-mode="TOTAL" class="tab-btn active">가족 총액 보기</button>
             <button type="button" data-action="price-mode" data-mode="PER_PAX" class="tab-btn">인원별 단가 보기</button>
@@ -657,10 +810,10 @@
         <div id="flightList" class="flight-list"></div>
       </section>
 
-      <!-- 4. 숙박 및 현지 경비 -->
+      <!-- 5. 숙박 및 현지 경비 -->
       <section class="card">
         <div class="section-head">
-          <h2 class="section-title"><span class="step-num">4</span> 숙박 · 식비 · 현지 경비 조정</h2>
+          <h2 class="section-title"><span class="step-num">5</span> 숙박 · 식비 · 현지 경비 조정</h2>
         </div>
 
         <div class="tier-grid">
@@ -798,6 +951,17 @@
         desc: '공항에서 시내까지 지하철 10분! 비행시간이 가장 짧아 어린 자녀나 부모님과 함께 가기 가장 부담 없는 도시입니다.',
         hotelRates: { budget: 130000, standard: 220000, luxury: 420000 },
         foodPerDay: 55000, activityPerDay: 25000, extraDefault: 150000,
+        courses: [
+          { day: '1일차 · 시내 핵심', title: '하카타 & 캐널시티 코스', route: '후쿠오카 공항 → 하카타역 → 캐널시티 분수쇼 → 나카스 포장마차 거리', tip: '공항에서 시내까지 10분 거리라 도착 첫날 체력 부담이 전혀 없습니다.' },
+          { day: '2일차 · 근교 힐링', title: '다자이후 & 유후인 버스투어', route: '다자이후 텐만구(매화떡) → 유후인 긴린코 호수 → 벳푸 지옥온천', tip: '가족 단위라면 일일 버스투어 예약 시 부모님·아이 모두 편하게 이동합니다.' },
+          { day: '3일차 · 공원·쇼핑', title: '오호리공원 & 텐진 쇼핑', route: '오호리공원 보트·산책 → 후쿠오카 타워 야경 → 텐진 지하상가·돈키호테', tip: '평지 위주 산책 코스와 대형 쇼핑몰이 연결되어 유모차 이동도 수월합니다.' }
+        ],
+        foods: [
+          { name: '이치란 본점 (나카스)', cat: '돈코츠 라멘', menu: '천연 돈코츠 라멘 + 반숙계란', reason: '한국인 후기 최다, 맵기·마늘 조절 가능해 아이부터 어른까지 호불호 없음', area: '나카스카와바타역 도보 2분', mapQuery: 'Ichiran Main Shop Fukuoka' },
+          { name: '모츠나베 라쿠텐치', cat: '곱창전골', menu: '간장 베이스 모츠나베 + 짬뽕면 사리', reason: '후쿠오카 3대 명물, 담백하고 칼칼한 국물로 부모님 만족도가 매우 높음', area: '텐진·하카타 다수 지점', mapQuery: 'Motsunabe Rakutenchi Fukuoka' },
+          { name: '효탄스시 (텐진점)', cat: '초밥·회', menu: '점심 특선 스시 세트 & 게살 크림고로케', reason: '가성비와 신선도로 블로그·인플루언서 평점 최상위권(오픈런 권장)', area: '텐진역 도보 3분', mapQuery: 'Hyotan Sushi Tenjin Fukuoka' },
+          { name: '키와미야 함바그', cat: '철판 함바그', menu: '와규 함바그 스테이크 + 계란밥 세트', reason: '뜨거운 돌판에 직접 구워 먹는 재미가 있어 초등학생 이상 아이들에게 인기', area: '하카타 버스터미널 1층', mapQuery: 'Kiwamiya Hamburg Hakata' }
+        ],
         flights: [
           { id: 'fuk-1', airline: '제주항공', type: 'LCC · 수하물 15kg', depTime: '07:50', arrTime: '09:10', retDep: '10:10', retArr: '11:35', slot: 'MORNING', durationMin: 80, adultPrice: 235000 },
           { id: 'fuk-2', airline: '대한항공', type: 'FSC · 기내식/수하물 23kg', depTime: '09:05', arrTime: '10:25', retDep: '11:30', retArr: '12:55', slot: 'MORNING', durationMin: 80, adultPrice: 345000 },
@@ -812,6 +976,17 @@
         desc: '유니버설 스튜디오 재팬, 해유관, 교토·나라 근교 여행까지 볼거리와 먹거리가 가장 풍부한 인기 가족 여행지입니다.',
         hotelRates: { budget: 150000, standard: 250000, luxury: 480000 },
         foodPerDay: 65000, activityPerDay: 45000, extraDefault: 200000,
+        courses: [
+          { day: '1일차 · 먹방·야경', title: '도톤보리 & 신사이바시', route: '난바 체크인 → 오사카성 천수각 → 도톤보리 글리코상 & 리버크루즈', tip: '주유패스 활용 시 리버크루즈·오사카성 무료 입장으로 경비를 아낄 수 있습니다.' },
+          { day: '2일차 · 테마파크', title: '유니버설 스튜디오(USJ) 종일', route: '슈퍼 닌텐도 월드 → 해리포터 존 → 미니언 파크 → 시티워크 저녁', tip: '아이 동반 시 익스프레스 패스 또는 오픈런으로 대기 시간을 줄이세요.' },
+          { day: '3일차 · 수족관·근교', title: '가이유칸 수족관 or 교토 투어', route: '텐포잔 대관람차 & 가이유칸 수족관 → 우메다 공중정원 야경', tip: '부모님 동반 시 수족관 대신 교토 청수사·아라시야마 반나절 코스를 추천합니다.' }
+        ],
+        foods: [
+          { name: '치보 (도톤보리 본점)', cat: '오코노미야키', menu: '도톤보리야키 & 철판 야키소바', reason: '셰프가 철판에서 직접 구워주며 테이블 좌석이 넓어 가족 외식에 최적', area: '난바·도톤보리 중심가', mapQuery: 'Chibo Okonomiyaki Dotonbori' },
+          { name: '동양정 (아베노 하루카스)', cat: '함박스테이크', menu: '100년 전통 은박지 함박스테이크 + 토마토 샐러드', reason: '고층 전망과 부드러운 식감 덕분에 아이와 부모님 모두 극찬하는 명소', area: '텐노지 아베노 하루카스 14층', mapQuery: 'Grill Capital Touyoutei Abeno Harukas' },
+          { name: '이치란 / 카무쿠라 라멘', cat: '라멘·교자', menu: '배추 달큰한 간장 베이스 오이시이 라멘', reason: '돼지냄새 없는 맑고 감칠맛 나는 국물이라 어르신·어린이 입맛에 안성맞춤', area: '도톤보리·난바역 인근', mapQuery: 'Kamukura Ramen Dotonbori' },
+          { name: '하루코마 스시 (텐진바시)', cat: '가성비 초밥', menu: '두툼한 연어·참치·장어 니기리 스시', reason: '오사카 현지인·여행 유튜버 모두가 꼽는 압도적 가성비 스시 맛집', area: '텐진바시스지 로쿠초메역', mapQuery: 'Harukoma Sushi Osaka' }
+        ],
         flights: [
           { id: 'osa-1', airline: '진에어', type: 'LCC · 수하물 15kg', depTime: '08:15', arrTime: '10:05', retDep: '11:05', retArr: '13:00', slot: 'MORNING', durationMin: 110, adultPrice: 279000 },
           { id: 'osa-2', airline: '대한항공', type: 'FSC · 기내식/수하물 23kg', depTime: '09:35', arrTime: '11:25', retDep: '12:40', retArr: '14:35', slot: 'MORNING', durationMin: 110, adultPrice: 410000 },
@@ -826,6 +1001,17 @@
         desc: '도쿄 디즈니랜드·디즈니씨, 해리포터 스튜디오, 최신 쇼핑 명소까지 아이부터 어른까지 취향 만족도가 높습니다.',
         hotelRates: { budget: 170000, standard: 290000, luxury: 580000 },
         foodPerDay: 70000, activityPerDay: 50000, extraDefault: 250000,
+        courses: [
+          { day: '1일차 · 전통·야경', title: '아사쿠사 & 스카이트리', route: '아사쿠사 센소지·나카미세 거리 → 스미다강 산책 → 도쿄 스카이트리 소라마치', tip: '평지 위주 동선과 소라마치 실내 식당가·쇼핑몰이 연결되어 쾌적합니다.' },
+          { day: '2일차 · 꿈의 나라', title: '도쿄 디즈니랜드 or 디즈니씨', route: '마이하마역 → 디즈니랜드 퍼레이드 & 어트랙션 → 불꽃놀이 관람', tip: '어린 자녀는 디즈니랜드, 초등 고학년·성인은 디즈니씨 만족도가 높습니다.' },
+          { day: '3일차 · 숲길·전망', title: '메이지신궁 & 시부야·오다이바', route: '하라주쿠 메이지신궁 숲길 → 시부야 스카이 전망대 → 오다이바 자유의 여신상', tip: '시부야 스카이는 일몰 시간대 기준 3~4주 전 사전 예매가 필수입니다.' }
+        ],
+        foods: [
+          { name: '아사쿠사 이마한', cat: '와규 스키야키', menu: '구로게와규 스키야키 런치 코스', reason: '130년 전통의 부드러운 소고기 전골로 부모님 효도 식사 1순위 맛집', area: '아사쿠사역 도보 3분', mapQuery: 'Asakusa Imahan Kokusai Dori' },
+          { name: '미도리스시 (긴자/시부야)', cat: '프리미엄 초밥', menu: '특선 모둠 초밥 세트 & 게살 미소샐러드', reason: '합리적 가격에 최상급 네타를 제공하는 도쿄 대표 인기 스시 전문점', area: '긴자·시부야 마크시티', mapQuery: 'Umegaoka Sushi No Midori Ginza' },
+          { name: '규카츠 모토무라', cat: '소고기 규카츠', menu: '규카츠 정식 (돌판에 직접 구워 먹는 소고기)', reason: '바삭하고 부드러운 식감으로 아이들과 젊은 세대 조회수 1위 메뉴', area: '신주쿠·시부야·도쿄역', mapQuery: 'Gyukatsu Motomura Shinjuku' },
+          { name: '도쿄 라멘 스트리트', cat: '라멘 명가 집결', menu: '로쿠린샤 츠케멘 / 소라노이로 베지라멘', reason: '도쿄역 지하에 10개 유명 라멘집이 모여 있어 가족 각자 취향대로 선택 가능', area: '도쿄역 이치방가이 지하 1층', mapQuery: 'Tokyo Ramen Street' }
+        ],
         flights: [
           { id: 'tyo-1', airline: '대한항공 (하네다)', type: 'FSC · 도심 초근접 공항', depTime: '08:40', arrTime: '10:55', retDep: '12:15', retArr: '14:45', slot: 'MORNING', durationMin: 135, adultPrice: 485000 },
           { id: 'tyo-2', airline: '에어프레미아 (나리타)', type: 'HSC · 넓은 좌석/23kg', depTime: '08:10', arrTime: '10:40', retDep: '12:00', retArr: '14:45', slot: 'MORNING', durationMin: 150, adultPrice: 335000 },
@@ -840,6 +1026,17 @@
         desc: '합리적인 비용으로 5성급 리조트·풀빌라를 누릴 수 있으며, 바나힐 테마파크와 호이안 야경 투어가 인기입니다.',
         hotelRates: { budget: 90000, standard: 170000, luxury: 340000 },
         foodPerDay: 35000, activityPerDay: 30000, extraDefault: 150000,
+        courses: [
+          { day: '1일차 · 휴양·야경', title: '미케비치 & 한시장·용다리', route: '리조트 수영장 휴식 → 핑크성당 & 한시장 쇼핑 → 용다리 불쇼·야시장', tip: '한낮 더위를 피해 오전·늦은 오후에 시내를 둘러보고 낮에는 호캉스를 즐기세요.' },
+          { day: '2일차 · 테마파크', title: '바나힐 케이블카 & 골든브릿지', route: '세계 최장 케이블카 → 골든브릿지(손가락 다리) → 프랑스 마을 & 판타지파크', tip: '산 정상이라 시내보다 선선하므로 얇은 긴팔 겉옷을 챙기면 좋습니다.' },
+          { day: '3일차 · 감성 야경', title: '호이안 올드타운 & 소원배', route: '바구니배 체험 → 호이안 올드타운 산책 → 투본강 소원배 & 등불 야경', tip: '해 질 녘 5시쯤 입장하면 낮 풍경과 화려한 홍등 야경을 모두 볼 수 있습니다.' }
+        ],
+        foods: [
+          { name: '마담란 (Madame Lan)', cat: '베트남 가정식', menu: '반쎄오, 분짜, 모닝글로리, 파인애플 볶음밥', reason: '위생적이고 쾌적한 대형 정원 식당으로 한국 가족 여행객 만족도 부동의 1위', area: '다낭 한강변 중심가', mapQuery: 'Madame Lan Restaurant Da Nang' },
+          { name: '목식당 (Moc Quan)', cat: '해산물 요리', menu: '칠리·갈릭 타이거새우구이, 가리비구이, 해산물 볶음밥', reason: '에어컨 완비 좌석과 합리적인 가격, 한국인 입맛에 딱 맞는 양념으로 인기', area: '미케비치 인근', mapQuery: 'Moc Seafood Restaurant Da Nang' },
+          { name: '벱꾸온 (Bep Cuon)', cat: '모던 베트남식', menu: '반쎄오 플래터, 코코넛 커피, 분팃느엉', reason: '향신료가 강하지 않고 플레이팅이 깔끔해 부모님·아이 모두 잘 먹는 맛집', area: '미케비치 인근', mapQuery: 'Bep Cuon Da Nang' },
+          { name: '바즈엉 반쎄오', cat: '로컬 반쎄오', menu: '바삭한 해물 반쎄오 + 라이스페이퍼 쌈', reason: '수십 년 전통의 현지 대표 맛집으로 고소하고 바삭한 식감이 일품', area: '다낭 시내 골목', mapQuery: 'Banh Xeo Ba Duong Da Nang' }
+        ],
         flights: [
           { id: 'dad-1', airline: '대한항공', type: 'FSC · 낮 비행기/23kg', depTime: '09:15', arrTime: '12:15', retDep: '13:45', retArr: '20:15', slot: 'MORNING', durationMin: 280, adultPrice: 495000 },
           { id: 'dad-2', airline: '비엣젯항공', type: 'LCC · 가성비 특가', depTime: '07:00', arrTime: '09:50', retDep: '11:10', retArr: '17:40', slot: 'MORNING', durationMin: 270, adultPrice: 310000 },
@@ -854,6 +1051,17 @@
         desc: '유네스코 자연유산 하롱베이 크루즈 투어와 호안끼엠 시내 관광, 저렴한 미식과 마사지를 즐기기 좋은 도시입니다.',
         hotelRates: { budget: 85000, standard: 150000, luxury: 290000 },
         foodPerDay: 30000, activityPerDay: 35000, extraDefault: 150000,
+        courses: [
+          { day: '1일차 · 시내·인형극', title: '호안끼엠 호수 & 수상인형극', route: '성요셉 성당 → 호안끼엠 호수 산책 → 탕롱 수상인형극 → 맥주거리', tip: '수상인형극은 언어를 몰라도 아이와 부모님 모두가 흥미롭게 관람할 수 있습니다.' },
+          { day: '2일차 · 대자연 크루즈', title: '하롱베이 럭셔리 데이크루즈', route: '하노이 출발(고속도로 2.5시간) → 하롱베이 크루즈 선상 뷔페 → 승솟동굴·티톱섬', tip: '부모님 효도 여행 만족도 1위 코스! 고속도로 개통으로 당일 투어가 매우 편해졌습니다.' },
+          { day: '3일차 · 유적·쇼핑', title: '바딘광장 & 서호·롯데센터', route: '호치민 묘소·한기둥사원 → 서호 쩐꾸옥 사원 → 롯데센터 전망대 & 마트 쇼핑', tip: '마지막 날 롯데센터에서 기념품 쇼핑과 마사지를 묶으면 공항 이동이 편리합니다.' }
+        ],
+        foods: [
+          { name: '퍼 자 쭈옌 (백종원 쌀국수)', cat: '소고기 쌀국수', menu: '진한 양지·차돌 소고기 쌀국수(퍼 보)', reason: '방송과 수많은 여행 유튜버가 극찬한 깊고 진한 보양식 같은 국물 맛', area: '호안끼엠 구시가지', mapQuery: 'Pho Gia Truyen Bat Dan Hanoi' },
+          { name: '분짜 닥킴 / 분짜 흐엉리엔', cat: '숯불 분짜', menu: '숯불 돼지고기 분짜 + 바삭한 해물 넴(춘권)', reason: '새콤달콤한 국물에 숯불고기와 면을 적셔 먹는 하노이 대표 국민 음식', area: '호안끼엠 구시가지', mapQuery: 'Bun Cha Huong Lien Hanoi' },
+          { name: '분보남보 (73 Hang Dieu)', cat: '비빔 쌀국수', menu: '소고기 샐러드 비빔 쌀국수', reason: '단짠단짠 소스에 고소한 땅콩과 채소가 어우러져 한국인 입맛 저격 1순위', area: '호안끼엠 중심가', mapQuery: 'Bun Bo Nam Bo 73 Hang Dieu' },
+          { name: '꽌 안 응온 (Quan An Ngon)', cat: '베트남 종합 미식', menu: '반쎄오, 월남쌈, 쌀국수, 볶음밥', reason: '고풍스러운 저택 분위기에서 베트남 전역의 대표 요리를 위생적으로 한 번에 맛봄', area: '호안끼엠 판보이쩌우', mapQuery: 'Quan An Ngon Hanoi' }
+        ],
         flights: [
           { id: 'han-1', airline: '대한항공', type: 'FSC · 오전 출발/23kg', depTime: '08:50', arrTime: '11:40', retDep: '13:10', retArr: '19:20', slot: 'MORNING', durationMin: 270, adultPrice: 480000 },
           { id: 'han-2', airline: '베트남항공', type: 'FSC · 국적기/23kg', depTime: '10:35', arrTime: '13:20', retDep: '14:40', retArr: '20:50', slot: 'MORNING', durationMin: 265, adultPrice: 415000 },
@@ -868,6 +1076,17 @@
         desc: '베트남의 몰디브라 불리는 휴양 섬! 빈원더스·사파리, 혼똔섬 해상 케이블카, 럭셔리 풀빌라 호캉스에 최적입니다.',
         hotelRates: { budget: 110000, standard: 210000, luxury: 430000 },
         foodPerDay: 40000, activityPerDay: 40000, extraDefault: 180000,
+        courses: [
+          { day: '1일차 · 북부 테마', title: '빈펄 사파리 & 그랜드월드 야경', route: '빈펄 사파리(기린 먹이주기) → 그랜드월드 수상택시 → 21:30 무료 분수쇼', tip: '오전 일찍 사파리에 가야 동물들이 활발하고 날씨도 선선합니다.' },
+          { day: '2일차 · 놀이·워터파크', title: '빈원더스 테마파크 & 아쿠아리움', route: '빈원더스 놀이기구 → 거북이 아쿠아리움 → 워터파크 물놀이', tip: '한 곳에서 놀이동산·수족관·워터파크를 모두 해결해 아이 동반 가족에 최고입니다.' },
+          { day: '3일차 · 남부 절경', title: '혼똔섬 해상 케이블카 & 선셋타운', route: '세계 최장 8km 해상 케이블카 → 아쿠아토피아 워터파크 → 키스브릿지 노을', tip: '해 질 녘 선셋타운과 키스브릿지의 핑크빛 노을은 가족 인생샷 필수 코스입니다.' }
+        ],
+        foods: [
+          { name: '분꿔이 끼엔싸이', cat: '오징어 어묵 쌀국수', menu: '직접 만든 쫄깃한 쌀국수 + 오징어·새우 어묵탕', reason: '푸꾸옥에서만 맛볼 수 있는 대표 향토 음식으로 시원하고 담백한 국물이 일품', area: '즈엉동 시내 본점', mapQuery: 'Bun Quay Kien Xay Phu Quoc' },
+          { name: '신짜오 해산물 레스토랑', cat: '오션뷰 해산물', menu: '갈릭버터 크레이피쉬, 맛조개 볶음, 해산물 볶음밥', reason: '바다 바로 앞에서 노을을 보며 쾌적하게 식사할 수 있는 인기 패밀리 레스토랑', area: '즈엉동 해변가', mapQuery: 'Xin Chao Seafood Restaurant Phu Quoc' },
+          { name: '쭈온쭈온 비스트로 & 스카이바', cat: '전망대 카페·다이닝', menu: '망고 스무디, 코코넛 커피, 파스타 & 반미', reason: '푸꾸옥 시내와 바다가 한눈에 내려다보이는 언덕 위 뷰 맛집 카페', area: '즈엉동 언덕 전망대', mapQuery: 'Chuon Chuon Bistro Sky Bar Phu Quoc' },
+          { name: '사오비치 해변 레스토랑', cat: '비치 로컬 식당', menu: '파인애플 볶음밥, 오징어 튀김, 신선한 코코넛', reason: '에메랄드빛 사오비치 해수욕 후 야자수 그늘에서 즐기는 여유로운 점심 코스', area: '남부 사오비치 해변', mapQuery: 'Sao Beach Phu Quoc' }
+        ],
         flights: [
           { id: 'pqc-1', airline: '대한항공', type: 'FSC · 오후 직항/23kg', depTime: '15:45', arrTime: '19:30', retDep: '21:00', retArr: '04:30', slot: 'AFTERNOON', durationMin: 330, adultPrice: 570000 },
           { id: 'pqc-2', airline: '비엣젯항공', type: 'LCC · 오전 직항', depTime: '06:50', arrTime: '10:35', retDep: '11:45', retArr: '19:15', slot: 'MORNING', durationMin: 325, adultPrice: 365000 },
@@ -879,6 +1098,7 @@
 
     var state = {
       countryFilter: 'ALL',
+      guideTab: 'ALL',
       selectedCityId: 'fukuoka',
       adult: 2,
       child: 1,
@@ -1006,6 +1226,60 @@
       var cur = CITIES[state.selectedCityId];
       document.getElementById('cityInfoBanner').innerHTML =
         '<strong style="color:#1d4ed8;">' + cur.flag + ' ' + cur.name + ':</strong> ' + cur.desc;
+    }
+
+    function renderGuide() {
+      var city = CITIES[state.selectedCityId];
+      document.getElementById('guideSectionTitle').textContent = city.flag + ' ' + city.name + ' 추천 코스 & 검증 맛집';
+
+      var courseBlock = document.getElementById('courseBlock');
+      var foodBlock = document.getElementById('foodBlock');
+
+      if (state.guideTab === 'ALL') {
+        courseBlock.style.display = 'block';
+        foodBlock.style.display = 'block';
+      } else if (state.guideTab === 'COURSE') {
+        courseBlock.style.display = 'block';
+        foodBlock.style.display = 'none';
+      } else if (state.guideTab === 'FOOD') {
+        courseBlock.style.display = 'none';
+        foodBlock.style.display = 'block';
+      }
+
+      // 추천 코스 렌더링
+      var cHtml = '';
+      for (var i = 0; i < city.courses.length; i++) {
+        var crs = city.courses[i];
+        cHtml += '<div class="course-card">' +
+          '<div class="course-day">' + crs.day + '</div>' +
+          '<div class="course-title">' + crs.title + '</div>' +
+          '<div class="course-route">' + crs.route + '</div>' +
+          '<div class="course-tip">💡 ' + crs.tip + '</div>' +
+        '</div>';
+      }
+      document.getElementById('courseList').innerHTML = cHtml;
+
+      // 추천 맛집 렌더링
+      var fHtml = '';
+      for (var j = 0; j < city.foods.length; j++) {
+        var fd = city.foods[j];
+        var mapUrl = 'https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent(fd.mapQuery);
+        fHtml += '<div class="food-card">' +
+          '<div>' +
+            '<div class="food-top">' +
+              '<div class="food-name">' + fd.name + '</div>' +
+              '<span class="food-cat">' + fd.cat + '</span>' +
+            '</div>' +
+            '<div class="food-menu" style="margin-top:6px;">🍴 대표메뉴: ' + fd.menu + '</div>' +
+            '<div class="food-reason" style="margin-top:4px;">' + fd.reason + '</div>' +
+          '</div>' +
+          '<div class="food-meta">' +
+            '<span>📍 ' + fd.area + '</span>' +
+            '<a href="' + mapUrl + '" target="_blank" rel="noopener noreferrer" class="map-link">구글맵 위치보기 ↗</a>' +
+          '</div>' +
+        '</div>';
+      }
+      document.getElementById('foodGrid').innerHTML = fHtml;
     }
 
     function renderPax() {
@@ -1181,13 +1455,14 @@
 
     function renderAll() {
       renderCities();
+      renderGuide();
       renderPax();
       renderFlights();
       renderSummary();
       document.getElementById('compareBadge').textContent = state.compareList.length;
     }
 
-    // 전역 클릭 이벤트 위임 (모든 버튼 100% 작동 보장)
+    // 전역 클릭 이벤트 위임
     document.addEventListener('click', function(e) {
       var target = e.target.closest('[data-action]');
       if (!target) {
@@ -1208,6 +1483,13 @@
       }
       else if (action === 'select-city') {
         selectCity(target.getAttribute('data-city'));
+      }
+      else if (action === 'guide-tab') {
+        state.guideTab = target.getAttribute('data-gtab');
+        var gBtns = document.querySelectorAll('[data-action="guide-tab"]');
+        for (var g = 0; g < gBtns.length; g++) gBtns[g].classList.remove('active');
+        target.classList.add('active');
+        renderGuide();
       }
       else if (action === 'step') {
         var field = target.getAttribute('data-field');
@@ -1250,8 +1532,13 @@
       }
       else if (action === 'copy-share') {
         var s = getSummary();
+        var topFoods = [];
+        for (var f = 0; f < s.city.foods.length; f++) topFoods.push(s.city.foods[f].name);
+        var topCourses = [];
+        for (var cr = 0; cr < s.city.courses.length; cr++) topCourses.push(s.city.courses[cr].title);
+
         var msg = [
-          '✈️ [우리 가족 여행 견적 제안 - ' + s.city.flag + ' ' + s.city.name + ']',
+          '✈️ [우리 가족 여행 견적 & 코스 제안 - ' + s.city.flag + ' ' + s.city.name + ']',
           '• 일정/인원: ' + state.nights + '박 ' + s.days + '일 / 총 ' + s.totalPax + '명 (성인 ' + state.adult + ', 아동 ' + state.child + ', 유아 ' + state.infant + ')',
           '• 선택 항공: ' + s.flight.airline + ' (출국 ' + s.flight.depTime + ' / 귀국 ' + s.flight.retDep + ')',
           '──────────────────',
@@ -1261,6 +1548,9 @@
           '  - 식비·카페: ' + formatKRW(s.foodTotal),
           '  - 교통·관광: ' + formatKRW(s.activityTotal),
           '  - 예비비·보험: ' + formatKRW(s.extraTotal),
+          '──────────────────',
+          '🗺️ 추천 코스: ' + topCourses.join(' / '),
+          '🍽️ 검증 맛집: ' + topFoods.join(', '),
           '──────────────────',
           '이 지역으로 어떨까요? 의견 주세요! 😊'
         ].join('\n');
@@ -1321,6 +1611,7 @@
       }
       else if (action === 'reset-all') {
         state.countryFilter = 'ALL';
+        state.guideTab = 'ALL';
         state.adult = 2;
         state.child = 1;
         state.infant = 0;
@@ -1336,7 +1627,6 @@
       }
     });
 
-    // 셀렉트 및 숫자 입력 실시간 반영
     document.addEventListener('change', function(e) {
       if (e.target.id === 'flightSortSelect') {
         state.sortBy = e.target.value;
@@ -1353,7 +1643,6 @@
       if (id === 'inputExtraPrice') { state.extraPriceTotal = val; renderSummary(); }
     });
 
-    // 초기 렌더링
     syncInputs();
     renderAll();
   </script>

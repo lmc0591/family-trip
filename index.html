@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>600만원 예산!! 3가족(11인) 공동 여행 예산 & 실시간 요금 비교기</title>
+  <title>600만원 예산!! 3가족(11인) 단계별 여행 견적 & 정산기</title>
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     body {
@@ -11,82 +11,50 @@
       background-color: #f1f5f9;
       color: #0f172a;
       line-height: 1.5;
-      padding-bottom: 64px;
+      padding-bottom: 80px;
     }
     button, select, input, a { font-family: inherit; }
     button { cursor: pointer; border: none; background: none; }
 
-    /* 상단 "600만원 예산!!" 강조 히어로 그래픽 배너 */
+    /* 상단 "600만원 예산!!" 강조 배너 */
     .hero-banner {
       background: linear-gradient(135deg, #0f172a 0%, #1e3a8a 55%, #1d4ed8 100%);
       color: #ffffff;
       border-bottom: 4px solid #fbbf24;
-      position: relative;
-      overflow: hidden;
     }
     .hero-inner {
-      max-width: 1200px;
+      max-width: 980px;
       margin: 0 auto;
-      padding: 20px 16px;
+      padding: 18px 16px;
       display: flex;
       flex-wrap: wrap;
       align-items: center;
       justify-content: space-between;
-      gap: 16px;
+      gap: 14px;
     }
     .hero-badge-graphic {
       display: inline-flex;
       align-items: center;
-      gap: 12px;
+      gap: 10px;
       background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%);
       color: #0f172a;
-      padding: 10px 20px;
-      border-radius: 16px;
-      box-shadow: 0 8px 20px rgba(251, 191, 36, 0.35);
+      padding: 9px 18px;
+      border-radius: 14px;
+      box-shadow: 0 6px 18px rgba(251, 191, 36, 0.35);
       border: 2px solid #fef08a;
       transform: rotate(-1deg);
     }
-    .hero-badge-icon {
-      font-size: 32px;
-      line-height: 1;
-    }
-    .hero-badge-text-top {
-      font-size: 11px;
-      font-weight: 900;
-      letter-spacing: 0.04em;
-      text-transform: uppercase;
-      color: #78350f;
-    }
-    .hero-badge-main {
-      font-size: 26px;
-      font-weight: 900;
-      letter-spacing: -0.03em;
-      line-height: 1.1;
-      color: #0f172a;
-    }
-    .hero-title-area {
-      flex: 1;
-      min-width: 240px;
-    }
-    .hero-title {
-      font-size: 20px;
-      font-weight: 800;
-      color: #ffffff;
-    }
-    .hero-sub {
-      font-size: 12.5px;
-      color: #cbd5e1;
-      margin-top: 4px;
-    }
-    .hero-actions {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
+    .hero-badge-icon { font-size: 28px; line-height: 1; }
+    .hero-badge-text-top { font-size: 10.5px; font-weight: 900; color: #78350f; }
+    .hero-badge-main { font-size: 23px; font-weight: 900; letter-spacing: -0.03em; line-height: 1.1; }
+    .hero-title-area { flex: 1; min-width: 220px; }
+    .hero-title { font-size: 18px; font-weight: 800; }
+    .hero-sub { font-size: 12px; color: #cbd5e1; margin-top: 3px; }
+    .hero-actions { display: flex; align-items: center; gap: 8px; }
     .btn-hero {
-      padding: 9px 14px;
+      padding: 8px 13px;
       border-radius: 10px;
-      font-size: 13px;
+      font-size: 12.5px;
       font-weight: 800;
       background: rgba(255, 255, 255, 0.14);
       color: #ffffff;
@@ -105,50 +73,88 @@
       border-radius: 999px;
     }
 
-    /* 기준 요금 안내 공지 바 */
-    .notice-bar {
-      max-width: 1200px;
-      margin: 14px auto 0;
-      padding: 0 16px;
+    /* 상단 진행 상태 스테퍼(Stepper) */
+    .stepper-wrap {
+      background: #ffffff;
+      border-bottom: 1px solid #e2e8f0;
+      position: sticky;
+      top: 0;
+      z-index: 30;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.03);
     }
-    .notice-inner {
-      background: #fffbeb;
-      border: 1px solid #fcd34d;
-      border-radius: 12px;
-      padding: 11px 16px;
-      font-size: 12.5px;
-      color: #78350f;
+    .stepper-inner {
+      max-width: 980px;
+      margin: 0 auto;
+      padding: 10px 16px;
       display: flex;
-      flex-wrap: wrap;
       align-items: center;
-      justify-content: space-between;
-      gap: 8px;
+      gap: 6px;
+      overflow-x: auto;
     }
+    .step-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 7px 12px;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 800;
+      white-space: nowrap;
+      border: 1.5px solid #e2e8f0;
+      background: #f8fafc;
+      color: #94a3b8;
+      transition: all 0.15s ease;
+    }
+    .step-pill.unlocked {
+      color: #334155;
+      background: #ffffff;
+      border-color: #cbd5e1;
+    }
+    .step-pill.unlocked:hover { border-color: #2563eb; color: #2563eb; }
+    .step-pill.current {
+      background: #2563eb;
+      color: #ffffff;
+      border-color: #2563eb;
+    }
+    .step-pill.done {
+      background: #eff6ff;
+      color: #1d4ed8;
+      border-color: #93c5fd;
+    }
+    .step-pill.locked { cursor: not-allowed; opacity: 0.6; }
+    .step-arrow { color: #cbd5e1; font-size: 12px; font-weight: 800; }
 
-    /* 메인 2단 그리드 */
-    .container {
-      max-width: 1200px;
-      margin: 16px auto 0;
+    /* 메인 단일 컬럼 컨테이너 */
+    .main-wrap {
+      max-width: 980px;
+      margin: 20px auto 0;
       padding: 0 16px;
-      display: grid;
-      grid-template-columns: 1fr;
+      display: flex;
+      flex-direction: column;
       gap: 20px;
     }
-    @media (min-width: 980px) {
-      .container {
-        grid-template-columns: 7.2fr 3.8fr;
-        align-items: start;
-      }
+
+    /* 스텝 카드 */
+    .step-card {
+      background: #ffffff;
+      border-radius: 18px;
+      padding: 22px;
+      border: 2px solid #e2e8f0;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+      animation: fadeSlide 0.25s ease;
+    }
+    .step-card.active-step {
+      border-color: #2563eb;
+      box-shadow: 0 6px 20px rgba(37, 99, 235, 0.08);
+    }
+    .step-card.completed-step {
+      border-color: #cbd5e1;
+    }
+    @keyframes fadeSlide {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
     }
 
-    .left-col { display: flex; flex-direction: column; gap: 20px; }
-    .card {
-      background: #ffffff;
-      border-radius: 16px;
-      padding: 20px;
-      border: 1px solid #e2e8f0;
-      box-shadow: 0 1px 3px rgba(0,0,0,0.04);
-    }
     .section-head {
       display: flex;
       flex-wrap: wrap;
@@ -158,24 +164,77 @@
       margin-bottom: 16px;
     }
     .section-title {
-      font-size: 17px;
+      font-size: 18px;
       font-weight: 800;
       display: flex;
       align-items: center;
-      gap: 8px;
+      gap: 9px;
+      color: #0f172a;
     }
     .step-num {
-      width: 24px;
-      height: 24px;
+      width: 26px;
+      height: 26px;
       border-radius: 50%;
       background: #2563eb;
       color: #ffffff;
-      font-size: 12px;
+      font-size: 13px;
       font-weight: 800;
       display: inline-flex;
       align-items: center;
       justify-content: center;
     }
+    .step-status-tag {
+      font-size: 11.5px;
+      font-weight: 800;
+      padding: 4px 10px;
+      border-radius: 999px;
+      background: #eff6ff;
+      color: #1d4ed8;
+    }
+
+    /* 다음 단계 버튼 영역 */
+    .step-footer {
+      margin-top: 20px;
+      padding-top: 16px;
+      border-top: 1px dashed #cbd5e1;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+    }
+    .step-hint {
+      font-size: 12.5px;
+      color: #475569;
+      font-weight: 600;
+    }
+    .btn-next-step {
+      padding: 12px 22px;
+      border-radius: 12px;
+      background: #2563eb;
+      color: #ffffff;
+      font-size: 14px;
+      font-weight: 800;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      box-shadow: 0 4px 12px rgba(37, 99, 235, 0.25);
+      transition: background 0.15s ease;
+    }
+    .btn-next-step:hover { background: #1d4ed8; }
+    .btn-final-calc {
+      padding: 13px 26px;
+      border-radius: 12px;
+      background: linear-gradient(135deg, #059669 0%, #047857 100%);
+      color: #ffffff;
+      font-size: 15px;
+      font-weight: 900;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      box-shadow: 0 4px 14px rgba(5, 150, 105, 0.3);
+    }
+    .btn-final-calc:hover { filter: brightness(1.05); }
 
     /* 탭 그룹 */
     .tab-group {
@@ -193,12 +252,9 @@
       font-weight: 700;
       color: #475569;
     }
-    .tab-btn.active {
-      background: #2563eb;
-      color: #ffffff;
-    }
+    .tab-btn.active { background: #2563eb; color: #ffffff; }
 
-    /* 3가족 선택 및 구성 카드 */
+    /* 3가족 선택 카드 */
     .family-grid {
       display: grid;
       grid-template-columns: 1fr;
@@ -212,16 +268,9 @@
       border-radius: 14px;
       padding: 14px;
       background: #f8fafc;
-      transition: all 0.15s ease;
     }
-    .fam-card.active {
-      border-color: #2563eb;
-      background: #eff6ff;
-    }
-    .fam-card.inactive {
-      opacity: 0.55;
-      background: #f1f5f9;
-    }
+    .fam-card.active { border-color: #2563eb; background: #eff6ff; }
+    .fam-card.inactive { opacity: 0.55; background: #f1f5f9; }
     .fam-header {
       display: flex;
       align-items: center;
@@ -237,7 +286,6 @@
       font-size: 15px;
       font-weight: 800;
       color: #0f172a;
-      text-align: left;
     }
     .fam-check {
       width: 22px;
@@ -252,10 +300,7 @@
       font-weight: 900;
       color: #ffffff;
     }
-    .fam-card.active .fam-check {
-      background: #2563eb;
-      border-color: #2563eb;
-    }
+    .fam-card.active .fam-check { background: #2563eb; border-color: #2563eb; }
     .fam-badge {
       font-size: 12px;
       font-weight: 800;
@@ -271,11 +316,7 @@
       font-size: 12.5px;
       margin-bottom: 7px;
     }
-    .fam-ctrl {
-      display: flex;
-      align-items: center;
-      gap: 6px;
-    }
+    .fam-ctrl { display: flex; align-items: center; gap: 6px; }
     .btn-mini-step {
       width: 26px;
       height: 26px;
@@ -290,21 +331,7 @@
       justify-content: center;
     }
     .btn-mini-step:hover { background: #e2e8f0; }
-    .fam-num {
-      min-width: 22px;
-      text-align: center;
-      font-weight: 800;
-      font-size: 13px;
-    }
-    .fam-cost-preview {
-      margin-top: 10px;
-      padding-top: 8px;
-      border-top: 1px dashed #cbd5e1;
-      font-size: 12px;
-      display: flex;
-      justify-content: space-between;
-      color: #334155;
-    }
+    .fam-num { min-width: 22px; text-align: center; font-weight: 800; font-size: 13px; }
 
     /* 출발일·예산·박수 바 */
     .budget-bar-box {
@@ -319,12 +346,7 @@
       justify-content: space-between;
       gap: 12px;
     }
-    .control-inline {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      font-size: 13px;
-    }
+    .control-inline { display: flex; align-items: center; gap: 8px; font-size: 13px; }
     .date-input {
       padding: 6px 10px;
       border-radius: 8px;
@@ -347,7 +369,7 @@
     /* 도시 그리드 */
     .city-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(195px, 1fr));
+      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
       gap: 12px;
     }
     .city-card {
@@ -359,22 +381,9 @@
       transition: all 0.15s ease;
     }
     .city-card:hover { border-color: #93c5fd; }
-    .city-card.active {
-      border-color: #2563eb;
-      background: #eff6ff;
-    }
-    .city-top {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      font-size: 11px;
-      margin-bottom: 6px;
-    }
-    .country-tag {
-      font-weight: 700;
-      padding: 2px 7px;
-      border-radius: 6px;
-    }
+    .city-card.active { border-color: #2563eb; background: #eff6ff; }
+    .city-top { display: flex; justify-content: space-between; align-items: center; font-size: 11px; margin-bottom: 6px; }
+    .country-tag { font-weight: 700; padding: 2px 7px; border-radius: 6px; }
     .tag-jp { background: #ffe4e6; color: #be123c; }
     .tag-vn { background: #fef3c7; color: #b45309; }
     .city-name { font-size: 18px; font-weight: 800; color: #0f172a; }
@@ -398,12 +407,12 @@
       color: #334155;
     }
 
-    /* 실시간 스카이스캐너 / 아고다 연동 & 실가격 입력 패널 */
+    /* 실시간 조회 패널 */
     .live-sync-panel {
       background: linear-gradient(135deg, #eff6ff 0%, #f0fdf4 100%);
       border: 2px solid #93c5fd;
       border-radius: 14px;
-      padding: 16px;
+      padding: 15px;
       margin-bottom: 16px;
     }
     .live-sync-head {
@@ -414,19 +423,10 @@
       gap: 8px;
       margin-bottom: 10px;
     }
-    .live-sync-title {
-      font-size: 14.5px;
-      font-weight: 800;
-      color: #1e3a8a;
-    }
-    .live-btn-row {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 8px;
-      margin-bottom: 12px;
-    }
+    .live-sync-title { font-size: 14px; font-weight: 800; color: #1e3a8a; }
+    .live-btn-row { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 12px; }
     .btn-sky {
-      padding: 9px 14px;
+      padding: 8px 13px;
       border-radius: 10px;
       background: #0284c7;
       color: #ffffff;
@@ -435,26 +435,10 @@
       text-decoration: none;
       display: inline-flex;
       align-items: center;
-      gap: 6px;
-      box-shadow: 0 2px 6px rgba(2, 132, 199, 0.25);
+      gap: 5px;
     }
-    .btn-sky:hover { background: #0369a1; }
-    .btn-agoda {
-      padding: 9px 14px;
-      border-radius: 10px;
-      background: #059669;
-      color: #ffffff;
-      font-size: 12.5px;
-      font-weight: 800;
-      text-decoration: none;
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      box-shadow: 0 2px 6px rgba(5, 150, 105, 0.25);
-    }
-    .btn-agoda:hover { background: #047857; }
     .btn-naver {
-      padding: 9px 14px;
+      padding: 8px 13px;
       border-radius: 10px;
       background: #16a34a;
       color: #ffffff;
@@ -463,19 +447,19 @@
       text-decoration: none;
       display: inline-flex;
       align-items: center;
-      gap: 6px;
+      gap: 5px;
     }
-    .btn-naver:hover { background: #15803d; }
-
-    .override-grid {
-      display: grid;
-      grid-template-columns: 1fr;
-      gap: 10px;
-      padding-top: 10px;
-      border-top: 1px dashed #93c5fd;
-    }
-    @media (min-width: 640px) {
-      .override-grid { grid-template-columns: 1fr 1fr; }
+    .btn-agoda {
+      padding: 8px 13px;
+      border-radius: 10px;
+      background: #059669;
+      color: #ffffff;
+      font-size: 12.5px;
+      font-weight: 800;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
     }
     .override-box {
       background: #ffffff;
@@ -484,208 +468,31 @@
       padding: 10px 12px;
     }
     .override-label {
-      font-size: 11.5px;
+      font-size: 12px;
       font-weight: 800;
       color: #334155;
       display: flex;
       justify-content: space-between;
-      margin-bottom: 5px;
+      margin-bottom: 6px;
     }
-    .override-input-row {
-      display: flex;
-      gap: 6px;
-    }
+    .override-input-row { display: flex; gap: 6px; }
     .override-input {
       flex: 1;
-      padding: 6px 8px;
-      border-radius: 7px;
+      padding: 7px 10px;
+      border-radius: 8px;
       border: 1px solid #94a3b8;
       font-size: 13px;
       font-weight: 800;
     }
     .btn-clear-override {
-      padding: 6px 9px;
-      border-radius: 7px;
+      padding: 6px 10px;
+      border-radius: 8px;
       background: #f1f5f9;
       color: #475569;
-      font-size: 11px;
-      font-weight: 700;
-      border: 1px solid #cbd5e1;
-    }
-
-    /* 추천 숙소 · 맛집 · 코스 가이드 */
-    .guide-subhead {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      margin-bottom: 10px;
-      gap: 8px;
-    }
-    .guide-badge {
-      font-size: 11px;
-      font-weight: 700;
-      padding: 3px 9px;
-      border-radius: 999px;
-      background: #eff6ff;
-      color: #1d4ed8;
-      border: 1px solid #bfdbfe;
-      white-space: nowrap;
-    }
-    .hotel-grid {
-      display: grid;
-      grid-template-columns: 1fr;
-      gap: 10px;
-    }
-    @media (min-width: 680px) {
-      .hotel-grid { grid-template-columns: repeat(3, 1fr); }
-    }
-    .hotel-card {
-      border: 2px solid #e2e8f0;
-      border-radius: 12px;
-      padding: 14px;
-      background: #ffffff;
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-      gap: 10px;
-    }
-    .hotel-card.selected {
-      border-color: #2563eb;
-      background: #f0f9ff;
-    }
-    .hotel-tier-tag {
-      display: inline-block;
-      font-size: 11px;
-      font-weight: 800;
-      padding: 2px 8px;
-      border-radius: 6px;
-      margin-bottom: 6px;
-    }
-    .tier-budget { background: #e2e8f0; color: #334155; }
-    .tier-standard { background: #dbeafe; color: #1d4ed8; }
-    .tier-luxury { background: #fef3c7; color: #b45309; }
-    .hotel-name { font-size: 15px; font-weight: 800; color: #0f172a; line-height: 1.3; }
-    .hotel-area { font-size: 11px; font-weight: 700; color: #2563eb; margin-top: 4px; }
-    .hotel-features { font-size: 12px; color: #475569; margin-top: 6px; line-height: 1.45; }
-    .hotel-price-row {
-      padding-top: 8px;
-      border-top: 1px dashed #cbd5e1;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-    }
-    .hotel-rate { font-size: 14px; font-weight: 900; color: #0f172a; }
-    .hotel-actions { display: flex; gap: 6px; margin-top: 6px; }
-    .btn-apply-hotel {
-      flex: 1;
-      padding: 7px 8px;
-      border-radius: 8px;
-      font-size: 11px;
-      font-weight: 800;
-      background: #1e293b;
-      color: #ffffff;
-      text-align: center;
-    }
-    .btn-apply-hotel.active { background: #2563eb; }
-    .btn-map-mini {
-      padding: 7px 9px;
-      border-radius: 8px;
-      font-size: 11px;
-      font-weight: 800;
-      background: #f1f5f9;
-      color: #334155;
-      border: 1px solid #cbd5e1;
-      text-decoration: none;
-    }
-
-    /* 맛집 카드 */
-    .food-grid {
-      display: grid;
-      grid-template-columns: 1fr;
-      gap: 10px;
-    }
-    @media (min-width: 640px) {
-      .food-grid { grid-template-columns: 1fr 1fr; }
-    }
-    .food-card {
-      background: #ffffff;
-      border: 1px solid #e2e8f0;
-      border-radius: 12px;
-      padding: 14px;
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-      gap: 8px;
-    }
-    .food-top { display: flex; justify-content: space-between; align-items: flex-start; gap: 8px; }
-    .food-name { font-size: 15px; font-weight: 800; color: #0f172a; }
-    .food-cat {
-      font-size: 11px;
-      font-weight: 700;
-      padding: 2px 7px;
-      border-radius: 6px;
-      background: #fef3c7;
-      color: #92400e;
-      white-space: nowrap;
-    }
-    .food-detail-list { display: flex; flex-direction: column; gap: 4px; font-size: 12px; color: #334155; margin-top: 6px; }
-    .food-tip-box {
-      background: #f8fafc;
-      border-radius: 8px;
-      padding: 6px 8px;
       font-size: 11.5px;
-      color: #475569;
-      border-left: 3px solid #2563eb;
-    }
-    .food-meta {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding-top: 8px;
-      border-top: 1px dashed #e2e8f0;
-      font-size: 11px;
-      color: #64748b;
-    }
-    .map-link {
-      font-size: 11px;
-      font-weight: 800;
-      color: #2563eb;
-      text-decoration: none;
-      padding: 4px 8px;
-      border-radius: 6px;
-      background: #eff6ff;
-    }
-
-    /* 코스 카드 */
-    .course-list {
-      display: grid;
-      grid-template-columns: 1fr;
-      gap: 10px;
-    }
-    @media (min-width: 640px) {
-      .course-list { grid-template-columns: repeat(3, 1fr); }
-    }
-    .course-card {
-      background: #f8fafc;
-      border: 1px solid #e2e8f0;
-      border-radius: 12px;
-      padding: 14px;
-      display: flex;
-      flex-direction: column;
-      gap: 6px;
-    }
-    .course-day { font-size: 11px; font-weight: 800; color: #2563eb; }
-    .course-title { font-size: 14px; font-weight: 800; color: #0f172a; }
-    .course-route {
-      font-size: 12px;
       font-weight: 700;
-      color: #334155;
-      background: #ffffff;
-      padding: 6px 8px;
-      border-radius: 8px;
-      border: 1px solid #e2e8f0;
+      border: 1px solid #cbd5e1;
     }
-    .course-tip { font-size: 12px; color: #64748b; }
 
     /* 항공권 필터 & 리스트 */
     .filter-bar {
@@ -694,8 +501,8 @@
       align-items: center;
       justify-content: space-between;
       gap: 10px;
-      padding-bottom: 14px;
-      margin-bottom: 14px;
+      padding-bottom: 12px;
+      margin-bottom: 12px;
       border-bottom: 1px solid #f1f5f9;
     }
     .time-btns { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; }
@@ -746,139 +553,208 @@
     .flight-total { font-size: 17px; font-weight: 800; color: #2563eb; }
     .flight-sub { font-size: 11px; color: #64748b; }
 
+    /* 숙소 · 맛집 · 코스 */
+    .guide-subhead { display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px; gap: 8px; }
+    .guide-badge {
+      font-size: 11px;
+      font-weight: 700;
+      padding: 3px 9px;
+      border-radius: 999px;
+      background: #eff6ff;
+      color: #1d4ed8;
+      border: 1px solid #bfdbfe;
+    }
+    .hotel-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 10px;
+    }
+    @media (min-width: 680px) {
+      .hotel-grid { grid-template-columns: repeat(3, 1fr); }
+    }
+    .hotel-card {
+      border: 2px solid #e2e8f0;
+      border-radius: 12px;
+      padding: 14px;
+      background: #ffffff;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 10px;
+    }
+    .hotel-card.selected { border-color: #2563eb; background: #f0f9ff; }
+    .hotel-tier-tag { display: inline-block; font-size: 11px; font-weight: 800; padding: 2px 8px; border-radius: 6px; margin-bottom: 6px; }
+    .tier-budget { background: #e2e8f0; color: #334155; }
+    .tier-standard { background: #dbeafe; color: #1d4ed8; }
+    .tier-luxury { background: #fef3c7; color: #b45309; }
+    .hotel-name { font-size: 15px; font-weight: 800; color: #0f172a; }
+    .hotel-area { font-size: 11px; font-weight: 700; color: #2563eb; margin-top: 4px; }
+    .hotel-features { font-size: 12px; color: #475569; margin-top: 6px; }
+    .hotel-price-row { padding-top: 8px; border-top: 1px dashed #cbd5e1; display: flex; justify-content: space-between; align-items: center; }
+    .hotel-rate { font-size: 14px; font-weight: 900; }
+    .hotel-actions { display: flex; gap: 6px; margin-top: 6px; }
+    .btn-apply-hotel {
+      flex: 1;
+      padding: 7px 8px;
+      border-radius: 8px;
+      font-size: 11.5px;
+      font-weight: 800;
+      background: #1e293b;
+      color: #ffffff;
+    }
+    .btn-apply-hotel.active { background: #2563eb; }
+    .btn-map-mini {
+      padding: 7px 9px;
+      border-radius: 8px;
+      font-size: 11.5px;
+      font-weight: 800;
+      background: #f1f5f9;
+      color: #334155;
+      border: 1px solid #cbd5e1;
+      text-decoration: none;
+    }
+
+    .food-grid { display: grid; grid-template-columns: 1fr; gap: 10px; }
+    @media (min-width: 640px) { .food-grid { grid-template-columns: 1fr 1fr; } }
+    .food-card {
+      background: #ffffff;
+      border: 1px solid #e2e8f0;
+      border-radius: 12px;
+      padding: 14px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 8px;
+    }
+    .food-top { display: flex; justify-content: space-between; align-items: flex-start; gap: 8px; }
+    .food-name { font-size: 15px; font-weight: 800; }
+    .food-cat { font-size: 11px; font-weight: 700; padding: 2px 7px; border-radius: 6px; background: #fef3c7; color: #92400e; white-space: nowrap; }
+    .food-detail-list { display: flex; flex-direction: column; gap: 4px; font-size: 12px; color: #334155; margin-top: 6px; }
+    .food-tip-box { background: #f8fafc; border-radius: 8px; padding: 6px 8px; font-size: 11.5px; color: #475569; border-left: 3px solid #2563eb; }
+    .food-meta { display: flex; justify-content: space-between; align-items: center; padding-top: 8px; border-top: 1px dashed #e2e8f0; font-size: 11px; color: #64748b; }
+    .map-link { font-size: 11px; font-weight: 800; color: #2563eb; text-decoration: none; padding: 4px 8px; border-radius: 6px; background: #eff6ff; }
+
+    .course-list { display: grid; grid-template-columns: 1fr; gap: 10px; }
+    @media (min-width: 640px) { .course-list { grid-template-columns: repeat(3, 1fr); } }
+    .course-card { background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 12px; padding: 14px; display: flex; flex-direction: column; gap: 6px; }
+    .course-day { font-size: 11px; font-weight: 800; color: #2563eb; }
+    .course-title { font-size: 14px; font-weight: 800; }
+    .course-route { font-size: 12px; font-weight: 700; color: #334155; background: #ffffff; padding: 6px 8px; border-radius: 8px; border: 1px solid #e2e8f0; }
+    .course-tip { font-size: 12px; color: #64748b; }
+
     /* 세부 단가 조정 */
-    .input-grid {
+    .input-grid { display: grid; grid-template-columns: 1fr; gap: 12px; }
+    @media (min-width: 640px) { .input-grid { grid-template-columns: 1fr 1fr; } }
+    .input-box { background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 10px; padding: 12px; }
+    .input-label { display: block; font-size: 12px; font-weight: 700; color: #334155; margin-bottom: 6px; }
+    .num-input { width: 100%; padding: 8px 10px; border-radius: 8px; border: 1px solid #cbd5e1; font-size: 14px; font-weight: 800; background: #ffffff; }
+    .input-hint { font-size: 11px; color: #64748b; margin-top: 5px; }
+
+    /* 최종 결과 정산표 카드 (5단계 완료 시 노출) */
+    .final-result-card {
+      background: #0f172a;
+      color: #ffffff;
+      border-radius: 20px;
+      padding: 26px;
+      border: 3px solid #fbbf24;
+      box-shadow: 0 14px 35px rgba(15, 23, 42, 0.25);
+      animation: fadeSlide 0.3s ease;
+    }
+    .final-head {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      padding-bottom: 16px;
+      border-bottom: 1px solid #334155;
+      margin-bottom: 20px;
+    }
+    .final-title { font-size: 22px; font-weight: 900; color: #fbbf24; }
+    .final-sub { font-size: 13px; color: #cbd5e1; margin-top: 3px; }
+
+    .final-kpi-grid {
       display: grid;
       grid-template-columns: 1fr;
       gap: 12px;
+      margin-bottom: 20px;
     }
-    @media (min-width: 640px) {
-      .input-grid { grid-template-columns: 1fr 1fr; }
+    @media (min-width: 680px) {
+      .final-kpi-grid { grid-template-columns: repeat(3, 1fr); }
     }
-    .input-box {
-      background: #f8fafc;
-      border: 1px solid #e2e8f0;
-      border-radius: 10px;
-      padding: 12px;
+    .kpi-box {
+      background: #1e293b;
+      border: 1px solid #334155;
+      border-radius: 14px;
+      padding: 16px;
     }
-    .input-label { display: block; font-size: 12px; font-weight: 700; color: #334155; margin-bottom: 6px; }
-    .num-input {
-      width: 100%;
-      padding: 8px 10px;
-      border-radius: 8px;
-      border: 1px solid #cbd5e1;
+    .kpi-box.over { background: rgba(159, 18, 57, 0.35); border-color: #fb7185; }
+    .kpi-box.under { background: rgba(6, 95, 70, 0.35); border-color: #34d399; }
+    .kpi-label { font-size: 12px; color: #94a3b8; font-weight: 700; }
+    .kpi-val { font-size: 24px; font-weight: 900; margin-top: 4px; }
+
+    .final-table-wrap {
+      background: #ffffff;
+      color: #0f172a;
+      border-radius: 14px;
+      overflow: hidden;
+      margin-bottom: 18px;
+    }
+    .final-table-title {
+      background: #f1f5f9;
+      padding: 12px 16px;
       font-size: 14px;
       font-weight: 800;
-      background: #ffffff;
-    }
-    .input-hint { font-size: 11px; color: #64748b; margin-top: 5px; }
-
-    /* 오른쪽 요약 및 600만원 정산 사이드바 */
-    .summary-card {
-      background: #0f172a;
-      color: #ffffff;
-      border-radius: 18px;
-      padding: 20px;
-      position: sticky;
-      top: 16px;
-      box-shadow: 0 10px 25px rgba(15, 23, 42, 0.2);
-    }
-    .sum-head {
+      border-bottom: 1px solid #e2e8f0;
       display: flex;
-      justify-content: space-between;
-      align-items: flex-start;
-      padding-bottom: 12px;
-      border-bottom: 1px solid #334155;
-      margin-bottom: 14px;
-    }
-    .sum-badge {
-      font-size: 11px;
-      font-weight: 800;
-      background: #2563eb;
-      padding: 3px 8px;
-      border-radius: 6px;
-    }
-    .sum-city { font-size: 21px; font-weight: 800; margin-top: 5px; }
-    .sum-total-label { font-size: 12px; color: #94a3b8; }
-    .sum-total-val { font-size: 28px; font-weight: 900; color: #fbbf24; margin-top: 2px; }
-
-    .budget-status-box {
-      margin-top: 12px;
-      padding: 14px;
-      border-radius: 12px;
-      border: 1px solid #334155;
-      background: #1e293b;
-    }
-    .budget-status-box.over {
-      background: rgba(159, 18, 57, 0.32);
-      border-color: #fb7185;
-    }
-    .budget-status-box.under {
-      background: rgba(6, 95, 70, 0.32);
-      border-color: #34d399;
-    }
-    .bs-top {
-      display: flex;
+      flex-wrap: wrap;
       justify-content: space-between;
       align-items: center;
-      font-size: 12px;
-      margin-bottom: 6px;
+      gap: 8px;
     }
-    .bs-diff { font-size: 18px; font-weight: 900; }
-    .split-toggle {
-      display: flex;
-      gap: 4px;
-      background: #0f172a;
+    table.res-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+    table.res-table th, table.res-table td {
+      padding: 11px 14px;
+      border-bottom: 1px solid #e2e8f0;
+      text-align: right;
+    }
+    table.res-table th:first-child, table.res-table td:first-child { text-align: left; }
+    table.res-table th { background: #f8fafc; font-weight: 800; color: #334155; font-size: 12px; }
+    table.res-table tr.total-row { background: #eff6ff; font-weight: 900; font-size: 14px; }
+
+    .split-toggle-light {
+      display: inline-flex;
+      background: #e2e8f0;
       padding: 3px;
       border-radius: 8px;
-      margin: 10px 0 8px;
+      gap: 4px;
     }
-    .split-btn {
-      flex: 1;
-      padding: 5px 6px;
+    .split-btn-light {
+      padding: 5px 10px;
       border-radius: 6px;
-      font-size: 11px;
-      font-weight: 700;
-      color: #94a3b8;
+      font-size: 11.5px;
+      font-weight: 800;
+      color: #475569;
     }
-    .split-btn.active { background: #2563eb; color: #ffffff; }
-    .fam-share-list { display: flex; flex-direction: column; gap: 6px; margin-top: 8px; }
-    .fam-share-row {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 7px 10px;
-      border-radius: 8px;
-      background: rgba(15, 23, 42, 0.65);
-      font-size: 12px;
-    }
+    .split-btn-light.active { background: #2563eb; color: #ffffff; }
 
-    .breakdown {
-      margin-top: 14px;
-      padding-top: 12px;
-      border-top: 1px solid #334155;
+    .final-actions {
       display: flex;
-      flex-direction: column;
-      gap: 8px;
-      font-size: 12.5px;
+      flex-wrap: wrap;
+      gap: 10px;
+      justify-content: flex-end;
     }
-    .bd-row { display: flex; justify-content: space-between; }
-    .bd-sub { font-size: 11px; color: #94a3b8; margin-top: -5px; padding-left: 16px; }
-
-    .btn-action-group { display: flex; flex-direction: column; gap: 8px; margin-top: 16px; }
     .btn-compare-add {
-      width: 100%;
-      padding: 11px;
+      padding: 13px 20px;
       border-radius: 12px;
       background: #1e293b;
       border: 1px solid #475569;
       color: #ffffff;
-      font-size: 13px;
-      font-weight: 700;
+      font-size: 14px;
+      font-weight: 800;
     }
     .btn-share {
-      width: 100%;
-      padding: 13px;
+      padding: 13px 24px;
       border-radius: 12px;
       background: #fbbf24;
       color: #0f172a;
@@ -908,22 +784,9 @@
       flex-direction: column;
       overflow: hidden;
     }
-    .modal-head {
-      padding: 16px 20px;
-      border-bottom: 1px solid #e2e8f0;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
+    .modal-head { padding: 16px 20px; border-bottom: 1px solid #e2e8f0; display: flex; justify-content: space-between; align-items: center; }
     .modal-body { padding: 20px; overflow-y: auto; flex: 1; }
-    .modal-foot {
-      padding: 14px 20px;
-      border-top: 1px solid #e2e8f0;
-      background: #f8fafc;
-      display: flex;
-      justify-content: space-between;
-      gap: 8px;
-    }
+    .modal-foot { padding: 14px 20px; border-top: 1px solid #e2e8f0; background: #f8fafc; display: flex; justify-content: space-between; gap: 8px; }
     table.cmp-table { width: 100%; border-collapse: collapse; font-size: 12.5px; }
     table.cmp-table th, table.cmp-table td { padding: 10px; border-bottom: 1px solid #e2e8f0; text-align: left; }
     table.cmp-table th { background: #f1f5f9; font-weight: 800; }
@@ -960,290 +823,349 @@
       </div>
 
       <div class="hero-title-area">
-        <div class="hero-title">✈️ 3가족(4인·4인·3인) 해외여행 지역 & 실비용 정산기</div>
-        <div class="hero-sub">스카이스캐너·아고다 실시간 시세 연동 검색 + 예산 초과 시 가족별 추가 부담금 자동 계산</div>
+        <div class="hero-title">✈️ 3가족(4인·4인·3인) 단계별 여행 견적 & 정산기</div>
+        <div class="hero-sub">1단계부터 5단계까지 순서대로 선택하면 최종 경비와 가족별 분담금 표가 완성됩니다</div>
       </div>
 
       <div class="hero-actions">
         <button type="button" data-action="open-compare" class="btn-hero">
           📋 후보지 비교함 <span id="compareBadge" class="badge-count">0</span>
         </button>
-        <button type="button" data-action="reset-all" class="btn-hero">초기화</button>
+        <button type="button" data-action="reset-all" class="btn-hero">처음부터 다시</button>
       </div>
     </div>
   </header>
 
-  <!-- 가격 기준 안내 바 -->
-  <div class="notice-bar">
-    <div class="notice-inner">
-      <div>
-        <strong>ℹ️ 요금 기준 안내:</strong> 아래 기본 표기 금액은 <strong>비수기~평수기 평균 시세</strong>입니다. 실제 예약 전 <strong>[스카이스캐너 / 아고다 실시간 조회]</strong> 버튼으로 정확한 시세를 확인한 뒤 <strong>실제 조회 금액</strong>을 입력하면 600만 원 정산이 즉시 업데이트됩니다.
+  <!-- 상단 단계 네비게이션 바 -->
+  <nav class="stepper-wrap">
+    <div class="stepper-inner" id="stepperBar">
+      <button type="button" data-action="goto-step" data-step="1" class="step-pill current">1. 가족·일정</button>
+      <span class="step-arrow">▶</span>
+      <button type="button" data-action="goto-step" data-step="2" class="step-pill locked">2. 여행 도시</button>
+      <span class="step-arrow">▶</span>
+      <button type="button" data-action="goto-step" data-step="3" class="step-pill locked">3. 항공권 선택</button>
+      <span class="step-arrow">▶</span>
+      <button type="button" data-action="goto-step" data-step="4" class="step-pill locked">4. 숙소·맛집·코스</button>
+      <span class="step-arrow">▶</span>
+      <button type="button" data-action="goto-step" data-step="5" class="step-pill locked">5. 현지 경비</button>
+      <span class="step-arrow">▶</span>
+      <button type="button" data-action="goto-step" data-step="6" class="step-pill locked">📊 최종 정산표</button>
+    </div>
+  </nav>
+
+  <main class="main-wrap">
+
+    <!-- ================= STEP 1: 참여 가족 & 출발일 & 공동 예산 ================= -->
+    <section id="stepSection1" class="step-card active-step">
+      <div class="section-head">
+        <h2 class="section-title"><span class="step-num">1</span> 참여 가족 선택 및 출발일·예산 설정</h2>
+        <span class="step-status-tag" id="activeFamilySummary">3가족 모두 참여 (총 11명 · 3실)</span>
       </div>
-    </div>
-  </div>
 
-  <main class="container">
-    <div class="left-col">
+      <div id="familyGrid" class="family-grid"></div>
 
-      <!-- 1. 3가족 구성 및 출발일 설정 -->
-      <section class="card">
-        <div class="section-head">
-          <h2 class="section-title"><span class="step-num">1</span> 참여 가족 선택 및 인원 구성 (4인 · 4인 · 3인)</h2>
-          <div style="font-size:12px; font-weight:700; color:#2563eb;" id="activeFamilySummary">3가족 모두 참여 (총 11명 · 3실)</div>
+      <div class="budget-bar-box">
+        <div class="control-inline">
+          <strong>🛫 출발일:</strong>
+          <input type="date" id="inputDepDate" class="date-input" />
         </div>
 
-        <div id="familyGrid" class="family-grid"></div>
+        <div class="control-inline">
+          <strong>🗓️ 기간:</strong>
+          <button type="button" data-action="step-nights" data-delta="-1" class="btn-mini-step">-</button>
+          <strong id="val-nights" style="color:#2563eb;">3박 4일</strong>
+          <button type="button" data-action="step-nights" data-delta="1" class="btn-mini-step">+</button>
+        </div>
 
-        <div class="budget-bar-box">
-          <div class="control-inline">
-            <strong>🛫 출발일:</strong>
-            <input type="date" id="inputDepDate" class="date-input" />
+        <div class="control-inline">
+          <strong>💰 공동 예산:</strong>
+          <input type="number" id="inputSharedBudget" step="100000" value="6000000" class="budget-input" />
+          <span>원</span>
+        </div>
+      </div>
+
+      <div class="step-footer">
+        <span class="step-hint">💡 참여할 가족과 출발일을 확인한 후 다음 단계를 눌러주세요.</span>
+        <button type="button" data-action="unlock-step" data-next="2" class="btn-next-step">
+          다음: 2단계 여행 후보 도시 선택 →
+        </button>
+      </div>
+    </section>
+
+    <!-- ================= STEP 2: 여행 후보 도시 선택 (1단계 완료 후 노출) ================= -->
+    <section id="stepSection2" class="step-card" style="display:none;">
+      <div class="section-head">
+        <h2 class="section-title"><span class="step-num">2</span> 여행 후보 도시 선택 (일본 · 베트남)</h2>
+        <div class="tab-group">
+          <button type="button" data-action="filter-country" data-country="ALL" class="tab-btn active">전체 (6곳)</button>
+          <button type="button" data-action="filter-country" data-country="JP" class="tab-btn">🇯🇵 일본 (3곳)</button>
+          <button type="button" data-action="filter-country" data-country="VN" class="tab-btn">🇻🇳 베트남 (3곳)</button>
+        </div>
+      </div>
+
+      <div id="cityGrid" class="city-grid"></div>
+      <div id="cityInfoBanner" class="city-desc-box"></div>
+
+      <div class="step-footer">
+        <span class="step-hint" id="step2SelectedHint">💡 도시 카드를 클릭하면 바로 3단계 항공권 조회가 열립니다.</span>
+        <button type="button" data-action="unlock-step" data-next="3" class="btn-next-step">
+          다음: 3단계 항공권 조회 및 선택 →
+        </button>
+      </div>
+    </section>
+
+    <!-- ================= STEP 3: 항공권 실시간 조회 및 선택 (2단계 완료 후 노출) ================= -->
+    <section id="stepSection3" class="step-card" style="display:none;">
+      <div class="section-head">
+        <h2 class="section-title"><span class="step-num">3</span> <span id="step3CityTitle">후쿠오카</span> 항공권 실시간 조회 및 선택</h2>
+      </div>
+
+      <div class="live-sync-panel">
+        <div class="live-sync-head">
+          <div class="live-sync-title" id="liveFlightHeader">🔍 선택한 일정·인원 조건으로 스카이스캐너·네이버 실시간 최저가 확인</div>
+        </div>
+        <div class="live-btn-row">
+          <a id="linkSkyscanner" href="#" target="_blank" rel="noopener noreferrer" class="btn-sky">
+            ✈️ 스카이스캐너 실시간 항공권 조회 ↗
+          </a>
+          <a id="linkNaverFlight" href="#" target="_blank" rel="noopener noreferrer" class="btn-naver">
+            🛫 네이버 항공권 비교 조회 ↗
+          </a>
+        </div>
+        <div class="override-box">
+          <div class="override-label">
+            <span>✈️ 확인한 실제 왕복 항공권 총액 직접 입력 (선택사항 - 미입력 시 아래 평균 시세 적용)</span>
+            <span style="color:#2563eb;" id="flightSourceTag">평균 시세 적용 중</span>
           </div>
-
-          <div class="control-inline">
-            <strong>🗓️ 기간:</strong>
-            <button type="button" data-action="step-nights" data-delta="-1" class="btn-mini-step">-</button>
-            <strong id="val-nights" style="color:#2563eb;">3박 4일</strong>
-            <button type="button" data-action="step-nights" data-delta="1" class="btn-mini-step">+</button>
-          </div>
-
-          <div class="control-inline">
-            <strong>💰 공동 예산:</strong>
-            <input type="number" id="inputSharedBudget" step="100000" value="6000000" class="budget-input" />
-            <span>원</span>
+          <div class="override-input-row">
+            <input type="number" id="inputRealFlightTotal" step="10000" placeholder="스카이스캐너에서 확인한 전체 인원 왕복 총액 (원)" class="override-input" />
+            <button type="button" data-action="clear-real-flight" class="btn-clear-override">평균시세 복귀</button>
           </div>
         </div>
-      </section>
+      </div>
 
-      <!-- 2. 여행 후보 도시 선택 -->
-      <section class="card">
-        <div class="section-head">
-          <h2 class="section-title"><span class="step-num">2</span> 여행 후보 도시 선택</h2>
+      <div class="filter-bar">
+        <div class="time-btns">
+          <span style="font-size:12px; font-weight:800; color:#64748b;">⏰ 출발시간:</span>
+          <button type="button" data-action="filter-time" data-time="ALL" class="time-btn active">전체</button>
+          <button type="button" data-action="filter-time" data-time="MORNING" class="time-btn">오전</button>
+          <button type="button" data-action="filter-time" data-time="AFTERNOON" class="time-btn">오후</button>
+          <button type="button" data-action="filter-time" data-time="EVENING" class="time-btn">저녁</button>
+        </div>
+        <div style="display:flex; gap:6px; align-items:center;">
           <div class="tab-group">
-            <button type="button" data-action="filter-country" data-country="ALL" class="tab-btn active">전체 (6곳)</button>
-            <button type="button" data-action="filter-country" data-country="JP" class="tab-btn">🇯🇵 일본 (3곳)</button>
-            <button type="button" data-action="filter-country" data-country="VN" class="tab-btn">🇻🇳 베트남 (3곳)</button>
+            <button type="button" data-action="price-mode" data-mode="TOTAL" class="tab-btn active">전체 총액</button>
+            <button type="button" data-action="price-mode" data-mode="PER_PAX" class="tab-btn">인원별 단가</button>
+          </div>
+          <select id="flightSortSelect" class="sort-select">
+            <option value="PRICE_ASC">💰 가격 낮은순</option>
+            <option value="TIME_ASC">🛫 출발 시간순</option>
+            <option value="DURATION_ASC">⚡ 비행시간순</option>
+          </select>
+        </div>
+      </div>
+
+      <div id="flightList" class="flight-list"></div>
+
+      <div class="step-footer">
+        <span class="step-hint" id="step3SelectedHint">💡 항공편을 선택하거나 실가격을 입력한 후 다음 단계를 눌러주세요.</span>
+        <button type="button" data-action="unlock-step" data-next="4" class="btn-next-step">
+          다음: 4단계 추천 숙소 · 맛집 · 코스 선택 →
+        </button>
+      </div>
+    </section>
+
+    <!-- ================= STEP 4: 추천 숙소 · 맛집 · 코스 (3단계 완료 후 노출) ================= -->
+    <section id="stepSection4" class="step-card" style="display:none;">
+      <div class="section-head">
+        <h2 class="section-title">
+          <span class="step-num">4</span>
+          <span id="guideSectionTitle">후쿠오카 추천 숙소 · 맛집 · 코스</span>
+        </h2>
+        <div class="tab-group">
+          <button type="button" data-action="guide-tab" data-gtab="ALL" class="tab-btn active">전체 보기</button>
+          <button type="button" data-action="guide-tab" data-gtab="HOTEL" class="tab-btn">🏨 추천 숙소</button>
+          <button type="button" data-action="guide-tab" data-gtab="FOOD" class="tab-btn">🍽️ 검증 맛집</button>
+          <button type="button" data-action="guide-tab" data-gtab="COURSE" class="tab-btn">🗺️ 추천 코스</button>
+        </div>
+      </div>
+
+      <!-- 아고다 실시간 숙박 조회 & 실가격 입력 -->
+      <div class="live-sync-panel">
+        <div class="live-sync-head">
+          <div class="live-sync-title" id="liveHotelHeader">🏨 아고다 실시간 숙박 요금 조회 및 실가격 입력</div>
+          <a id="linkAgoda" href="#" target="_blank" rel="noopener noreferrer" class="btn-agoda">
+            🏨 아고다 실시간 숙소 전체 조회 ↗
+          </a>
+        </div>
+        <div class="override-box">
+          <div class="override-label">
+            <span>🏨 확인한 실제 숙박 총액 직접 입력 (선택사항 - 미입력 시 아래 선택 숙소 평균가 적용)</span>
+            <span style="color:#059669;" id="hotelSourceTag">평균 시세 적용 중</span>
+          </div>
+          <div class="override-input-row">
+            <input type="number" id="inputRealHotelTotal" step="10000" placeholder="아고다에서 확인한 전체 박수·객실 숙박 총액 (원)" class="override-input" />
+            <button type="button" data-action="clear-real-hotel" class="btn-clear-override">평균시세 복귀</button>
           </div>
         </div>
-        <div id="cityGrid" class="city-grid"></div>
-        <div id="cityInfoBanner" class="city-desc-box"></div>
-      </section>
+      </div>
 
-      <!-- 3. 스카이스캐너 · 아고다 실시간 가격 조회 & 실가격 반영 -->
-      <section class="card">
-        <div class="section-head">
-          <h2 class="section-title"><span class="step-num">3</span> 항공권 & 숙소 실시간 시세 조회 · 실가격 입력</h2>
+      <div id="hotelGuideBlock" style="margin-bottom: 22px;">
+        <div class="guide-subhead">
+          <strong style="font-size:14px; color:#1e293b;">🏨 등급별 가족 인기 숙소 (숙소 선택 시 견적에 즉시 반영)</strong>
+          <span class="guide-badge">위치·가족편의 검증</span>
         </div>
+        <div id="hotelGuideGrid" class="hotel-grid"></div>
+      </div>
 
-        <div class="live-sync-panel">
-          <div class="live-sync-head">
-            <div class="live-sync-title" id="liveSearchHeader">🔍 선택한 일정·인원(성인 6, 아동 5) 조건으로 실시간 최저가 바로 열기</div>
-            <span style="font-size:11px; color:#1e40af; font-weight:700;">새 탭에서 정확한 날짜별 요금 확인</span>
-          </div>
-
-          <div class="live-btn-row">
-            <a id="linkSkyscanner" href="#" target="_blank" rel="noopener noreferrer" class="btn-sky">
-              ✈️ 스카이스캐너 실시간 항공권 조회 ↗
-            </a>
-            <a id="linkNaverFlight" href="#" target="_blank" rel="noopener noreferrer" class="btn-naver">
-              🛫 네이버 항공권 비교 조회 ↗
-            </a>
-            <a id="linkAgoda" href="#" target="_blank" rel="noopener noreferrer" class="btn-agoda">
-              🏨 아고다 실시간 숙소 요금 조회 ↗
-            </a>
-          </div>
-
-          <div class="override-grid">
-            <div class="override-box">
-              <div class="override-label">
-                <span>✈️ 확인한 실제 항공권 총액 (전체 인원 왕복)</span>
-                <span style="color:#2563eb;" id="flightSourceTag">평균 시세 적용 중</span>
-              </div>
-              <div class="override-input-row">
-                <input type="number" id="inputRealFlightTotal" step="10000" placeholder="스카이스캐너 확인 총액 입력 (원)" class="override-input" />
-                <button type="button" data-action="clear-real-flight" class="btn-clear-override">평균복귀</button>
-              </div>
-            </div>
-
-            <div class="override-box">
-              <div class="override-label">
-                <span>🏨 확인한 실제 숙박 총액 (전체 박수·객실)</span>
-                <span style="color:#059669;" id="hotelSourceTag">평균 시세 적용 중</span>
-              </div>
-              <div class="override-input-row">
-                <input type="number" id="inputRealHotelTotal" step="10000" placeholder="아고다 확인 총액 입력 (원)" class="override-input" />
-                <button type="button" data-action="clear-real-hotel" class="btn-clear-override">평균복귀</button>
-              </div>
-            </div>
-          </div>
+      <div id="foodBlock" style="margin-bottom: 22px;">
+        <div class="guide-subhead">
+          <strong style="font-size:14px; color:#1e293b;">🍽️ 대표 메뉴·위치·웨이팅 팁까지 담은 검증 맛집</strong>
+          <span class="guide-badge">인기 리뷰 최상위</span>
         </div>
+        <div id="foodGrid" class="food-grid"></div>
+      </div>
 
-        <!-- 평균 시세 기반 항공권 비교 리스트 -->
-        <div class="filter-bar">
-          <div class="time-btns">
-            <span style="font-size:12px; font-weight:800; color:#64748b;">참고 평균 시세:</span>
-            <button type="button" data-action="filter-time" data-time="ALL" class="time-btn active">전체</button>
-            <button type="button" data-action="filter-time" data-time="MORNING" class="time-btn">오전</button>
-            <button type="button" data-action="filter-time" data-time="AFTERNOON" class="time-btn">오후</button>
-            <button type="button" data-action="filter-time" data-time="EVENING" class="time-btn">저녁</button>
-          </div>
-          <div style="display:flex; gap:6px; align-items:center;">
-            <div class="tab-group">
-              <button type="button" data-action="price-mode" data-mode="TOTAL" class="tab-btn active">전체 총액</button>
-              <button type="button" data-action="price-mode" data-mode="PER_PAX" class="tab-btn">인원별 단가</button>
-            </div>
-            <select id="flightSortSelect" class="sort-select">
-              <option value="PRICE_ASC">💰 가격 낮은순</option>
-              <option value="TIME_ASC">🛫 출발 시간순</option>
-              <option value="DURATION_ASC">⚡ 비행시간순</option>
-            </select>
-          </div>
+      <div id="courseBlock">
+        <div class="guide-subhead">
+          <strong style="font-size:14px; color:#1e293b;">🗺️ 가족 맞춤형 3일 핵심 동선</strong>
+          <span class="guide-badge">이동 피로도 최소화</span>
         </div>
+        <div id="courseList" class="course-list"></div>
+      </div>
 
-        <div id="flightList" class="flight-list"></div>
-      </section>
+      <div class="step-footer">
+        <span class="step-hint" id="step4SelectedHint">💡 숙소와 코스를 확인하신 후 마지막 5단계 현지 경비를 확인하세요.</span>
+        <button type="button" data-action="unlock-step" data-next="5" class="btn-next-step">
+          다음: 5단계 식비 · 현지 경비 조정 →
+        </button>
+      </div>
+    </section>
 
-      <!-- 4. 추천 숙소 · 검증 맛집 · 핵심 코스 -->
-      <section class="card">
-        <div class="section-head">
-          <h2 class="section-title">
-            <span class="step-num">4</span>
-            <span id="guideSectionTitle">후쿠오카 추천 숙소 · 맛집 · 코스</span>
-          </h2>
-          <div class="tab-group">
-            <button type="button" data-action="guide-tab" data-gtab="ALL" class="tab-btn active">전체 보기</button>
-            <button type="button" data-action="guide-tab" data-gtab="HOTEL" class="tab-btn">🏨 추천 숙소</button>
-            <button type="button" data-action="guide-tab" data-gtab="FOOD" class="tab-btn">🍽️ 검증 맛집</button>
-            <button type="button" data-action="guide-tab" data-gtab="COURSE" class="tab-btn">🗺️ 추천 코스</button>
-          </div>
+    <!-- ================= STEP 5: 식비 · 교통 · 예비비 조정 (4단계 완료 후 노출) ================= -->
+    <section id="stepSection5" class="step-card" style="display:none;">
+      <div class="section-head">
+        <h2 class="section-title"><span class="step-num">5</span> 현지 식비 · 교통 · 예비비 단가 조정</h2>
+      </div>
+
+      <div class="input-grid">
+        <div class="input-box">
+          <label class="input-label" for="inputHotelPrice">숙박비 평균 단가 (1박 / 1객실, 원)</label>
+          <input type="number" id="inputHotelPrice" step="10000" class="num-input" />
+          <div id="hotelCalcHint" class="input-hint"></div>
         </div>
-
-        <div id="hotelGuideBlock" style="margin-bottom: 22px;">
-          <div class="guide-subhead">
-            <strong style="font-size:14px; color:#1e293b;">🏨 등급별 가족 인기 숙소 (아고다 실시간 요금 바로 조회 가능)</strong>
-            <span class="guide-badge">위치·가족편의 검증</span>
-          </div>
-          <div id="hotelGuideGrid" class="hotel-grid"></div>
+        <div class="input-box">
+          <label class="input-label" for="inputFoodPrice">현지 식비·카페 (1일 / 1인 기준, 원)</label>
+          <input type="number" id="inputFoodPrice" step="5000" class="num-input" />
+          <div id="foodCalcHint" class="input-hint"></div>
         </div>
-
-        <div id="foodBlock" style="margin-bottom: 22px;">
-          <div class="guide-subhead">
-            <strong style="font-size:14px; color:#1e293b;">🍽️ 대표 메뉴·위치·웨이팅 팁까지 담은 검증 맛집</strong>
-            <span class="guide-badge">인기 리뷰 최상위</span>
-          </div>
-          <div id="foodGrid" class="food-grid"></div>
+        <div class="input-box">
+          <label class="input-label" for="inputActivityPrice">현지 교통·투어·입장료 (1일 / 1인, 원)</label>
+          <input type="number" id="inputActivityPrice" step="5000" class="num-input" />
+          <div id="activityCalcHint" class="input-hint"></div>
         </div>
-
-        <div id="courseBlock">
-          <div class="guide-subhead">
-            <strong style="font-size:14px; color:#1e293b;">🗺️ 가족 맞춤형 3일 핵심 동선</strong>
-            <span class="guide-badge">이동 피로도 최소화</span>
-          </div>
-          <div id="courseList" class="course-list"></div>
+        <div class="input-box">
+          <label class="input-label" for="inputExtraPrice">예비비·보험·공동경비 (1인당 기준, 원)</label>
+          <input type="number" id="inputExtraPrice" step="10000" class="num-input" />
+          <div id="extraCalcHint" class="input-hint"></div>
         </div>
-      </section>
+      </div>
 
-      <!-- 5. 숙박 및 현지 경비 세부 단가 조정 -->
-      <section class="card">
-        <div class="section-head">
-          <h2 class="section-title"><span class="step-num">5</span> 숙박 · 식비 · 현지 경비 세부 단가 조정</h2>
-        </div>
+      <div class="step-footer">
+        <span class="step-hint">💡 모든 단계 입력이 완료되었습니다! 아래 버튼을 눌러 최종 정산표를 확인하세요.</span>
+        <button type="button" data-action="unlock-step" data-next="6" class="btn-final-calc">
+          ✅ 최종 금액 및 가족별 정산표 보기
+        </button>
+      </div>
+    </section>
 
-        <div class="input-grid">
-          <div class="input-box">
-            <label class="input-label" for="inputHotelPrice">숙박비 평균 단가 (1박 / 1객실, 원)</label>
-            <input type="number" id="inputHotelPrice" step="10000" class="num-input" />
-            <div id="hotelCalcHint" class="input-hint"></div>
-          </div>
-          <div class="input-box">
-            <label class="input-label" for="inputFoodPrice">현지 식비·카페 (1일 / 1인 기준, 원)</label>
-            <input type="number" id="inputFoodPrice" step="5000" class="num-input" />
-            <div id="foodCalcHint" class="input-hint"></div>
-          </div>
-          <div class="input-box">
-            <label class="input-label" for="inputActivityPrice">현지 교통·투어·입장료 (1일 / 1인, 원)</label>
-            <input type="number" id="inputActivityPrice" step="5000" class="num-input" />
-            <div id="activityCalcHint" class="input-hint"></div>
-          </div>
-          <div class="input-box">
-            <label class="input-label" for="inputExtraPrice">예비비·보험·공동경비 (1인당 기준, 원)</label>
-            <input type="number" id="inputExtraPrice" step="10000" class="num-input" />
-            <div id="extraCalcHint" class="input-hint"></div>
-          </div>
-        </div>
-      </section>
-    </div>
-
-    <!-- 오른쪽 견적 및 600만 원 초과 정산 사이드바 -->
-    <aside>
-      <div class="summary-card">
-        <div class="sum-head">
-          <div>
-            <span id="summaryCountryBadge" class="sum-badge">🇯🇵 일본</span>
-            <div id="summaryCityName" class="sum-city">후쿠오카</div>
-          </div>
-          <div style="text-align:right;">
-            <div id="summaryTripMeta" style="font-size:12px; color:#cbd5e1;">3박 4일 · 3가족 11명</div>
-            <div id="summaryFlightMeta" style="font-size:12px; color:#93c5fd; font-weight:700; margin-top:3px;">진에어</div>
-          </div>
-        </div>
-
+    <!-- ================= STEP 6: 최종 금액 정산표 (5단계 완료 후 노출) ================= -->
+    <section id="finalResultSection" class="final-result-card" style="display:none;">
+      <div class="final-head">
         <div>
-          <div class="sum-total-label">전체 참여 가족 예상 총 경비</div>
-          <div id="summaryGrandTotal" class="sum-total-val">0원</div>
-          <div id="summaryPerPerson" style="font-size:12px; color:#cbd5e1; margin-top:2px;">1인 평균 약 0원</div>
+          <div class="final-title" id="finalMainTitle">📊 [후쿠오카] 3가족 여행 최종 경비 정산표</div>
+          <div class="final-sub" id="finalSubMeta">출발일 · 3박 4일 · 3가족 총 11명 (객실 3실)</div>
         </div>
-
-        <!-- 600만 원 예산 초과 / 잔액 & 가족별 부담금 정산 박스 -->
-        <div id="budgetStatusBox" class="budget-status-box over">
-          <div class="bs-top">
-            <span id="bsTitle" style="font-weight:800; color:#fda4af;">🚨 공동 예산 600만 원 초과</span>
-            <span id="bsBudgetLabel" style="color:#cbd5e1;">예산 6,000,000원</span>
-          </div>
-          <div id="bsDiffAmount" class="bs-diff" style="color:#fda4af;">+0원 초과</div>
-          <div id="bsSubGuide" style="font-size:11.5px; color:#e2e8f0; margin-top:3px;">
-            초과 금액을 참여 가족별로 나누어 부담합니다.
-          </div>
-
-          <div class="split-toggle">
-            <button type="button" data-action="split-mode" data-smode="ACTUAL" class="split-btn active">실제 비용 비례 부담</button>
-            <button type="button" data-action="split-mode" data-smode="EQUAL" class="split-btn">초과금 가족수 1/N 균등</button>
-          </div>
-
-          <div id="famShareList" class="fam-share-list"></div>
-        </div>
-
-        <div class="breakdown">
-          <div class="bd-row">
-            <span>✈️ 왕복 항공권 총액</span>
-            <strong id="breakdownFlight">0원</strong>
-          </div>
-          <div id="breakdownFlightDetail" class="bd-sub">성인 · 아동 · 유아</div>
-          <div class="bd-row">
-            <span>🏨 숙박비 총액</span>
-            <strong id="breakdownHotel">0원</strong>
-          </div>
-          <div id="breakdownHotelDetail" class="bd-sub">선택 숙소</div>
-          <div class="bd-row">
-            <span>🍽️ 식비·카페 총액</span>
-            <strong id="breakdownFood">0원</strong>
-          </div>
-          <div class="bd-row">
-            <span>🚕 교통·관광 총액</span>
-            <strong id="breakdownActivity">0원</strong>
-          </div>
-          <div class="bd-row">
-            <span>🛍️ 예비비·보험 총액</span>
-            <strong id="breakdownExtra">0원</strong>
-          </div>
-        </div>
-
-        <div class="btn-action-group">
-          <button type="button" data-action="add-compare" class="btn-compare-add">➕ 현재 견적 비교함에 담기</button>
-          <button type="button" data-action="copy-share" class="btn-share">💬 가족 단톡방용 정산표 복사</button>
+        <div style="text-align:right;">
+          <span style="font-size:12px; color:#94a3b8;">공동 목표 예산</span>
+          <div style="font-size:18px; font-weight:900; color:#ffffff;" id="finalBudgetDisplay">6,000,000원</div>
         </div>
       </div>
-    </aside>
+
+      <!-- 3대 핵심 요약 KPI -->
+      <div class="final-kpi-grid">
+        <div class="kpi-box">
+          <div class="kpi-label">전체 참여 가족 총 경비</div>
+          <div class="kpi-val" style="color:#fbbf24;" id="finalGrandTotal">0원</div>
+          <div style="font-size:11.5px; color:#cbd5e1; margin-top:3px;" id="finalPerPerson">1인 평균 약 0원</div>
+        </div>
+
+        <div class="kpi-box" id="finalDiffBox">
+          <div class="kpi-label" id="finalDiffLabel">600만 원 예산 대비</div>
+          <div class="kpi-val" id="finalDiffVal">+0원</div>
+          <div style="font-size:11.5px; color:#e2e8f0; margin-top:3px;" id="finalDiffDesc">예산 정산 결과</div>
+        </div>
+
+        <div class="kpi-box">
+          <div class="kpi-label">선택 항공 · 숙소 요약</div>
+          <div style="font-size:14px; font-weight:800; color:#93c5fd; margin-top:5px;" id="finalFlightSummary">진에어</div>
+          <div style="font-size:12.5px; color:#e2e8f0; margin-top:3px;" id="finalHotelSummary">도미 인 하카타 기온</div>
+        </div>
+      </div>
+
+      <!-- 표 1: 항목별 전체 경비 내역표 -->
+      <div class="final-table-wrap">
+        <div class="final-table-title">
+          <span>1️⃣ 항목별 전체 예상 경비 상세표</span>
+          <span style="font-size:11.5px; color:#64748b; font-weight:600;">단위: 원</span>
+        </div>
+        <div style="overflow-x:auto;">
+          <table class="res-table">
+            <thead>
+              <tr>
+                <th>구분 항목</th>
+                <th>산출 기준</th>
+                <th>합계 금액</th>
+                <th>비중</th>
+              </tr>
+            </thead>
+            <tbody id="itemBreakdownTbody"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- 표 2: 3가족별 발생 비용 및 600만 원 초과 추가 부담금 정산표 -->
+      <div class="final-table-wrap">
+        <div class="final-table-title">
+          <span>2️⃣ 가족별 경비 및 600만 원 초과 추가 부담금 정산표</span>
+          <div class="split-toggle-light">
+            <button type="button" data-action="split-mode" data-smode="ACTUAL" class="split-btn-light active">실제 비용 비례 부담</button>
+            <button type="button" data-action="split-mode" data-smode="EQUAL" class="split-btn-light">초과금 가족수 1/N 균등</button>
+          </div>
+        </div>
+        <div style="overflow-x:auto;">
+          <table class="res-table">
+            <thead>
+              <tr>
+                <th>가족 구분</th>
+                <th>항공권</th>
+                <th>숙박비</th>
+                <th>식비·현지·예비비</th>
+                <th>가족별 총 발생액</th>
+                <th style="color:#be123c;">600만 원 초과 추가부담</th>
+              </tr>
+            </thead>
+            <tbody id="familyBreakdownTbody"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="final-actions">
+        <button type="button" data-action="add-compare" class="btn-compare-add">➕ 이 결과 후보지 비교함에 담기</button>
+        <button type="button" data-action="copy-share" class="btn-share">💬 가족 단톡방용 최종 정산표 복사</button>
+      </div>
+    </section>
+
   </main>
 
   <!-- 비교함 모달 -->
@@ -1258,10 +1180,10 @@
       </div>
       <div id="compareModalBody" class="modal-body"></div>
       <div class="modal-foot">
-        <button type="button" data-action="clear-compare" class="btn-header">비교함 비우기</button>
+        <button type="button" data-action="clear-compare" class="btn-hero" style="background:#f1f5f9; color:#334155; border-color:#cbd5e1;">비교함 비우기</button>
         <div style="display:flex; gap:8px;">
           <button type="button" data-action="copy-all-compare" class="btn-share" style="padding:8px 14px; font-size:12px;">💬 전체 비교표 복사</button>
-          <button type="button" data-action="close-compare" class="btn-header" style="background:#0f172a; color:#fff;">닫기</button>
+          <button type="button" data-action="close-compare" class="btn-hero" style="background:#0f172a; color:#fff;">닫기</button>
         </div>
       </div>
     </div>
@@ -1486,6 +1408,8 @@
     }
 
     var state = {
+      unlockedStep: 1,
+      activeStep: 1,
       families: getDefaultFamilies(),
       sharedBudget: 6000000,
       splitMode: 'ACTUAL',
@@ -1504,8 +1428,8 @@
       foodPricePerDay: 50000,
       activityPricePerDay: 25000,
       extraPerPax: 40000,
-      realFlightTotal: null, // 스카이스캐너 확인 실가격 직접 입력값
-      realHotelTotal: null,  // 아고다 확인 실가격 직접 입력값
+      realFlightTotal: null,
+      realHotelTotal: null,
       compareList: []
     };
 
@@ -1578,7 +1502,61 @@
       document.getElementById('inputRealHotelTotal').value = state.realHotelTotal !== null ? state.realHotelTotal : '';
     }
 
-    function selectCity(cityId) {
+    function unlockAndGoToStep(stepNum, shouldScroll) {
+      if (stepNum > state.unlockedStep) {
+        state.unlockedStep = stepNum;
+      }
+      state.activeStep = stepNum;
+      renderAll();
+
+      if (shouldScroll) {
+        var targetEl = (stepNum === 6)
+          ? document.getElementById('finalResultSection')
+          : document.getElementById('stepSection' + stepNum);
+        if (targetEl) {
+          setTimeout(function() {
+            targetEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          }, 60);
+        }
+      }
+    }
+
+    function updateStepVisibility() {
+      for (var s = 1; s <= 5; s++) {
+        var sec = document.getElementById('stepSection' + s);
+        if (!sec) continue;
+        if (s <= state.unlockedStep) {
+          sec.style.display = 'block';
+          sec.className = 'step-card ' + (s === state.activeStep ? 'active-step' : 'completed-step');
+        } else {
+          sec.style.display = 'none';
+        }
+      }
+
+      var finalSec = document.getElementById('finalResultSection');
+      if (state.unlockedStep >= 6) {
+        finalSec.style.display = 'block';
+      } else {
+        finalSec.style.display = 'none';
+      }
+
+      var pills = document.querySelectorAll('#stepperBar .step-pill');
+      for (var p = 0; p < pills.length; p++) {
+        var st = parseInt(pills[p].getAttribute('data-step'), 10);
+        pills[p].classList.remove('current', 'done', 'unlocked', 'locked');
+        if (st === state.activeStep) {
+          pills[p].classList.add('current');
+        } else if (st < state.unlockedStep) {
+          pills[p].classList.add('done', 'unlocked');
+        } else if (st === state.unlockedStep) {
+          pills[p].classList.add('unlocked');
+        } else {
+          pills[p].classList.add('locked');
+        }
+      }
+    }
+
+    function selectCity(cityId, autoAdvance) {
       var city = CITIES[cityId];
       if (!city) return;
       state.selectedCityId = cityId;
@@ -1593,29 +1571,30 @@
       var sortedFlights = city.flights.slice().sort(function(a, b) { return a.adultPrice - b.adultPrice; });
       state.selectedFlightId = sortedFlights[0].id;
       syncInputs();
-      renderAll();
+
+      if (autoAdvance) {
+        unlockAndGoToStep(3, true);
+      } else {
+        renderAll();
+      }
     }
 
-    // 실시간 스카이스캐너 / 네이버 항공 / 아고다 딥링크 생성
     function updateLiveSearchLinks(calc) {
       var city = calc.city;
       var retDate = addDays(state.depDate, state.nights);
-      var depCompact = state.depDate.replace(/-/g, '').slice(2); // YYMMDD
+      var depCompact = state.depDate.replace(/-/g, '').slice(2);
       var retCompact = retDate.replace(/-/g, '').slice(2);
 
-      // 스카이스캐너 왕복 딥링크 (성인/아동/유아 인원 파라미터 반영)
       var skyUrl = 'https://www.skyscanner.co.kr/transport/flights/icn/' + city.iata.toLowerCase() +
         '/' + depCompact + '/' + retCompact +
         '/?adultsv2=' + Math.max(1, calc.totalAdult) +
         '&cabinclass=economy&childrenv2=' + (calc.totalChild > 0 ? Array(calc.totalChild).fill('7').join('%7C') : '') +
         '&infants=' + calc.totalInfant + '&rtn=1';
 
-      // 네이버 항공권 검색 링크
       var naverUrl = 'https://flight.naver.com/flights/international/ICN-' + city.iata + '-' +
         state.depDate.replace(/-/g, '') + '/' + city.iata + '-ICN-' + retDate.replace(/-/g, '') +
         '?adult=' + Math.max(1, calc.totalAdult) + '&child=' + calc.totalChild + '&infant=' + calc.totalInfant + '&fareType=Y';
 
-      // 아고다 숙소 검색 링크 (도시 + 체크인/체크아웃 + 객실 수 + 인원)
       var agodaUrl = 'https://www.agoda.com/ko-kr/search?city=' + encodeURIComponent(city.agodaCity) +
         '&checkIn=' + state.depDate + '&los=' + state.nights +
         '&rooms=' + Math.max(1, calc.totalRooms) + '&adults=' + Math.max(1, calc.totalAdult) + '&children=' + calc.totalChild;
@@ -1624,8 +1603,10 @@
       document.getElementById('linkNaverFlight').href = naverUrl;
       document.getElementById('linkAgoda').href = agodaUrl;
 
-      document.getElementById('liveSearchHeader').textContent =
-        '🔍 ' + city.name + ' (' + state.depDate + ' ~ ' + retDate + ' / 성인 ' + calc.totalAdult + ', 아동 ' + calc.totalChild + ', 객실 ' + calc.totalRooms + '실) 실시간 조회';
+      document.getElementById('liveFlightHeader').textContent =
+        '🔍 ' + city.name + ' (' + state.depDate + ' ~ ' + retDate + ' / 성인 ' + calc.totalAdult + ', 아동 ' + calc.totalChild + ') 실시간 항공권 조회';
+      document.getElementById('liveHotelHeader').textContent =
+        '🏨 ' + city.name + ' (' + state.nights + '박 / 객실 ' + calc.totalRooms + '실) 아고다 실시간 요금 조회';
 
       document.getElementById('flightSourceTag').textContent =
         state.realFlightTotal !== null ? '✅ 실가격 적용됨' : '평균 시세 적용 중';
@@ -1649,7 +1630,6 @@
       var estFlight = 0, estHotel = 0, totalFood = 0, totalActivity = 0, totalExtra = 0;
       var activeFamilies = [];
 
-      // 1차 집계 (인원 및 평균 시세 기준 비율 계산)
       for (var f = 0; f < state.families.length; f++) {
         var fam = state.families[f];
         var famPax = fam.adult + fam.child + fam.infant;
@@ -1665,6 +1645,7 @@
           id: fam.id, name: fam.name, enabled: fam.enabled,
           adult: fam.adult, child: fam.child, infant: fam.infant, rooms: fam.rooms, pax: famPax,
           flightEst: fFlightEst, hotelEst: fHotelEst,
+          actualFlight: 0, actualHotel: 0,
           foodCost: fFood, activityCost: fActivity, extraCost: fExtra,
           rawCost: 0, extraBurden: 0
         };
@@ -1687,14 +1668,13 @@
       var finalFlightTotal = state.realFlightTotal !== null ? state.realFlightTotal : estFlight;
       var finalHotelTotal = state.realHotelTotal !== null ? state.realHotelTotal : estHotel;
 
-      // 실가격 입력 시 각 가족별 비중대로 항공·숙박비 배분
       for (var k = 0; k < activeFamilies.length; k++) {
         var af = activeFamilies[k];
         var fRatio = estFlight > 0 ? (af.flightEst / estFlight) : (1 / activeFamilies.length);
         var hRatio = estHotel > 0 ? (af.hotelEst / estHotel) : (1 / activeFamilies.length);
-        var actualFlight = Math.round(finalFlightTotal * fRatio);
-        var actualHotel = Math.round(finalHotelTotal * hRatio);
-        af.rawCost = actualFlight + actualHotel + af.foodCost + af.activityCost + af.extraCost;
+        af.actualFlight = Math.round(finalFlightTotal * fRatio);
+        af.actualHotel = Math.round(finalHotelTotal * hRatio);
+        af.rawCost = af.actualFlight + af.actualHotel + af.foodCost + af.activityCost + af.extraCost;
       }
 
       var grandTotal = finalFlightTotal + finalHotelTotal + totalFood + totalActivity + totalExtra;
@@ -1762,10 +1742,6 @@
             '<span class="fam-num">' + fam.rooms + '실</span>' +
             '<button type="button" data-action="fam-step" data-fidx="' + i + '" data-field="rooms" data-delta="1" class="btn-mini-step">+</button>' +
           '</div></div>' +
-          '<div class="fam-cost-preview">' +
-            '<span>가족 발생 경비</span>' +
-            '<strong style="color:#1d4ed8;">' + (fam.enabled ? formatKRW(d.rawCost) : '0원 (제외)') + '</strong>' +
-          '</div>' +
         '</div>';
       }
       grid.innerHTML = html;
@@ -1806,88 +1782,13 @@
       var cur = CITIES[state.selectedCityId];
       document.getElementById('cityInfoBanner').innerHTML =
         '<strong style="color:#1d4ed8;">' + cur.flag + ' ' + cur.name + ':</strong> ' + cur.desc;
-    }
-
-    function renderGuide(calc) {
-      var city = CITIES[state.selectedCityId];
-      document.getElementById('guideSectionTitle').textContent = city.flag + ' ' + city.name + ' 추천 숙소 · 맛집 · 코스';
-
-      document.getElementById('hotelGuideBlock').style.display = (state.guideTab === 'ALL' || state.guideTab === 'HOTEL') ? 'block' : 'none';
-      document.getElementById('foodBlock').style.display = (state.guideTab === 'ALL' || state.guideTab === 'FOOD') ? 'block' : 'none';
-      document.getElementById('courseBlock').style.display = (state.guideTab === 'ALL' || state.guideTab === 'COURSE') ? 'block' : 'none';
-
-      var hHtml = '';
-      for (var h = 0; h < city.hotels.length; h++) {
-        var ht = city.hotels[h];
-        var isSel = (ht.tier === state.hotelTier && state.realHotelTotal === null);
-        var tierCls = ht.tier === 'budget' ? 'tier-budget' : (ht.tier === 'standard' ? 'tier-standard' : 'tier-luxury');
-        var agodaHotelUrl = 'https://www.agoda.com/ko-kr/search?textToSearch=' + encodeURIComponent(ht.query) +
-          '&checkIn=' + state.depDate + '&los=' + state.nights + '&rooms=' + Math.max(1, calc.totalRooms) +
-          '&adults=' + Math.max(1, calc.totalAdult) + '&children=' + calc.totalChild;
-
-        hHtml += '<div class="hotel-card' + (isSel ? ' selected' : '') + '">' +
-          '<div>' +
-            '<span class="hotel-tier-tag ' + tierCls + '">' + ht.tierLabel + '</span>' +
-            '<div class="hotel-name">' + ht.name + '</div>' +
-            '<div class="hotel-area">📍 ' + ht.area + '</div>' +
-            '<div class="hotel-features">' + ht.features + '</div>' +
-          '</div>' +
-          '<div>' +
-            '<div class="hotel-price-row">' +
-              '<span style="font-size:11px; color:#64748b;">1박 1실 평균</span>' +
-              '<span class="hotel-rate">' + formatKRW(ht.rate) + '</span>' +
-            '</div>' +
-            '<div class="hotel-actions">' +
-              '<button type="button" data-action="apply-hotel-card" data-tier="' + ht.tier + '" class="btn-apply-hotel' + (isSel ? ' active' : '') + '">' +
-                (isSel ? '✓ 평균가 적용됨' : '평균가 적용') +
-              '</button>' +
-              '<a href="' + agodaHotelUrl + '" target="_blank" rel="noopener noreferrer" class="btn-map-mini">아고다 조회 ↗</a>' +
-            '</div>' +
-          '</div>' +
-        '</div>';
-      }
-      document.getElementById('hotelGuideGrid').innerHTML = hHtml;
-
-      var fHtml = '';
-      for (var j = 0; j < city.foods.length; j++) {
-        var fd = city.foods[j];
-        var fMapUrl = 'https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent(fd.mapQuery);
-        fHtml += '<div class="food-card">' +
-          '<div>' +
-            '<div class="food-top">' +
-              '<div class="food-name">' + fd.name + '</div>' +
-              '<span class="food-cat">' + fd.cat + '</span>' +
-            '</div>' +
-            '<div class="food-detail-list">' +
-              '<div><strong>🍴 대표 메뉴:</strong> ' + fd.menu + '</div>' +
-              '<div><strong>📍 상세 위치:</strong> ' + fd.area + '</div>' +
-              '<div><strong>👍 추천 이유:</strong> ' + fd.reason + '</div>' +
-            '</div>' +
-            '<div class="food-tip-box" style="margin-top:8px;">💡 <strong>이용 팁:</strong> ' + fd.tip + '</div>' +
-          '</div>' +
-          '<div class="food-meta">' +
-            '<span>가족 외식 검증 명소</span>' +
-            '<a href="' + fMapUrl + '" target="_blank" rel="noopener noreferrer" class="map-link">구글맵 위치·리뷰 보기 ↗</a>' +
-          '</div>' +
-        '</div>';
-      }
-      document.getElementById('foodGrid').innerHTML = fHtml;
-
-      var cHtml = '';
-      for (var i = 0; i < city.courses.length; i++) {
-        var crs = city.courses[i];
-        cHtml += '<div class="course-card">' +
-          '<div class="course-day">' + crs.day + '</div>' +
-          '<div class="course-title">' + crs.title + '</div>' +
-          '<div class="course-route">' + crs.route + '</div>' +
-          '<div class="course-tip">💡 ' + crs.tip + '</div>' +
-        '</div>';
-      }
-      document.getElementById('courseList').innerHTML = cHtml;
+      document.getElementById('step2SelectedHint').textContent =
+        '✅ 현재 선택된 도시: ' + cur.flag + ' ' + cur.name + ' (다른 도시를 누르면 해당 도시 기준으로 변경됩니다)';
     }
 
     function renderFlights(calc) {
       var city = CITIES[state.selectedCityId];
+      document.getElementById('step3CityTitle').textContent = city.flag + ' ' + city.name;
       var list = city.flights.slice();
 
       if (state.timeFilter !== 'ALL') {
@@ -1957,9 +1858,97 @@
         '</div>';
       }
       container.innerHTML = html;
+
+      document.getElementById('step3SelectedHint').textContent =
+        state.realFlightTotal !== null
+          ? ('✅ 실조회 항공권 총액 ' + formatKRW(state.realFlightTotal) + ' 적용됨')
+          : ('✅ 선택 항공편: ' + calc.flight.airline + ' (' + formatKRW(calc.totalFlight) + ')');
     }
 
-    function renderSummary(s) {
+    function renderGuide(calc) {
+      var city = CITIES[state.selectedCityId];
+      document.getElementById('guideSectionTitle').textContent = city.flag + ' ' + city.name + ' 추천 숙소 · 맛집 · 코스';
+
+      document.getElementById('hotelGuideBlock').style.display = (state.guideTab === 'ALL' || state.guideTab === 'HOTEL') ? 'block' : 'none';
+      document.getElementById('foodBlock').style.display = (state.guideTab === 'ALL' || state.guideTab === 'FOOD') ? 'block' : 'none';
+      document.getElementById('courseBlock').style.display = (state.guideTab === 'ALL' || state.guideTab === 'COURSE') ? 'block' : 'none';
+
+      var hHtml = '';
+      for (var h = 0; h < city.hotels.length; h++) {
+        var ht = city.hotels[h];
+        var isSel = (ht.tier === state.hotelTier && state.realHotelTotal === null);
+        var tierCls = ht.tier === 'budget' ? 'tier-budget' : (ht.tier === 'standard' ? 'tier-standard' : 'tier-luxury');
+        var agodaHotelUrl = 'https://www.agoda.com/ko-kr/search?textToSearch=' + encodeURIComponent(ht.query) +
+          '&checkIn=' + state.depDate + '&los=' + state.nights + '&rooms=' + Math.max(1, calc.totalRooms) +
+          '&adults=' + Math.max(1, calc.totalAdult) + '&children=' + calc.totalChild;
+
+        hHtml += '<div class="hotel-card' + (isSel ? ' selected' : '') + '">' +
+          '<div>' +
+            '<span class="hotel-tier-tag ' + tierCls + '">' + ht.tierLabel + '</span>' +
+            '<div class="hotel-name">' + ht.name + '</div>' +
+            '<div class="hotel-area">📍 ' + ht.area + '</div>' +
+            '<div class="hotel-features">' + ht.features + '</div>' +
+          '</div>' +
+          '<div>' +
+            '<div class="hotel-price-row">' +
+              '<span style="font-size:11px; color:#64748b;">1박 1실 평균</span>' +
+              '<span class="hotel-rate">' + formatKRW(ht.rate) + '</span>' +
+            '</div>' +
+            '<div class="hotel-actions">' +
+              '<button type="button" data-action="apply-hotel-card" data-tier="' + ht.tier + '" class="btn-apply-hotel' + (isSel ? ' active' : '') + '">' +
+                (isSel ? '✓ 선택됨' : '이 숙소 선택') +
+              '</button>' +
+              '<a href="' + agodaHotelUrl + '" target="_blank" rel="noopener noreferrer" class="btn-map-mini">아고다 ↗</a>' +
+            '</div>' +
+          '</div>' +
+        '</div>';
+      }
+      document.getElementById('hotelGuideGrid').innerHTML = hHtml;
+
+      var fHtml = '';
+      for (var j = 0; j < city.foods.length; j++) {
+        var fd = city.foods[j];
+        var fMapUrl = 'https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent(fd.mapQuery);
+        fHtml += '<div class="food-card">' +
+          '<div>' +
+            '<div class="food-top">' +
+              '<div class="food-name">' + fd.name + '</div>' +
+              '<span class="food-cat">' + fd.cat + '</span>' +
+            '</div>' +
+            '<div class="food-detail-list">' +
+              '<div><strong>🍴 대표 메뉴:</strong> ' + fd.menu + '</div>' +
+              '<div><strong>📍 상세 위치:</strong> ' + fd.area + '</div>' +
+              '<div><strong>👍 추천 이유:</strong> ' + fd.reason + '</div>' +
+            '</div>' +
+            '<div class="food-tip-box" style="margin-top:8px;">💡 <strong>이용 팁:</strong> ' + fd.tip + '</div>' +
+          '</div>' +
+          '<div class="food-meta">' +
+            '<span>가족 외식 검증 명소</span>' +
+            '<a href="' + fMapUrl + '" target="_blank" rel="noopener noreferrer" class="map-link">구글맵 위치·리뷰 ↗</a>' +
+          '</div>' +
+        '</div>';
+      }
+      document.getElementById('foodGrid').innerHTML = fHtml;
+
+      var cHtml = '';
+      for (var i = 0; i < city.courses.length; i++) {
+        var crs = city.courses[i];
+        cHtml += '<div class="course-card">' +
+          '<div class="course-day">' + crs.day + '</div>' +
+          '<div class="course-title">' + crs.title + '</div>' +
+          '<div class="course-route">' + crs.route + '</div>' +
+          '<div class="course-tip">💡 ' + crs.tip + '</div>' +
+        '</div>';
+      }
+      document.getElementById('courseList').innerHTML = cHtml;
+
+      document.getElementById('step4SelectedHint').textContent =
+        state.realHotelTotal !== null
+          ? ('✅ 실조회 숙박 총액 ' + formatKRW(state.realHotelTotal) + ' 적용됨')
+          : ('✅ 선택 숙소: ' + state.selectedHotelName + ' (' + formatKRW(calc.totalHotel) + ')');
+    }
+
+    function renderStep5Hints(s) {
       var localPax = s.totalAdult + s.totalChild;
       document.getElementById('hotelCalcHint').textContent =
         state.realHotelTotal !== null
@@ -1968,84 +1957,130 @@
       document.getElementById('foodCalcHint').textContent = s.days + '일 × ' + localPax + '명(성인·아동) = ' + formatKRW(s.totalFood);
       document.getElementById('activityCalcHint').textContent = s.days + '일 × ' + localPax + '명(성인·아동) = ' + formatKRW(s.totalActivity);
       document.getElementById('extraCalcHint').textContent = '총 ' + s.totalPax + '명 × ' + formatKRW(state.extraPerPax) + ' = ' + formatKRW(s.totalExtra);
+    }
 
-      document.getElementById('summaryCountryBadge').textContent = s.city.flag + ' ' + s.city.countryName;
-      document.getElementById('summaryCityName').textContent = s.city.name;
-      document.getElementById('summaryTripMeta').textContent = state.nights + '박 ' + s.days + '일 · ' + s.activeFamilies.length + '가족 ' + s.totalPax + '명';
-      document.getElementById('summaryFlightMeta').textContent =
-        state.realFlightTotal !== null ? '실시간 조회 항공권 총액 적용' : (s.flight.airline + ' (' + s.flight.depTime + ' 출발)');
+    // 최종 정산표 렌더링 (6단계)
+    function renderFinalTable(s) {
+      var retDate = addDays(state.depDate, state.nights);
+      document.getElementById('finalMainTitle').textContent =
+        '📊 [' + s.city.flag + ' ' + s.city.name + '] 3가족 여행 최종 경비 정산표';
+      document.getElementById('finalSubMeta').textContent =
+        state.depDate + ' ~ ' + retDate + ' (' + state.nights + '박 ' + s.days + '일) · ' + s.activeFamilies.length + '가족 총 ' + s.totalPax + '명 (객실 ' + s.totalRooms + '실)';
+      document.getElementById('finalBudgetDisplay').textContent = formatKRW(state.sharedBudget);
 
-      document.getElementById('summaryGrandTotal').textContent = formatKRW(s.grandTotal);
-      document.getElementById('summaryPerPerson').textContent = '1인 평균 약 ' + formatKRW(s.perPersonAvg) + ' (총 ' + s.totalPax + '명 기준)';
+      document.getElementById('finalGrandTotal').textContent = formatKRW(s.grandTotal);
+      document.getElementById('finalPerPerson').textContent = '1인 평균 약 ' + formatKRW(s.perPersonAvg) + ' (총 ' + s.totalPax + '명 기준)';
 
-      var statusBox = document.getElementById('budgetStatusBox');
-      var bsTitle = document.getElementById('bsTitle');
-      var bsBudgetLabel = document.getElementById('bsBudgetLabel');
-      var bsDiffAmount = document.getElementById('bsDiffAmount');
-      var bsSubGuide = document.getElementById('bsSubGuide');
-
-      bsBudgetLabel.textContent = '공동 예산 ' + formatKRW(state.sharedBudget);
+      var diffBox = document.getElementById('finalDiffBox');
+      var diffLabel = document.getElementById('finalDiffLabel');
+      var diffVal = document.getElementById('finalDiffVal');
+      var diffDesc = document.getElementById('finalDiffDesc');
 
       if (s.diff > 0) {
-        statusBox.className = 'budget-status-box over';
-        bsTitle.textContent = '🚨 600만 원 예산 초과';
-        bsTitle.style.color = '#fda4af';
-        bsDiffAmount.textContent = '+' + formatKRW(s.diff) + ' 초과';
-        bsDiffAmount.style.color = '#fda4af';
-        bsSubGuide.textContent = '공동 예산(' + formatKRW(state.sharedBudget) + ') 초과분을 참여 가족별로 나누어 부담합니다.';
+        diffBox.className = 'kpi-box over';
+        diffLabel.textContent = '🚨 공동 예산 초과 금액';
+        diffVal.textContent = '+' + formatKRW(s.diff);
+        diffVal.style.color = '#fda4af';
+        diffDesc.textContent = '아래 가족별 정산표에서 추가 분담금을 확인하세요.';
       } else {
-        statusBox.className = 'budget-status-box under';
-        bsTitle.textContent = '✅ 600만 원 예산 내 가능!';
-        bsTitle.style.color = '#6ee7b7';
-        bsDiffAmount.textContent = formatKRW(Math.abs(s.diff)) + ' 여유';
-        bsDiffAmount.style.color = '#6ee7b7';
-        bsSubGuide.textContent = '공동 예산 ' + formatKRW(state.sharedBudget) + ' 안에서 추가 부담금 없이 여행 가능합니다.';
+        diffBox.className = 'kpi-box under';
+        diffLabel.textContent = '✅ 공동 예산 내 여유 금액';
+        diffVal.textContent = formatKRW(Math.abs(s.diff)) + ' 여유';
+        diffVal.style.color = '#6ee7b7';
+        diffDesc.textContent = '추가 부담금 없이 공동 예산으로 여행 가능합니다!';
       }
 
-      var shareHtml = '';
-      if (s.activeFamilies.length === 0) {
-        shareHtml = '<div style="font-size:12px; color:#94a3b8; text-align:center; padding:8px;">최소 1개 가족 이상 선택해 주세요.</div>';
-      } else {
-        for (var i = 0; i < s.activeFamilies.length; i++) {
-          var af = s.activeFamilies[i];
-          var burdenText = s.diff > 0
-            ? ('<strong style="color:#fda4af;">+' + formatKRW(af.extraBurden) + '</strong>')
-            : ('<strong style="color:#6ee7b7;">0원 (예산 내)</strong>');
+      document.getElementById('finalFlightSummary').textContent =
+        state.realFlightTotal !== null ? '✈️ 스카이스캐너 실조회 총액' : ('✈️ ' + s.flight.airline + ' (' + s.flight.depTime + ' 출발)');
+      document.getElementById('finalHotelSummary').textContent =
+        state.realHotelTotal !== null ? '🏨 아고다 실조회 총액' : ('🏨 ' + state.selectedHotelName);
 
-          shareHtml += '<div class="fam-share-row">' +
-            '<div>' +
-              '<div style="font-weight:800; color:#ffffff;">' + af.name + ' <span style="font-weight:400; color:#94a3b8;">(' + af.pax + '명·' + af.rooms + '실)</span></div>' +
-              '<div style="font-size:10.5px; color:#94a3b8;">총 발생액 ' + formatKRW(af.rawCost) + '</div>' +
-            '</div>' +
-            '<div style="text-align:right;">' +
-              '<div style="font-size:10px; color:#cbd5e1;">추가 부담금</div>' +
-              burdenText +
-            '</div>' +
-          '</div>';
+      // 표 1: 항목별 전체 경비 상세표
+      var tot = Math.max(1, s.grandTotal);
+      var localPax = s.totalAdult + s.totalChild;
+      var items = [
+        {
+          name: '✈️ 왕복 항공권 총액',
+          basis: state.realFlightTotal !== null ? '실조회 항공권 총액 직접 입력' : ('성인 ' + s.totalAdult + ', 아동 ' + s.totalChild + (s.totalInfant > 0 ? ', 유아 ' + s.totalInfant : '')),
+          amount: s.totalFlight
+        },
+        {
+          name: '🏨 숙박비 총액',
+          basis: state.realHotelTotal !== null ? '실조회 숙박 총액 직접 입력' : (state.nights + '박 × 총 ' + s.totalRooms + '실 (' + formatKRW(state.hotelPricePerNight) + '/박)'),
+          amount: s.totalHotel
+        },
+        {
+          name: '🍽️ 현지 식비·카페',
+          basis: s.days + '일 × ' + localPax + '명 × ' + formatKRW(state.foodPricePerDay),
+          amount: s.totalFood
+        },
+        {
+          name: '🚕 현지 교통·투어·입장료',
+          basis: s.days + '일 × ' + localPax + '명 × ' + formatKRW(state.activityPricePerDay),
+          amount: s.totalActivity
+        },
+        {
+          name: '🛍️ 예비비·여행자보험',
+          basis: '총 ' + s.totalPax + '명 × ' + formatKRW(state.extraPerPax),
+          amount: s.totalExtra
         }
-      }
-      document.getElementById('famShareList').innerHTML = shareHtml;
+      ];
 
-      document.getElementById('breakdownFlight').textContent = formatKRW(s.totalFlight);
-      document.getElementById('breakdownFlightDetail').textContent =
-        state.realFlightTotal !== null
-          ? '스카이스캐너/실제 조회 총액 직접 입력 반영'
-          : ('성인 ' + s.totalAdult + '(' + formatKRW(s.adultUnit) + ') · 아동 ' + s.totalChild + '(' + formatKRW(s.childUnit) + ')');
-      document.getElementById('breakdownHotel').textContent = formatKRW(s.totalHotel);
-      document.getElementById('breakdownHotelDetail').textContent =
-        state.realHotelTotal !== null
-          ? '아고다/실제 조회 숙박 총액 직접 입력 반영'
-          : (state.selectedHotelName + ' (' + state.nights + '박 × ' + s.totalRooms + '실)');
-      document.getElementById('breakdownFood').textContent = formatKRW(s.totalFood);
-      document.getElementById('breakdownActivity').textContent = formatKRW(s.totalActivity);
-      document.getElementById('breakdownExtra').textContent = formatKRW(s.totalExtra);
+      var itemRows = '';
+      for (var i = 0; i < items.length; i++) {
+        var it = items[i];
+        var pct = Math.round((it.amount / tot) * 100);
+        itemRows += '<tr>' +
+          '<td><strong>' + it.name + '</strong></td>' +
+          '<td style="color:#64748b; font-size:12px;">' + it.basis + '</td>' +
+          '<td><strong>' + formatKRW(it.amount) + '</strong></td>' +
+          '<td style="color:#2563eb; font-weight:700;">' + pct + '%</td>' +
+        '</tr>';
+      }
+      itemRows += '<tr class="total-row">' +
+        '<td>합계 (전체 예상 총 경비)</td>' +
+        '<td style="font-size:12px; font-weight:600; color:#1e40af;">공동 예산 ' + formatKRW(state.sharedBudget) + ' 기준</td>' +
+        '<td style="color:#1d4ed8;">' + formatKRW(s.grandTotal) + '</td>' +
+        '<td>100%</td>' +
+      '</tr>';
+      document.getElementById('itemBreakdownTbody').innerHTML = itemRows;
+
+      // 표 2: 가족별 경비 및 600만 원 초과 추가 부담금 정산표
+      var famRows = '';
+      var sumBurden = 0;
+      for (var f = 0; f < s.activeFamilies.length; f++) {
+        var af = s.activeFamilies[f];
+        var localSum = af.foodCost + af.activityCost + af.extraCost;
+        sumBurden += af.extraBurden;
+        var burdenCell = s.diff > 0
+          ? ('<strong style="color:#be123c; font-size:14px;">+' + formatKRW(af.extraBurden) + '</strong>')
+          : ('<strong style="color:#059669;">0원 (예산 내)</strong>');
+
+        famRows += '<tr>' +
+          '<td><strong>' + af.name + '</strong> <span style="font-size:11px; color:#64748b;">(' + af.rooms + '실)</span></td>' +
+          '<td>' + formatKRW(af.actualFlight) + '</td>' +
+          '<td>' + formatKRW(af.actualHotel) + '</td>' +
+          '<td>' + formatKRW(localSum) + '</td>' +
+          '<td><strong>' + formatKRW(af.rawCost) + '</strong></td>' +
+          '<td>' + burdenCell + '</td>' +
+        '</tr>';
+      }
+      famRows += '<tr class="total-row">' +
+        '<td>총 합계 (' + s.activeFamilies.length + '가족 ' + s.totalPax + '명)</td>' +
+        '<td>' + formatKRW(s.totalFlight) + '</td>' +
+        '<td>' + formatKRW(s.totalHotel) + '</td>' +
+        '<td>' + formatKRW(s.totalFood + s.totalActivity + s.totalExtra) + '</td>' +
+        '<td style="color:#1d4ed8;">' + formatKRW(s.grandTotal) + '</td>' +
+        '<td style="color:#be123c;">' + (s.diff > 0 ? ('+' + formatKRW(sumBurden)) : '0원') + '</td>' +
+      '</tr>';
+      document.getElementById('familyBreakdownTbody').innerHTML = famRows;
     }
 
     function renderCompareModal() {
       document.getElementById('compareBadge').textContent = state.compareList.length;
       var body = document.getElementById('compareModalBody');
       if (state.compareList.length === 0) {
-        body.innerHTML = '<div style="padding:40px 16px; text-align:center; color:#64748b;">아직 비교함에 담긴 여행지가 없습니다.<br>도시를 선택한 뒤 우측의 <strong>[➕ 현재 견적 비교함에 담기]</strong>를 눌러보세요.</div>';
+        body.innerHTML = '<div style="padding:40px 16px; text-align:center; color:#64748b;">아직 비교함에 담긴 여행지가 없습니다.<br>5단계까지 완료 후 <strong>[➕ 이 결과 후보지 비교함에 담기]</strong>를 눌러보세요.</div>';
         return;
       }
       var rows = '';
@@ -2069,13 +2104,15 @@
     }
 
     function renderAll() {
+      updateStepVisibility();
       var calc = calculateAll();
       renderFamilies(calc);
       renderCities();
       updateLiveSearchLinks(calc);
-      renderGuide(calc);
       renderFlights(calc);
-      renderSummary(calc);
+      renderGuide(calc);
+      renderStep5Hints(calc);
+      renderFinalTable(calc);
       document.getElementById('compareBadge').textContent = state.compareList.length;
     }
 
@@ -2102,7 +2139,24 @@
 
       var action = target.getAttribute('data-action');
 
-      if (action === 'toggle-family') {
+      if (action === 'unlock-step') {
+        var nextStep = parseInt(target.getAttribute('data-next'), 10);
+        var calc = calculateAll();
+        if (calc.activeFamilies.length === 0) {
+          showToast('⚠️ 최소 1개 가족 이상 참여를 선택해 주세요.');
+          return;
+        }
+        unlockAndGoToStep(nextStep, true);
+      }
+      else if (action === 'goto-step') {
+        var st = parseInt(target.getAttribute('data-step'), 10);
+        if (st > state.unlockedStep) {
+          showToast('이전 단계를 먼저 완료해 주세요.');
+          return;
+        }
+        unlockAndGoToStep(st, true);
+      }
+      else if (action === 'toggle-family') {
         var fidx = parseInt(target.getAttribute('data-fidx'), 10);
         state.families[fidx].enabled = !state.families[fidx].enabled;
         renderAll();
@@ -2127,13 +2181,6 @@
         state.nights = Math.max(1, Math.min(14, state.nights + d));
         renderAll();
       }
-      else if (action === 'split-mode') {
-        state.splitMode = target.getAttribute('data-smode');
-        var sBtns = document.querySelectorAll('[data-action="split-mode"]');
-        for (var sb = 0; sb < sBtns.length; sb++) sBtns[sb].classList.remove('active');
-        target.classList.add('active');
-        renderAll();
-      }
       else if (action === 'filter-country') {
         state.countryFilter = target.getAttribute('data-country');
         var btns = document.querySelectorAll('[data-action="filter-country"]');
@@ -2142,19 +2189,13 @@
         renderCities();
       }
       else if (action === 'select-city') {
-        selectCity(target.getAttribute('data-city'));
+        selectCity(target.getAttribute('data-city'), true);
       }
-      else if (action === 'guide-tab') {
-        state.guideTab = target.getAttribute('data-gtab');
-        var gBtns = document.querySelectorAll('[data-action="guide-tab"]');
-        for (var g = 0; g < gBtns.length; g++) gBtns[g].classList.remove('active');
-        target.classList.add('active');
-        renderGuide(calculateAll());
-      }
-      else if (action === 'apply-hotel-card') {
-        var tier = target.getAttribute('data-tier');
-        applyHotelTier(tier);
-        showToast('🏨 [' + state.selectedHotelName + '] 평균 시세가 적용되었습니다.');
+      else if (action === 'select-flight') {
+        state.selectedFlightId = target.getAttribute('data-flight');
+        state.realFlightTotal = null;
+        document.getElementById('inputRealFlightTotal').value = '';
+        renderAll();
       }
       else if (action === 'clear-real-flight') {
         state.realFlightTotal = null;
@@ -2182,10 +2223,23 @@
         target.classList.add('active');
         renderFlights(calculateAll());
       }
-      else if (action === 'select-flight') {
-        state.selectedFlightId = target.getAttribute('data-flight');
-        state.realFlightTotal = null;
-        document.getElementById('inputRealFlightTotal').value = '';
+      else if (action === 'guide-tab') {
+        state.guideTab = target.getAttribute('data-gtab');
+        var gBtns = document.querySelectorAll('[data-action="guide-tab"]');
+        for (var g = 0; g < gBtns.length; g++) gBtns[g].classList.remove('active');
+        target.classList.add('active');
+        renderGuide(calculateAll());
+      }
+      else if (action === 'apply-hotel-card') {
+        var tier = target.getAttribute('data-tier');
+        applyHotelTier(tier);
+        showToast('🏨 [' + state.selectedHotelName + '] 요금이 적용되었습니다.');
+      }
+      else if (action === 'split-mode') {
+        state.splitMode = target.getAttribute('data-smode');
+        var sBtns = document.querySelectorAll('[data-action="split-mode"]');
+        for (var sb = 0; sb < sBtns.length; sb++) sBtns[sb].classList.remove('active');
+        target.classList.add('active');
         renderAll();
       }
       else if (action === 'copy-share') {
@@ -2199,7 +2253,7 @@
         }
 
         var msg = [
-          '💰 [600만원 예산!! 3가족 여행 정산표 - ' + s.city.flag + ' ' + s.city.name + ']',
+          '💰 [600만원 예산!! 3가족 여행 최종 정산표 - ' + s.city.flag + ' ' + s.city.name + ']',
           '• 일정/인원: ' + state.depDate + ' 출발 (' + state.nights + '박 ' + s.days + '일) / ' + s.activeFamilies.length + '가족 총 ' + s.totalPax + '명',
           '• 숙소/항공: ' + (state.realHotelTotal !== null ? '실조회 숙박 총액' : state.selectedHotelName) + ' / ' + (state.realFlightTotal !== null ? '실조회 항공 총액' : s.flight.airline),
           '──────────────────',
@@ -2212,7 +2266,7 @@
           '👨‍👩‍👧‍👦 가족별 정산 내역:',
           famLines.join('\n'),
           '──────────────────',
-          '이 일정과 분담금으로 진행할까요? 의견 주세요! 😊'
+          '이 정산표로 진행할까요? 의견 주세요! 😊'
         ].join('\n');
         copyText(msg);
       }
@@ -2236,7 +2290,7 @@
           familySummary: fSumList.join('<br>')
         });
         document.getElementById('compareBadge').textContent = state.compareList.length;
-        showToast('📋 [' + sum.city.name + '] 정산 내역이 비교함에 담겼습니다!');
+        showToast('📋 [' + sum.city.name + '] 최종 정산표가 비교함에 담겼습니다!');
       }
       else if (action === 'open-compare') {
         renderCompareModal();
@@ -2272,6 +2326,8 @@
         copyText(lines.join('\n'));
       }
       else if (action === 'reset-all') {
+        state.unlockedStep = 1;
+        state.activeStep = 1;
         state.families = getDefaultFamilies();
         state.sharedBudget = 6000000;
         state.splitMode = 'ACTUAL';
@@ -2286,8 +2342,9 @@
         state.realFlightTotal = null;
         state.realHotelTotal = null;
         document.getElementById('flightSortSelect').value = 'PRICE_ASC';
-        selectCity('fukuoka');
-        showToast('600만 원 예산 · 3가족(4인/4인/3인) 기본값으로 초기화되었습니다.');
+        selectCity('fukuoka', false);
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+        showToast('1단계부터 다시 시작합니다.');
       }
     });
 

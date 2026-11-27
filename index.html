@@ -1,0 +1,1085 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>우리 가족 여행 플래너 & 비용 계산기</title>
+    <!-- Tailwind CSS 로드 -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts: Pretendard & Inter -->
+    <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Pretendard', 'Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        brand: {
+                            50: '#fff8f1',
+                            100: '#feecdc',
+                            200: '#fcd9bd',
+                            500: '#ff5a1f',
+                            600: '#d03801',
+                        },
+                        ocean: {
+                            50: '#f0f9ff',
+                            100: '#e0f2fe',
+                            500: '#0ea5e9',
+                            600: '#0284c7',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        /* 커스텀 스크롤바 및 미세 애니메이션 */
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f1f5f9;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 9999px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
+        }
+        .tab-active {
+            border-color: #0ea5e9;
+            background-color: #f0f9ff;
+            box-shadow: 0 4px 12px -2px rgba(14, 165, 233, 0.15);
+        }
+        input[type="range"] {
+            accent-color: #0ea5e9;
+        }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800 font-sans antialiased selection:bg-ocean-100 selection:text-ocean-600">
+
+    <!-- 상단 프로토타입 안내 배너 -->
+    <div class="bg-gradient-to-r from-amber-50 via-orange-50 to-sky-50 border-b border-amber-200/70 px-4 py-2.5 text-xs sm:text-sm">
+        <div class="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-2">
+            <div class="flex items-center gap-2 text-amber-900">
+                <span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-semibold bg-amber-200/80 text-amber-900 shrink-0">
+                    프로토타입 안내
+                </span>
+                <span>현재 표시된 항공권 및 물가는 가족 회의용 <strong>평균 시세 샘플 데이터</strong>입니다. 실시간 예약 전 아래 링크로 실제 운임을 확인하세요.</span>
+            </div>
+            <div class="flex items-center gap-2 shrink-0">
+                <a href="https://flight.naver.com/" target="_blank" rel="noopener noreferrer" 
+                   class="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg bg-white border border-slate-200 text-slate-700 hover:bg-emerald-50 hover:text-emerald-700 hover:border-emerald-200 font-medium transition shadow-xs">
+                    <span>네이버 항공권</span>
+                    <i data-lucide="external-link" class="w-3.5 h-3.5"></i>
+                </a>
+                <a href="https://www.skyscanner.co.kr/" target="_blank" rel="noopener noreferrer" 
+                   class="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg bg-white border border-slate-200 text-slate-700 hover:bg-sky-50 hover:text-sky-700 hover:border-sky-200 font-medium transition shadow-xs">
+                    <span>스카이스캐너</span>
+                    <i data-lucide="external-link" class="w-3.5 h-3.5"></i>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- 메인 헤더 -->
+    <header class="bg-white border-b border-slate-200/80 sticky top-0 z-30 backdrop-blur-md bg-white/90">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+            <div class="flex items-center gap-2.5">
+                <div class="w-10 h-10 rounded-2xl bg-gradient-to-br from-sky-500 to-indigo-600 flex items-center justify-center text-white shadow-md shadow-sky-500/20">
+                    <i data-lucide="plane-takeoff" class="w-5 h-5"></i>
+                </div>
+                <div>
+                    <h1 class="text-lg sm:text-xl font-bold text-slate-900 tracking-tight">우리 가족 여행 & 경비 계산기</h1>
+                    <p class="text-xs text-slate-500 hidden sm:block">후보지별 항공권 비교부터 가족 총 예산까지 한눈에 시뮬레이션</p>
+                </div>
+            </div>
+            <div class="flex items-center gap-2">
+                <button onclick="resetAll()" class="inline-flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs sm:text-sm font-medium text-slate-600 hover:bg-slate-100 transition">
+                    <i data-lucide="rotate-ccw" class="w-4 h-4"></i>
+                    <span class="hidden sm:inline">초기화</span>
+                </button>
+                <button onclick="copySummary()" class="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl text-xs sm:text-sm font-semibold bg-sky-500 hover:bg-sky-600 text-white shadow-sm shadow-sky-500/20 transition active:scale-95">
+                    <i data-lucide="share-2" class="w-4 h-4"></i>
+                    <span>가족 공유용 견적 복사</span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- 메인 컨텐츠 레이아웃 -->
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8">
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8 items-start">
+            
+            <!-- 좌측 메인 설정 및 조회 영역 (8컬럼) -->
+            <div class="lg:col-span-8 space-y-6">
+
+                <!-- STEP 1: 여행 국가 및 도시 선택 -->
+                <section class="bg-white rounded-3xl p-5 sm:p-6 shadow-xs border border-slate-200/80">
+                    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-4">
+                        <div class="flex items-center gap-2">
+                            <span class="w-6 h-6 rounded-full bg-sky-100 text-sky-600 text-xs font-bold flex items-center justify-center">1</span>
+                            <h2 class="text-base sm:text-lg font-bold text-slate-900">어디로 떠날까요? (후보 도시 선택)</h2>
+                        </div>
+                        <!-- 국가 필터 탭 -->
+                        <div class="inline-flex p-1 rounded-xl bg-slate-100 self-start sm:self-auto">
+                            <button onclick="filterCountry('ALL')" id="country-btn-ALL" class="country-filter px-3 py-1 rounded-lg text-xs font-semibold bg-white text-slate-900 shadow-xs transition">전체 (6)</button>
+                            <button onclick="filterCountry('JP')" id="country-btn-JP" class="country-filter px-3 py-1 rounded-lg text-xs font-medium text-slate-600 hover:text-slate-900 transition">🇯🇵 일본 (3)</button>
+                            <button onclick="filterCountry('VN')" id="country-btn-VN" class="country-filter px-3 py-1 rounded-lg text-xs font-medium text-slate-600 hover:text-slate-900 transition">🇻🇳 베트남 (3)</button>
+                        </div>
+                    </div>
+
+                    <!-- 도시 카드 그리드 -->
+                    <div id="city-grid" class="grid grid-cols-2 sm:grid-cols-3 gap-3">
+                        <!-- JS로 렌더링 -->
+                    </div>
+
+                    <!-- 선택된 도시 요약 배너 -->
+                    <div id="city-info-banner" class="mt-4 p-3.5 rounded-2xl bg-slate-50 border border-slate-200/70 flex flex-col sm:flex-row sm:items-center justify-between gap-2 text-xs sm:text-sm">
+                        <!-- JS로 렌더링 -->
+                    </div>
+                </section>
+
+                <!-- STEP 2: 여행 일정 및 가족 인원 설정 -->
+                <section class="bg-white rounded-3xl p-5 sm:p-6 shadow-xs border border-slate-200/80">
+                    <div class="flex items-center gap-2 mb-4">
+                        <span class="w-6 h-6 rounded-full bg-sky-100 text-sky-600 text-xs font-bold flex items-center justify-center">2</span>
+                        <h2 class="text-base sm:text-lg font-bold text-slate-900">여행 기간 및 가족 인원 설정</h2>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+                        <!-- 일정 설정 -->
+                        <div class="p-4 rounded-2xl bg-slate-50/80 border border-slate-200/60 space-y-3">
+                            <div class="flex items-center justify-between">
+                                <span class="text-sm font-semibold text-slate-700 flex items-center gap-1.5">
+                                    <i data-lucide="calendar" class="w-4 h-4 text-sky-500"></i>
+                                    여행 기간 설정
+                                </span>
+                                <span id="duration-badge" class="px-2.5 py-0.5 rounded-full text-xs font-bold bg-sky-100 text-sky-700">
+                                    3박 4일
+                                </span>
+                            </div>
+                            <div class="grid grid-cols-2 gap-2.5">
+                                <div>
+                                    <label class="block text-xs text-slate-500 mb-1">출발일 (인천 출발)</label>
+                                    <input type="date" id="depart-date" onchange="handleDateChange()" class="w-full px-3 py-2 rounded-xl bg-white border border-slate-200 text-xs sm:text-sm font-medium text-slate-800 focus:outline-none focus:border-sky-500">
+                                </div>
+                                <div>
+                                    <label class="block text-xs text-slate-500 mb-1">귀국일 (인천 도착)</label>
+                                    <input type="date" id="return-date" onchange="handleDateChange()" class="w-full px-3 py-2 rounded-xl bg-white border border-slate-200 text-xs sm:text-sm font-medium text-slate-800 focus:outline-none focus:border-sky-500">
+                                </div>
+                            </div>
+                            <!-- 빠른 박수 선택 버튼 -->
+                            <div class="flex items-center gap-1.5 pt-1">
+                                <span class="text-xs text-slate-400 mr-1">빠른 선택:</span>
+                                <button onclick="setQuickNights(2)" class="px-2.5 py-1 rounded-lg bg-white border border-slate-200 hover:border-sky-400 text-xs font-medium text-slate-600 transition">2박 3일</button>
+                                <button onclick="setQuickNights(3)" class="px-2.5 py-1 rounded-lg bg-white border border-slate-200 hover:border-sky-400 text-xs font-medium text-slate-600 transition">3박 4일</button>
+                                <button onclick="setQuickNights(4)" class="px-2.5 py-1 rounded-lg bg-white border border-slate-200 hover:border-sky-400 text-xs font-medium text-slate-600 transition">4박 5일</button>
+                                <button onclick="setQuickNights(5)" class="px-2.5 py-1 rounded-lg bg-white border border-slate-200 hover:border-sky-400 text-xs font-medium text-slate-600 transition">5박 6일</button>
+                            </div>
+                        </div>
+
+                        <!-- 인원수 설정 -->
+                        <div class="p-4 rounded-2xl bg-slate-50/80 border border-slate-200/60 space-y-2.5">
+                            <div class="flex items-center justify-between mb-1">
+                                <span class="text-sm font-semibold text-slate-700 flex items-center gap-1.5">
+                                    <i data-lucide="users" class="w-4 h-4 text-sky-500"></i>
+                                    가족 인원수
+                                </span>
+                                <span id="total-pax-badge" class="text-xs font-bold text-slate-600">총 4명</span>
+                            </div>
+
+                            <!-- 성인 -->
+                            <div class="flex items-center justify-between bg-white px-3 py-2 rounded-xl border border-slate-200/70">
+                                <div>
+                                    <div class="text-xs sm:text-sm font-semibold text-slate-800">성인 <span class="text-xs font-normal text-slate-400">(만 12세 이상)</span></div>
+                                </div>
+                                <div class="flex items-center gap-2.5">
+                                    <button onclick="updatePax('adult', -1)" class="w-7 h-7 rounded-lg bg-slate-100 hover:bg-slate-200 flex items-center justify-center text-slate-700 font-bold transition">-</button>
+                                    <span id="pax-adult" class="w-5 text-center text-sm font-bold text-slate-900">2</span>
+                                    <button onclick="updatePax('adult', 1)" class="w-7 h-7 rounded-lg bg-sky-100 hover:bg-sky-200 flex items-center justify-center text-sky-700 font-bold transition">+</button>
+                                </div>
+                            </div>
+
+                            <!-- 아동 -->
+                            <div class="flex items-center justify-between bg-white px-3 py-2 rounded-xl border border-slate-200/70">
+                                <div>
+                                    <div class="text-xs sm:text-sm font-semibold text-slate-800">아동 <span class="text-xs font-normal text-slate-400">(만 2~11세 / 성인의 약 75~85%)</span></div>
+                                </div>
+                                <div class="flex items-center gap-2.5">
+                                    <button onclick="updatePax('child', -1)" class="w-7 h-7 rounded-lg bg-slate-100 hover:bg-slate-200 flex items-center justify-center text-slate-700 font-bold transition">-</button>
+                                    <span id="pax-child" class="w-5 text-center text-sm font-bold text-slate-900">2</span>
+                                    <button onclick="updatePax('child', 1)" class="w-7 h-7 rounded-lg bg-sky-100 hover:bg-sky-200 flex items-center justify-center text-sky-700 font-bold transition">+</button>
+                                </div>
+                            </div>
+
+                            <!-- 유아 -->
+                            <div class="flex items-center justify-between bg-white px-3 py-2 rounded-xl border border-slate-200/70">
+                                <div>
+                                    <div class="text-xs sm:text-sm font-semibold text-slate-800">유아 <span class="text-xs font-normal text-slate-400">(만 24개월 미만 / 성인의 약 10~15%)</span></div>
+                                </div>
+                                <div class="flex items-center gap-2.5">
+                                    <button onclick="updatePax('infant', -1)" class="w-7 h-7 rounded-lg bg-slate-100 hover:bg-slate-200 flex items-center justify-center text-slate-700 font-bold transition">-</button>
+                                    <span id="pax-infant" class="w-5 text-center text-sm font-bold text-slate-900">0</span>
+                                    <button onclick="updatePax('infant', 1)" class="w-7 h-7 rounded-lg bg-sky-100 hover:bg-sky-200 flex items-center justify-center text-sky-700 font-bold transition">+</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- STEP 3: 항공권 조회 및 비교 (인원별, 시간별, 가격별) -->
+                <section class="bg-white rounded-3xl p-5 sm:p-6 shadow-xs border border-slate-200/80">
+                    <div class="flex flex-col md:flex-row md:items-center justify-between gap-3 mb-4">
+                        <div class="flex items-center gap-2">
+                            <span class="w-6 h-6 rounded-full bg-sky-100 text-sky-600 text-xs font-bold flex items-center justify-center">3</span>
+                            <div>
+                                <h2 class="text-base sm:text-lg font-bold text-slate-900">
+                                    <span id="flight-city-title" class="text-sky-600">후쿠오카</span> 항공권 조회 및 비교
+                                </h2>
+                                <p class="text-xs text-slate-500">왕복 기준 예상 운임 · 원하는 항공편을 선택하면 우측 예산에 즉시 반영됩니다.</p>
+                            </div>
+                        </div>
+
+                        <!-- 정렬 및 보기 전환 컨트롤 (가격별, 시간별, 인원별) -->
+                        <div class="flex flex-wrap items-center gap-2">
+                            <!-- 가격별 / 시간별 / 비행시간별 정렬 -->
+                            <div class="inline-flex p-1 rounded-xl bg-slate-100 text-xs">
+                                <button onclick="setFlightSort('price')" id="sort-price" class="px-2.5 py-1.5 rounded-lg font-semibold bg-white text-slate-900 shadow-xs transition flex items-center gap-1">
+                                    <i data-lucide="arrow-down-narrow-wide" class="w-3.5 h-3.5 text-sky-500"></i>
+                                    가격 낮은순
+                                </button>
+                                <button onclick="setFlightSort('time')" id="sort-time" class="px-2.5 py-1.5 rounded-lg font-medium text-slate-600 hover:text-slate-900 transition flex items-center gap-1">
+                                    <i data-lucide="clock" class="w-3.5 h-3.5 text-amber-500"></i>
+                                    출발 시간순
+                                </button>
+                                <button onclick="setFlightSort('duration')" id="sort-duration" class="px-2.5 py-1.5 rounded-lg font-medium text-slate-600 hover:text-slate-900 transition flex items-center gap-1">
+                                    <i data-lucide="zap" class="w-3.5 h-3.5 text-emerald-500"></i>
+                                    비행시간 짧은순
+                                </button>
+                            </div>
+
+                            <!-- 인원별 단가 / 가족 총액 보기 토글 -->
+                            <div class="inline-flex p-1 rounded-xl bg-sky-50 border border-sky-200/70 text-xs">
+                                <button onclick="setPriceViewMode('total')" id="view-total" class="px-2.5 py-1.5 rounded-lg font-semibold bg-sky-500 text-white shadow-xs transition">
+                                    가족 총액 보기
+                                </button>
+                                <button onclick="setPriceViewMode('perPerson')" id="view-perPerson" class="px-2.5 py-1.5 rounded-lg font-medium text-sky-700 hover:bg-sky-100 transition">
+                                    인원별 단가 보기
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 시간대 빠른 필터 (오전/오후/저녁) -->
+                    <div class="flex items-center gap-1.5 mb-4 overflow-x-auto pb-1">
+                        <span class="text-xs font-medium text-slate-500 mr-1 shrink-0">출발 시간대:</span>
+                        <button onclick="setTimeFilter('ALL')" id="time-filter-ALL" class="time-filter-btn px-3 py-1 rounded-full text-xs font-semibold bg-slate-800 text-white transition shrink-0">전체 시간대</button>
+                        <button onclick="setTimeFilter('MORNING')" id="time-filter-MORNING" class="time-filter-btn px-3 py-1 rounded-full text-xs font-medium bg-slate-100 text-slate-600 hover:bg-slate-200 transition shrink-0">🌅 오전 출발 (06~12시)</button>
+                        <button onclick="setTimeFilter('AFTERNOON')" id="time-filter-AFTERNOON" class="time-filter-btn px-3 py-1 rounded-full text-xs font-medium bg-slate-100 text-slate-600 hover:bg-slate-200 transition shrink-0">☀️ 오후 출발 (12~18시)</button>
+                        <button onclick="setTimeFilter('EVENING')" id="time-filter-EVENING" class="time-filter-btn px-3 py-1 rounded-full text-xs font-medium bg-slate-100 text-slate-600 hover:bg-slate-200 transition shrink-0">🌙 저녁/밤 출발 (18~24시)</button>
+                    </div>
+
+                    <!-- 항공편 리스트 컨테이너 -->
+                    <div id="flight-list" class="space-y-3">
+                        <!-- JS로 렌더링 -->
+                    </div>
+                </section>
+
+                <!-- STEP 4: 숙박, 식비 및 현지 경비 계산기 -->
+                <section class="bg-white rounded-3xl p-5 sm:p-6 shadow-xs border border-slate-200/80">
+                    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-5">
+                        <div class="flex items-center gap-2">
+                            <span class="w-6 h-6 rounded-full bg-sky-100 text-sky-600 text-xs font-bold flex items-center justify-center">4</span>
+                            <h2 class="text-base sm:text-lg font-bold text-slate-900">숙박 및 현지 체류비 시뮬레이션</h2>
+                        </div>
+                        <button onclick="applyRecommendedLocalCosts()" class="self-start sm:self-auto inline-flex items-center gap-1 px-3 py-1.5 rounded-xl bg-amber-50 hover:bg-amber-100 border border-amber-200 text-amber-800 text-xs font-semibold transition">
+                            <i data-lucide="sparkles" class="w-3.5 h-3.5"></i>
+                            <span id="recommend-cost-btn-text">후쿠오카 평균 물가 자동 적용</span>
+                        </button>
+                    </div>
+
+                    <div class="space-y-5">
+                        <!-- 1) 숙박비 설정 -->
+                        <div class="p-4 rounded-2xl bg-slate-50 border border-slate-200/70">
+                            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-3">
+                                <div>
+                                    <h3 class="text-sm font-bold text-slate-800 flex items-center gap-1.5">
+                                        <i data-lucide="hotel" class="w-4 h-4 text-indigo-500"></i>
+                                        숙박비 (호텔 / 리조트)
+                                    </h3>
+                                    <p class="text-xs text-slate-500 mt-0.5">숙소 등급 선택 또는 슬라이더 조절 · <span class="font-semibold text-slate-700 nights-text">3박</span> 기준</p>
+                                </div>
+                                <div class="text-right">
+                                    <span id="hotel-total-display" class="text-base font-bold text-indigo-600">750,000원</span>
+                                </div>
+                            </div>
+
+                            <!-- 숙소 등급 빠른 선택 버튼 -->
+                            <div class="grid grid-cols-3 gap-2 mb-3.5">
+                                <button type="button" onclick="setHotelTier('budget')" id="tier-budget" class="hotel-tier-btn py-2 px-2.5 rounded-xl border border-slate-200 bg-white hover:border-indigo-300 text-xs font-medium text-slate-700 transition text-center">
+                                    🏨 가성비 호텔<br><span class="text-[11px] text-slate-400">1박 ~12만원</span>
+                                </button>
+                                <button type="button" onclick="setHotelTier('standard')" id="tier-standard" class="hotel-tier-btn py-2 px-2.5 rounded-xl border-2 border-indigo-500 bg-indigo-50/60 text-xs font-bold text-indigo-700 transition text-center">
+                                    🏢 4성급 가족호텔<br><span class="text-[11px] text-indigo-500">1박 ~25만원</span>
+                                </button>
+                                <button type="button" onclick="setHotelTier('luxury')" id="tier-luxury" class="hotel-tier-btn py-2 px-2.5 rounded-xl border border-slate-200 bg-white hover:border-indigo-300 text-xs font-medium text-slate-700 transition text-center">
+                                    🏝️ 5성급 리조트/풀빌라<br><span class="text-[11px] text-slate-400">1박 ~48만원</span>
+                                </button>
+                            </div>
+
+                            <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 items-center">
+                                <div class="sm:col-span-2 space-y-1.5">
+                                    <div class="flex justify-between text-xs">
+                                        <span class="text-slate-500">1박당 1객실 예상 비용</span>
+                                        <span id="hotel-per-night-label" class="font-bold text-slate-800">250,000원 / 박</span>
+                                    </div>
+                                    <input type="range" id="hotel-rate-slider" min="80000" max="800000" step="10000" value="250000" oninput="updateExpenseInputs()" class="w-full h-2 bg-slate-200 rounded-lg cursor-pointer">
+                                    <div class="flex justify-between text-[11px] text-slate-400">
+                                        <span>가성비 (8만)</span>
+                                        <span>4성급 (25만)</span>
+                                        <span>5성급 풀빌라 (80만)</span>
+                                    </div>
+                                </div>
+
+                                <div class="bg-white p-2.5 rounded-xl border border-slate-200 flex items-center justify-between">
+                                    <span class="text-xs font-semibold text-slate-700">객실 수</span>
+                                    <div class="flex items-center gap-2">
+                                        <button onclick="updateRooms(-1)" class="w-7 h-7 rounded-lg bg-slate-100 hover:bg-slate-200 font-bold text-slate-700">-</button>
+                                        <span id="room-count" class="w-5 text-center text-sm font-bold text-slate-900">1</span>
+                                        <button onclick="updateRooms(1)" class="w-7 h-7 rounded-lg bg-indigo-100 hover:bg-indigo-200 font-bold text-indigo-700">+</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 2) 식비 및 현지 관광/교통비 -->
+                        <div class="p-4 rounded-2xl bg-slate-50 border border-slate-200/70">
+                            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-3">
+                                <div>
+                                    <h3 class="text-sm font-bold text-slate-800 flex items-center gap-1.5">
+                                        <i data-lucide="utensils" class="w-4 h-4 text-emerald-500"></i>
+                                        식비 · 투어 · 현지 교통비
+                                    </h3>
+                                    <p class="text-xs text-slate-500 mt-0.5">1인 1일 예상 경비 × <span class="font-semibold text-slate-700 paying-pax-text">4명(성인+아동)</span> × <span class="font-semibold text-slate-700 days-text">4일</span></p>
+                                </div>
+                                <div class="text-right">
+                                    <span id="food-total-display" class="text-base font-bold text-emerald-600">1,280,000원</span>
+                                </div>
+                            </div>
+
+                            <div class="space-y-1.5">
+                                <div class="flex justify-between text-xs">
+                                    <span class="text-slate-500">1인 1일 평균 식비 및 입장료/택시비</span>
+                                    <span id="food-per-day-label" class="font-bold text-slate-800">80,000원 / 1인·1일</span>
+                                </div>
+                                <input type="range" id="food-rate-slider" min="30000" max="250000" step="5000" value="80000" oninput="updateExpenseInputs()" class="w-full h-2 bg-slate-200 rounded-lg cursor-pointer">
+                                <div class="flex justify-between text-[11px] text-slate-400">
+                                    <span>알뜰 현지식 (3만)</span>
+                                    <span>여유로운 맛집/투어 (8만)</span>
+                                    <span>럭셔리 다이닝 (25만)</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 3) 기타 예비비 (여행자 보험, 유심/로밍, 쇼핑/비상금) -->
+                        <div class="p-4 rounded-2xl bg-slate-50 border border-slate-200/70">
+                            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-3">
+                                <div>
+                                    <h3 class="text-sm font-bold text-slate-800 flex items-center gap-1.5">
+                                        <i data-lucide="shield-check" class="w-4 h-4 text-amber-500"></i>
+                                        여행자 보험 · 유심 · 쇼핑/예비비 (가족 전체)
+                                    </h3>
+                                    <p class="text-xs text-slate-500 mt-0.5">출국 전 준비물 및 면세점/기념품 예비 예산</p>
+                                </div>
+                                <div class="text-right">
+                                    <span id="etc-total-display" class="text-base font-bold text-amber-600">300,000원</span>
+                                </div>
+                            </div>
+                            <input type="range" id="etc-rate-slider" min="0" max="2000000" step="50000" value="300000" oninput="updateExpenseInputs()" class="w-full h-2 bg-slate-200 rounded-lg cursor-pointer">
+                            <div class="flex justify-between text-[11px] text-slate-400 mt-1">
+                                <span>0원</span>
+                                <span>30만원</span>
+                                <span>100만원</span>
+                                <span>200만원</span>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- STEP 5: 후보지 비교함 (여러 도시 견적 저장 및 나란히 비교) -->
+                <section class="bg-white rounded-3xl p-5 sm:p-6 shadow-xs border border-slate-200/80">
+                    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-4">
+                        <div class="flex items-center gap-2">
+                            <span class="w-6 h-6 rounded-full bg-indigo-100 text-indigo-600 text-xs font-bold flex items-center justify-center">5</span>
+                            <div>
+                                <h2 class="text-base sm:text-lg font-bold text-slate-900">후보지 견적 비교함</h2>
+                                <p class="text-xs text-slate-500">여러 도시의 계산 결과를 담아두고 총액과 조건을 한눈에 비교해 보세요.</p>
+                            </div>
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <button onclick="addToCompare()" class="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-bold shadow-xs transition active:scale-95">
+                                <i data-lucide="plus-circle" class="w-4 h-4"></i>
+                                <span>현재 견적 비교함에 담기</span>
+                            </button>
+                            <button onclick="copyCompareSummary()" id="copy-compare-btn" class="hidden inline-flex items-center gap-1.5 px-3 py-2 rounded-xl bg-slate-800 hover:bg-slate-900 text-white text-xs font-semibold transition">
+                                <i data-lucide="copy" class="w-3.5 h-3.5"></i>
+                                <span>비교표 복사</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div id="compare-container">
+                        <!-- JS로 렌더링 -->
+                    </div>
+                </section>
+            </div>
+
+            <!-- 우측 실시간 비용 요약 스티키 대시보드 (4컬럼) -->
+            <aside class="lg:col-span-4 lg:sticky lg:top-22 space-y-4">
+                <div class="bg-white rounded-3xl p-5 sm:p-6 shadow-md shadow-slate-200/60 border border-slate-200">
+                    <!-- 상단 요약 헤더 -->
+                    <div class="flex items-center justify-between pb-4 border-b border-slate-100">
+                        <div>
+                            <span id="summary-country-badge" class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-sky-100 text-sky-700 mb-1">
+                                🇯🇵 일본 여행 견적서
+                            </span>
+                            <h2 id="summary-title" class="text-xl font-extrabold text-slate-900">후쿠오카 3박 4일</h2>
+                        </div>
+                        <div class="text-right">
+                            <div class="text-xs text-slate-400">여행 인원</div>
+                            <div id="summary-pax-text" class="text-sm font-bold text-slate-700">성인 2, 아동 2</div>
+                        </div>
+                    </div>
+
+                    <!-- 총 예상 경비 하이라이트 -->
+                    <div class="my-5 p-4 rounded-2xl bg-gradient-to-br from-slate-900 to-slate-800 text-white shadow-inner">
+                        <div class="flex items-center justify-between text-xs text-slate-300 mb-1">
+                            <span>우리 가족 총 예상 경비</span>
+                            <span class="px-2 py-0.5 rounded bg-white/10 text-sky-300 font-medium">VAT/유류세 포함 기준</span>
+                        </div>
+                        <div id="grand-total-amount" class="text-2xl sm:text-3xl font-extrabold tracking-tight text-white">
+                            3,310,000원
+                        </div>
+                        <div class="mt-2 pt-2 border-t border-white/10 flex items-center justify-between text-xs">
+                            <span class="text-slate-300">1인당 평균 경비 (전체 인원 기준)</span>
+                            <span id="per-person-avg-amount" class="font-bold text-amber-300 text-sm">827,500원</span>
+                        </div>
+                    </div>
+
+                    <!-- 항목별 비중 시각화 프로그레스 바 -->
+                    <div class="mb-5">
+                        <div class="flex justify-between text-xs font-semibold text-slate-600 mb-1.5">
+                            <span>경비 구성 비중</span>
+                            <span id="ratio-text" class="text-slate-400">항공 30% · 숙박 23% · 현지 47%</span>
+                        </div>
+                        <div class="w-full h-3 rounded-full bg-slate-100 overflow-hidden flex">
+                            <div id="bar-flight" class="bg-sky-500 h-full transition-all duration-300" style="width: 30%"></div>
+                            <div id="bar-hotel" class="bg-indigo-500 h-full transition-all duration-300" style="width: 23%"></div>
+                            <div id="bar-food" class="bg-emerald-500 h-full transition-all duration-300" style="width: 38%"></div>
+                            <div id="bar-etc" class="bg-amber-400 h-full transition-all duration-300" style="width: 9%"></div>
+                        </div>
+                    </div>
+
+                    <!-- 상세 내역 리스트 -->
+                    <div class="space-y-3 text-sm border-t border-slate-100 pt-4">
+                        <!-- 항공권 -->
+                        <div class="flex items-start justify-between">
+                            <div>
+                                <div class="font-semibold text-slate-800 flex items-center gap-1.5">
+                                    <span class="w-2.5 h-2.5 rounded-full bg-sky-500"></span>
+                                    왕복 항공권 총액
+                                </div>
+                                <div id="summary-flight-detail" class="text-xs text-slate-500 pl-4 mt-0.5">
+                                    진에어 (09:10 출발) · 성인2, 아동2
+                                </div>
+                            </div>
+                            <span id="summary-flight-cost" class="font-bold text-slate-900">980,000원</span>
+                        </div>
+
+                        <!-- 숙박비 -->
+                        <div class="flex items-start justify-between">
+                            <div>
+                                <div class="font-semibold text-slate-800 flex items-center gap-1.5">
+                                    <span class="w-2.5 h-2.5 rounded-full bg-indigo-500"></span>
+                                    숙박비
+                                </div>
+                                <div id="summary-hotel-detail" class="text-xs text-slate-500 pl-4 mt-0.5">
+                                    객실 1개 × 3박 (1박 25만원)
+                                </div>
+                            </div>
+                            <span id="summary-hotel-cost" class="font-bold text-slate-900">750,000원</span>
+                        </div>
+
+                        <!-- 식비/관광 -->
+                        <div class="flex items-start justify-between">
+                            <div>
+                                <div class="font-semibold text-slate-800 flex items-center gap-1.5">
+                                    <span class="w-2.5 h-2.5 rounded-full bg-emerald-500"></span>
+                                    식비 · 관광 · 교통
+                                </div>
+                                <div id="summary-food-detail" class="text-xs text-slate-500 pl-4 mt-0.5">
+                                    4명 × 4일 (1일 8만원)
+                                </div>
+                            </div>
+                            <span id="summary-food-cost" class="font-bold text-slate-900">1,280,000원</span>
+                        </div>
+
+                        <!-- 기타 예비비 -->
+                        <div class="flex items-start justify-between">
+                            <div>
+                                <div class="font-semibold text-slate-800 flex items-center gap-1.5">
+                                    <span class="w-2.5 h-2.5 rounded-full bg-amber-400"></span>
+                                    보험 · 유심 · 예비비
+                                </div>
+                            </div>
+                            <span id="summary-etc-cost" class="font-bold text-slate-900">300,000원</span>
+                        </div>
+                    </div>
+
+                    <!-- 가족 비교 메모장 & 공유 버튼 -->
+                    <div class="mt-5 pt-4 border-t border-slate-100 space-y-3">
+                        <div>
+                            <label for="family-memo" class="block text-xs font-semibold text-slate-600 mb-1">가족 의견 / 특이사항 메모 (복사 시 함께 포함)</label>
+                            <input type="text" id="family-memo" placeholder="예: 부모님 모시고 가니 오전 직항 선호, 수영장 좋은 리조트!" 
+                                   class="w-full px-3 py-2 rounded-xl bg-slate-50 border border-slate-200 text-xs text-slate-800 focus:outline-none focus:border-sky-500">
+                        </div>
+
+                        <button onclick="copySummary()" class="w-full py-3.5 px-4 rounded-2xl bg-gradient-to-r from-sky-500 to-indigo-600 hover:from-sky-600 hover:to-indigo-700 text-white font-bold text-sm shadow-lg shadow-sky-500/25 flex items-center justify-center gap-2 transition active:scale-[0.98]">
+                            <i data-lucide="clipboard-copy" class="w-4 h-4"></i>
+                            <span>견적 요약 복사해서 가족방에 공유하기</span>
+                        </button>
+
+                        <button onclick="addToCompare()" class="w-full py-2.5 px-4 rounded-2xl bg-indigo-50 hover:bg-indigo-100 text-indigo-700 border border-indigo-200/80 font-bold text-xs flex items-center justify-center gap-1.5 transition">
+                            <i data-lucide="scale" class="w-4 h-4"></i>
+                            <span>후보지 비교함에 현재 견적 추가하기</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- 후보지 빠른 비교 팁 카드 -->
+                <div class="bg-sky-50/80 rounded-2xl p-4 border border-sky-200/70 text-xs text-sky-900 space-y-1.5">
+                    <div class="font-bold flex items-center gap-1.5 text-sky-800">
+                        <i data-lucide="lightbulb" class="w-4 h-4 text-sky-600"></i>
+                        가족 여행지 선택 팁
+                    </div>
+                    <p class="leading-relaxed text-sky-800/90">
+                        • <strong>짧은 일정(2박3일~3박4일)</strong>이나 어린 아이가 있다면 비행 1~2시간대인 <strong>후쿠오카·오사카</strong>가 체력 부담이 적습니다.<br>
+                        • <strong>4박 이상 휴양과 가성비</strong>를 원하시면 리조트 물가가 저렴한 <strong>다낭·푸꾸옥</strong>이 유리합니다.
+                    </p>
+                </div>
+            </aside>
+        </div>
+    </main>
+
+    <!-- 토스트 메시지 알림 박스 (alert 대신 사용) -->
+    <div id="toast-box" class="fixed bottom-6 left-1/2 -translate-x-1/2 z-50 pointer-events-none opacity-0 transition-all duration-300 translate-y-4">
+        <div class="bg-slate-900 text-white px-5 py-3 rounded-2xl shadow-xl flex items-center gap-2.5 text-sm font-medium border border-slate-700">
+            <i data-lucide="check-circle-2" class="w-5 h-5 text-emerald-400 shrink-0"></i>
+            <span id="toast-message">클립보드에 견적 요약이 복사되었습니다!</span>
+        </div>
+    </div>
+
+    <script>
+        /**
+         * 1. 여행지 및 샘플 항공권 데이터베이스
+         * - 일본: 후쿠오카, 도쿄, 오사카
+         * - 베트남: 다낭, 하노이, 푸꾸옥
+         */
+        const DESTINATIONS = {
+            fukuoka: {
+                id: 'fukuoka',
+                country: 'JP',
+                countryName: '일본',
+                flag: '🇯🇵',
+                name: '후쿠오카',
+                enName: 'Fukuoka (FUK)',
+                flightDuration: '약 1시간 20분',
+                badge: '초단거리·효도/유아 동반 추천',
+                description: '인천에서 1시간 20분! 시내와 공항이 15분 거리로 이동이 매우 편하고 온천과 먹거리가 풍부합니다.',
+                recommendedHotelPerNight: 250000,
+                recommendedFoodPerDay: 80000,
+                flights: [
+                    { id: 'fuk-1', airline: '진에어 (Jin Air)', code: 'LJ261', depTime: '08:10', arrTime: '09:30', returnTime: '10:30 → 11:55', duration: '1시간 20분', direct: true, adultPrice: 260000, childPrice: 210000, infantPrice: 35000, tag: '오전 인기' },
+                    { id: 'fuk-2', airline: '티웨이항공 (T\'way)', code: 'TW291', depTime: '10:05', arrTime: '11:25', returnTime: '12:25 → 13:50', duration: '1시간 20분', direct: true, adultPrice: 245000, childPrice: 198000, infantPrice: 35000, tag: '가성비 추천' },
+                    { id: 'fuk-3', airline: '대한항공 (Korean Air)', code: 'KE787', depTime: '09:05', arrTime: '10:25', returnTime: '11:35 → 13:00', duration: '1시간 20분', direct: true, adultPrice: 390000, childPrice: 305000, infantPrice: 45000, tag: '국적기·수하물 넉넉' },
+                    { id: 'fuk-4', airline: '제주항공 (JEJU air)', code: '7C1404', depTime: '14:20', arrTime: '15:40', returnTime: '16:40 → 18:05', duration: '1시간 20분', direct: true, adultPrice: 225000, childPrice: 185000, infantPrice: 30000, tag: '최저가' },
+                    { id: 'fuk-5', airline: '아시아나항공 (Asiana)', code: 'OZ134', depTime: '18:30', arrTime: '19:50', returnTime: '20:50 → 22:15', duration: '1시간 20분', direct: true, adultPrice: 340000, childPrice: 265000, infantPrice: 40000, tag: '퇴근 후 출발' }
+                ]
+            },
+            osaka: {
+                id: 'osaka',
+                country: 'JP',
+                countryName: '일본',
+                flag: '🇯🇵',
+                name: '오사카',
+                enName: 'Osaka (KIX)',
+                flightDuration: '약 1시간 50분',
+                badge: '유니버설스튜디오·미식 천국',
+                description: '유니버설 스튜디오 재팬(USJ), 교토·나라 근교 여행까지 아이부터 어른까지 만족도가 높은 인기 여행지입니다.',
+                recommendedHotelPerNight: 280000,
+                recommendedFoodPerDay: 90000,
+                flights: [
+                    { id: 'osa-1', airline: '제주항공 (JEJU air)', code: '7C1302', depTime: '07:50', arrTime: '09:40', returnTime: '10:50 → 12:45', duration: '1시간 50분', direct: true, adultPrice: 275000, childPrice: 220000, infantPrice: 35000, tag: '알찬 오전 출발' },
+                    { id: 'osa-2', airline: '피치항공 (Peach)', code: 'MM002', depTime: '10:40', arrTime: '12:30', returnTime: '13:40 → 15:35', duration: '1시간 50분', direct: true, adultPrice: 255000, childPrice: 210000, infantPrice: 35000, tag: '최저가' },
+                    { id: 'osa-3', airline: '대한항공 (Korean Air)', code: 'KE723', depTime: '09:35', arrTime: '11:25', returnTime: '12:40 → 14:35', duration: '1시간 50분', direct: true, adultPrice: 440000, childPrice: 340000, infantPrice: 50000, tag: '가족 선호 1위' },
+                    { id: 'osa-4', airline: '아시아나항공 (Asiana)', code: 'OZ114', depTime: '14:15', arrTime: '16:05', returnTime: '17:15 → 19:10', duration: '1시간 50분', direct: true, adultPrice: 410000, childPrice: 320000, infantPrice: 48000, tag: '오후 여유 출발' },
+                    { id: 'osa-5', airline: '진에어 (Jin Air)', code: 'LJ235', depTime: '18:10', arrTime: '20:00', returnTime: '21:00 → 22:55', duration: '1시간 50분', direct: true, adultPrice: 265000, childPrice: 215000, infantPrice: 35000, tag: '저녁 출발' }
+                ]
+            },
+            tokyo: {
+                id: 'tokyo',
+                country: 'JP',
+                countryName: '일본',
+                flag: '🇯🇵',
+                name: '도쿄',
+                enName: 'Tokyo (NRT/HND)',
+                flightDuration: '약 2시간 25분',
+                badge: '디즈니랜드·쇼핑/테마파크',
+                description: '도쿄 디즈니랜드·디즈니씨, 해리포터 스튜디오 등 아이들이 열광하는 테마파크와 세련된 도심 여행이 가능합니다.',
+                recommendedHotelPerNight: 320000,
+                recommendedFoodPerDay: 95000,
+                flights: [
+                    { id: 'tyo-1', airline: '에어프레미아 (Air Premia)', code: 'YP731', depTime: '08:30', arrTime: '10:55', returnTime: '12:10 → 14:50', duration: '2시간 25분', direct: true, adultPrice: 310000, childPrice: 255000, infantPrice: 40000, tag: '넓은 좌석 추천' },
+                    { id: 'tyo-2', airline: '이스타항공 (Eastar Jet)', code: 'ZE601', depTime: '07:45', arrTime: '10:10', returnTime: '11:20 → 14:00', duration: '2시간 25분', direct: true, adultPrice: 285000, childPrice: 235000, infantPrice: 38000, tag: '최저가' },
+                    { id: 'tyo-3', airline: '대한항공 (Korean Air)', code: 'KE703', depTime: '10:10', arrTime: '12:35', returnTime: '13:55 → 16:35', duration: '2시간 25분', direct: true, adultPrice: 495000, childPrice: 380000, infantPrice: 55000, tag: '국적기 직항' },
+                    { id: 'tyo-4', airline: '아시아나항공 (Asiana)', code: 'OZ104', depTime: '15:30', arrTime: '17:55', returnTime: '19:05 → 21:45', duration: '2시간 25분', direct: true, adultPrice: 465000, childPrice: 360000, infantPrice: 52000, tag: '오후 직항' },
+                    { id: 'tyo-5', airline: '티웨이항공 (T\'way)', code: 'TW205', depTime: '19:15', arrTime: '21:40', returnTime: '22:40 → 01:20', duration: '2시간 25분', direct: true, adultPrice: 295000, childPrice: 240000, infantPrice: 38000, tag: '야간 편' }
+                ]
+            },
+            danang: {
+                id: 'danang',
+                country: 'VN',
+                countryName: '베트남',
+                flag: '🇻🇳',
+                name: '다낭',
+                enName: 'Da Nang (DAD)',
+                flightDuration: '약 4시간 45분',
+                badge: '가족 휴양 1위·리조트 천국',
+                description: '한국인 가족 여행 만족도 1위! 바나힐, 호이안 올드타운, 프라이빗 비치 리조트까지 가성비 최고의 휴양지입니다.',
+                recommendedHotelPerNight: 220000,
+                recommendedFoodPerDay: 55000,
+                flights: [
+                    { id: 'dad-1', airline: '비엣젯항공 (Vietjet)', code: 'VJ879', depTime: '07:00', arrTime: '09:45', returnTime: '11:00 → 17:30', duration: '4시간 45분', direct: true, adultPrice: 330000, childPrice: 280000, infantPrice: 45000, tag: '오전 출발 최저가' },
+                    { id: 'dad-2', airline: '티웨이항공 (T\'way)', code: 'TW125', depTime: '10:30', arrTime: '13:15', returnTime: '14:25 → 20:55', duration: '4시간 45분', direct: true, adultPrice: 385000, childPrice: 315000, infantPrice: 48000, tag: '아이 동반 편한 시간' },
+                    { id: 'dad-3', airline: '대한항공 (Korean Air)', code: 'KE463', depTime: '18:40', arrTime: '21:25', returnTime: '22:50 → 05:20', duration: '4시간 45분', direct: true, adultPrice: 580000, childPrice: 450000, infantPrice: 65000, tag: '국적기 야간편' },
+                    { id: 'dad-4', airline: '진에어 (Jin Air)', code: 'LJ081', depTime: '21:15', arrTime: '00:05', returnTime: '01:20 → 07:50', duration: '4시간 50분', direct: true, adultPrice: 365000, childPrice: 295000, infantPrice: 45000, tag: '꽉 찬 일정' }
+                ]
+            },
+            hanoi: {
+                id: 'hanoi',
+                country: 'VN',
+                countryName: '베트남',
+                flag: '🇻🇳',
+                name: '하노이',
+                enName: 'Hanoi (HAN)',
+                flightDuration: '약 4시간 30분',
+                badge: '하롱베이 크루즈·역사/문화',
+                description: '유네스코 자연유산 하롱베이 럭셔리 크루즈와 하노이 시내 투어를 결합한 3대 대가족 효도 여행 추천지입니다.',
+                recommendedHotelPerNight: 190000,
+                recommendedFoodPerDay: 50000,
+                flights: [
+                    { id: 'han-1', airline: '비엣젯항공 (Vietjet)', code: 'VJ963', depTime: '06:25', arrTime: '08:55', returnTime: '10:15 → 16:35', duration: '4시간 30분', direct: true, adultPrice: 315000, childPrice: 265000, infantPrice: 42000, tag: '최저가' },
+                    { id: 'han-2', airline: '베트남항공 (Vietnam Airlines)', code: 'VN417', depTime: '10:35', arrTime: '13:05', returnTime: '14:30 → 20:50', duration: '4시간 30분', direct: true, adultPrice: 460000, childPrice: 360000, infantPrice: 55000, tag: '낮 시간 FSC 추천' },
+                    { id: 'han-3', airline: '대한항공 (Korean Air)', code: 'KE479', depTime: '19:10', arrTime: '21:40', returnTime: '23:10 → 05:30', duration: '4시간 30분', direct: true, adultPrice: 550000, childPrice: 425000, infantPrice: 60000, tag: '국적기 직항' },
+                    { id: 'han-4', airline: '제주항공 (JEJU air)', code: '7C2803', depTime: '21:40', arrTime: '00:10', returnTime: '01:20 → 07:40', duration: '4시간 30분', direct: true, adultPrice: 345000, childPrice: 280000, infantPrice: 45000, tag: '밤 출발' }
+                ]
+            },
+            phuquoc: {
+                id: 'phuquoc',
+                country: 'VN',
+                countryName: '베트남',
+                flag: '🇻🇳',
+                name: '푸꾸옥',
+                enName: 'Phu Quoc (PQC)',
+                flightDuration: '약 5시간 30분',
+                badge: '빈원더스·사파리·에메랄드 바다',
+                description: '베트남의 진주라 불리는 휴양섬! 빈원더스 테마파크, 빈펄 사파리, 세계 최장 해상 케이블카 등 가족 볼거리가 압도적입니다.',
+                recommendedHotelPerNight: 260000,
+                recommendedFoodPerDay: 60000,
+                flights: [
+                    { id: 'fuk-1', airline: '진에어 (Jin Air)', code: 'LJ261', depTime: '08:10', arrTime: '09:30', returnTime: '10:30 → 11:55', duration: '1시간 20분', durationMin: 80, direct: true, adultPrice: 260000, childPrice: 210000, infantPrice: 35000, tag: '오전 인기' },
+                    { id: 'fuk-2', airline: '티웨이항공 (T\'way)', code: 'TW291', depTime: '10:05', arrTime: '11:25', returnTime: '12:25 → 13:50', duration: '1시간 20분', durationMin: 80, direct: true, adultPrice: 245000, childPrice: 198000, infantPrice: 35000, tag: '가성비 추천' },
+                    { id: 'fuk-3', airline: '대한항공 (Korean Air)', code: 'KE787', depTime: '09:05', arrTime: '10:25', returnTime: '11:35 → 13:00', duration: '1시간 20분', durationMin: 80, direct: true, adultPrice: 390000, childPrice: 305000, infantPrice: 45000, tag: '국적기·수하물 넉넉' },
+                    { id: 'fuk-4', airline: '제주항공 (JEJU air)', code: '7C1404', depTime: '14:20', arrTime: '15:40', returnTime: '16:40 → 18:05', duration: '1시간 20분', durationMin: 80, direct: true, adultPrice: 225000, childPrice: 185000, infantPrice: 30000, tag: '최저가' },
+                    { id: 'fuk-5', airline: '아시아나항공 (Asiana)', code: 'OZ134', depTime: '18:30', arrTime: '19:50', returnTime: '20:50 → 22:15', duration: '1시간 20분', durationMin: 80, direct: true, adultPrice: 340000, childPrice: 265000, infantPrice: 40000, tag: '퇴근 후 출발' }
+                ]
+            },
+            osaka: {
+                id: 'osaka',
+                country: 'JP',
+                countryName: '일본',
+                flag: '🇯🇵',
+                name: '오사카',
+                enName: 'Osaka (KIX)',
+                flightDuration: '약 1시간 45분',
+                badge: '유니버설스튜디오·미식 천국',
+                description: '유니버설 스튜디오 재팬(USJ), 교토·나라 근교 여행까지 아이부터 어른까지 만족도가 높은 인기 여행지입니다.',
+                recommendedHotelPerNight: 280000,
+                recommendedFoodPerDay: 90000,
+                flights: [
+                    { id: 'osa-1', airline: '제주항공 (JEJU air)', code: '7C1302', depTime: '07:50', arrTime: '09:35', returnTime: '10:50 → 12:40', duration: '1시간 45분', durationMin: 105, direct: true, adultPrice: 275000, childPrice: 220000, infantPrice: 35000, tag: '알찬 오전 출발' },
+                    { id: 'osa-2', airline: '피치항공 (Peach)', code: 'MM002', depTime: '10:40', arrTime: '12:25', returnTime: '13:40 → 15:30', duration: '1시간 45분', durationMin: 105, direct: true, adultPrice: 255000, childPrice: 210000, infantPrice: 35000, tag: '최저가' },
+                    { id: 'osa-3', airline: '대한항공 (Korean Air)', code: 'KE723', depTime: '09:35', arrTime: '11:20', returnTime: '12:40 → 14:30', duration: '1시간 45분', durationMin: 105, direct: true, adultPrice: 440000, childPrice: 340000, infantPrice: 50000, tag: '가족 선호 1위' },
+                    { id: 'osa-4', airline: '아시아나항공 (Asiana)', code: 'OZ114', depTime: '14:15', arrTime: '16:00', returnTime: '17:15 → 19:05', duration: '1시간 45분', durationMin: 105, direct: true, adultPrice: 410000, childPrice: 320000, infantPrice: 48000, tag: '오후 여유 출발' },
+                    { id: 'osa-5', airline: '진에어 (Jin Air)', code: 'LJ235', depTime: '18:10', arrTime: '20:00', returnTime: '21:00 → 22:55', duration: '1시간 50분', durationMin: 110, direct: true, adultPrice: 265000, childPrice: 215000, infantPrice: 35000, tag: '저녁 출발' }
+                ]
+            },
+            tokyo: {
+                id: 'tokyo',
+                country: 'JP',
+                countryName: '일본',
+                flag: '🇯🇵',
+                name: '도쿄',
+                enName: 'Tokyo (NRT/HND)',
+                flightDuration: '약 2시간 20분',
+                badge: '디즈니랜드·쇼핑/테마파크',
+                description: '도쿄 디즈니랜드·디즈니씨, 해리포터 스튜디오 등 아이들이 열광하는 테마파크와 세련된 도심 여행이 가능합니다.',
+                recommendedHotelPerNight: 320000,
+                recommendedFoodPerDay: 95000,
+                flights: [
+                    { id: 'tyo-1', airline: '에어프레미아 (Air Premia)', code: 'YP731', depTime: '08:30', arrTime: '10:50', returnTime: '12:10 → 14:45', duration: '2시간 20분', durationMin: 140, direct: true, adultPrice: 310000, childPrice: 255000, infantPrice: 40000, tag: '넓은 좌석 추천' },
+                    { id: 'tyo-2', airline: '이스타항공 (Eastar Jet)', code: 'ZE601', depTime: '07:45', arrTime: '10:10', returnTime: '11:20 → 14:00', duration: '2시간 25분', durationMin: 145, direct: true, adultPrice: 285000, childPrice: 235000, infantPrice: 38000, tag: '최저가' },
+                    { id: 'tyo-3', airline: '대한항공 (Korean Air)', code: 'KE703', depTime: '10:10', arrTime: '12:30', returnTime: '13:55 → 16:30', duration: '2시간 20분', durationMin: 140, direct: true, adultPrice: 495000, childPrice: 380000, infantPrice: 55000, tag: '국적기 직항' },
+                    { id: 'tyo-4', airline: '아시아나항공 (Asiana)', code: 'OZ104', depTime: '15:30', arrTime: '17:50', returnTime: '19:05 → 21:40', duration: '2시간 20분', durationMin: 140, direct: true, adultPrice: 465000, childPrice: 360000, infantPrice: 52000, tag: '오후 직항' },
+                    { id: 'tyo-5', airline: '티웨이항공 (T\'way)', code: 'TW205', depTime: '19:15', arrTime: '21:40', returnTime: '22:40 → 01:20', duration: '2시간 25분', durationMin: 145, direct: true, adultPrice: 295000, childPrice: 240000, infantPrice: 38000, tag: '야간 편' }
+                ]
+            },
+            danang: {
+                id: 'danang',
+                country: 'VN',
+                countryName: '베트남',
+                flag: '🇻🇳',
+                name: '다낭',
+                enName: 'Da Nang (DAD)',
+                flightDuration: '약 4시간 30분',
+                badge: '가족 휴양 1위·리조트 천국',
+                description: '한국인 가족 여행 만족도 1위! 바나힐, 호이안 올드타운, 프라이빗 비치 리조트까지 가성비 최고의 휴양지입니다.',
+                recommendedHotelPerNight: 220000,
+                recommendedFoodPerDay: 55000,
+                flights: [
+                    { id: 'dad-1', airline: '비엣젯항공 (Vietjet)', code: 'VJ879', depTime: '07:00', arrTime: '09:30', returnTime: '11:00 → 17:20', duration: '4시간 30분', durationMin: 270, direct: true, adultPrice: 330000, childPrice: 280000, infantPrice: 45000, tag: '오전 출발 최저가' },
+                    { id: 'dad-2', airline: '티웨이항공 (T\'way)', code: 'TW125', depTime: '10:30', arrTime: '13:05', returnTime: '14:25 → 20:50', duration: '4시간 35분', durationMin: 275, direct: true, adultPrice: 385000, childPrice: 315000, infantPrice: 48000, tag: '아이 동반 편한 시간' },
+                    { id: 'dad-3', airline: '대한항공 (Korean Air)', code: 'KE463', depTime: '18:40', arrTime: '21:10', returnTime: '22:50 → 05:10', duration: '4시간 30분', durationMin: 270, direct: true, adultPrice: 580000, childPrice: 450000, infantPrice: 65000, tag: '국적기 야간편' },
+                    { id: 'dad-4', airline: '진에어 (Jin Air)', code: 'LJ081', depTime: '21:15', arrTime: '23:55', returnTime: '01:20 → 07:45', duration: '4시간 40분', durationMin: 280, direct: true, adultPrice: 365000, childPrice: 295000, infantPrice: 45000, tag: '꽉 찬 일정' }
+                ]
+            },
+            hanoi: {
+                id: 'hanoi',
+                country: 'VN',
+                countryName: '베트남',
+                flag: '🇻🇳',
+                name: '하노이',
+                enName: 'Hanoi (HAN)',
+                flightDuration: '약 4시간 30분',
+                badge: '하롱베이 크루즈·역사/문화',
+                description: '유네스코 자연유산 하롱베이 럭셔리 크루즈와 하노이 시내 투어를 결합한 3대 대가족 효도 여행 추천지입니다.',
+                recommendedHotelPerNight: 190000,
+                recommendedFoodPerDay: 50000,
+                flights: [
+                    { id: 'han-1', airline: '비엣젯항공 (Vietjet)', code: 'VJ963', depTime: '06:25', arrTime: '08:55', returnTime: '10:15 → 16:35', duration: '4시간 30분', durationMin: 270, direct: true, adultPrice: 315000, childPrice: 265000, infantPrice: 42000, tag: '최저가' },
+                    { id: 'han-2', airline: '베트남항공 (Vietnam Airlines)', code: 'VN417', depTime: '10:35', arrTime: '13:05', returnTime: '14:30 → 20:50', duration: '4시간 30분', durationMin: 270, direct: true, adultPrice: 460000, childPrice: 360000, infantPrice: 55000, tag: '낮 시간 FSC 추천' },
+                    { id: 'han-3', airline: '대한항공 (Korean Air)', code: 'KE479', depTime: '19:10', arrTime: '21:40', returnTime: '23:10 → 05:30', duration: '4시간 30분', durationMin: 270, direct: true, adultPrice: 550000, childPrice: 425000, infantPrice: 60000, tag: '국적기 직항' },
+                    { id: 'han-4', airline: '제주항공 (JEJU air)', code: '7C2803', depTime: '21:40', arrTime: '00:15', returnTime: '01:20 → 07:45', duration: '4시간 35분', durationMin: 275, direct: true, adultPrice: 345000, childPrice: 280000, infantPrice: 45000, tag: '밤 출발' }
+                ]
+            },
+            phuquoc: {
+                id: 'phuquoc',
+                country: 'VN',
+                countryName: '베트남',
+                flag: '🇻🇳',
+                name: '푸꾸옥',
+                enName: 'Phu Quoc (PQC)',
+                flightDuration: '약 5시간 30분',
+                badge: '빈원더스·사파리·에메랄드 바다',
+                description: '베트남의 진주라 불리는 휴양섬! 빈원더스 테마파크, 빈펄 사파리, 세계 최장 해상 케이블카 등 가족 볼거리가 압도적입니다.',
+                recommendedHotelPerNight: 260000,
+                recommendedFoodPerDay: 60000,
+                flights: [
+                    { id: 'pqc-1', airline: '비엣젯항공 (Vietjet)', code: 'VJ975', depTime: '06:50', arrTime: '10:20', returnTime: '11:30 → 18:50', duration: '5시간 30분', durationMin: 330, direct: true, adultPrice: 390000, childPrice: 330000, infantPrice: 50000, tag: '오전 직항' },
+                    { id: 'pqc-2', airline: '제주항공 (JEJU air)', code: '7C2951', depTime: '14:30', arrTime: '18:00', returnTime: '19:10 → 02:30', duration: '5시간 30분', durationMin: 330, direct: true, adultPrice: 430000, childPrice: 355000, infantPrice: 52000, tag: '오후 직항' },
+                    { id: 'pqc-3', airline: '대한항공 (Korean Air)', code: 'KE485', depTime: '17:50', arrTime: '21:20', returnTime: '22:50 → 06:10', duration: '5시간 30분', durationMin: 330, direct: true, adultPrice: 660000, childPrice: 510000, infantPrice: 70000, tag: '국적기 직항' },
+                    { id: 'pqc-4', airline: '진에어 (Jin Air)', code: 'LJ093', depTime: '19:45', arrTime: '23:20', returnTime: '00:30 → 07:55', duration: '5시간 35분', durationMin: 335, direct: true, adultPrice: 415000, childPrice: 340000, infantPrice: 50000, tag: '가성비 직항' }
+                ]
+            }
+        };
+
+        /**
+         * 2. 애플리케이션 상태 관리 (State)
+         */
+        let state = {
+            countryFilter: 'ALL',
+            selectedCityId: 'fukuoka',
+            departDate: '',
+            returnDate: '',
+            nights: 3,
+            pax: {
+                adult: 2,
+                child: 2,
+                infant: 0
+            },
+            flightSort: 'price', // 'price' | 'time' | 'duration'
+            priceViewMode: 'total', // 'total' | 'perPerson'
+            timeFilter: 'ALL', // 'ALL' | 'MORNING' | 'AFTERNOON' | 'EVENING'
+            selectedFlightId: 'fuk-2',
+            expenses: {
+                hotelPerNight: 250000,
+                rooms: 1,
+                foodPerDay: 80000,
+                etcTotal: 300000
+            },
+            compareList: [] // 후보지 비교함 저장 배열
+        };
+
+        /**
+         * 3. 유틸리티 함수
+         */
+// ... existing code ... -->
+        function setHotelTier(tier) {
+            const tierRates = {
+                budget: 120000,
+                standard: 250000,
+                luxury: 480000
+            };
+            const rate = tierRates[tier] || 250000;
+            state.expenses.hotelPerNight = rate;
+            document.getElementById('hotel-rate-slider').value = rate;
+            updateHotelTierUI(rate);
+            renderSummaryAndExpenses();
+        }
+
+        function updateHotelTierUI(rate) {
+            document.querySelectorAll('.hotel-tier-btn').forEach(btn => {
+                btn.className = 'hotel-tier-btn py-2 px-2.5 rounded-xl border border-slate-200 bg-white hover:border-indigo-300 text-xs font-medium text-slate-700 transition text-center';
+            });
+            let activeId = 'tier-standard';
+            if (rate <= 160000) activeId = 'tier-budget';
+            else if (rate >= 400000) activeId = 'tier-luxury';
+
+            const activeBtn = document.getElementById(activeId);
+            if (activeBtn) {
+                activeBtn.className = 'hotel-tier-btn py-2 px-2.5 rounded-xl border-2 border-indigo-500 bg-indigo-50/60 text-xs font-bold text-indigo-700 transition text-center';
+            }
+        }
+
+        function updateExpenseInputs() {
+            state.expenses.hotelPerNight = parseInt(document.getElementById('hotel-rate-slider').value, 10);
+            state.expenses.foodPerDay = parseInt(document.getElementById('food-rate-slider').value, 10);
+            state.expenses.etcTotal = parseInt(document.getElementById('etc-rate-slider').value, 10);
+            updateHotelTierUI(state.expenses.hotelPerNight);
+            renderSummaryAndExpenses();
+        }
+
+        /**
+         * 7. 항공권 정렬, 필터, 보기 전환 및 렌더링
+         */
+        function setFlightSort(sortType) {
+            state.flightSort = sortType;
+            const sortIds = ['price', 'time', 'duration'];
+            sortIds.forEach(id => {
+                const btn = document.getElementById(`sort-${id}`);
+                if (!btn) return;
+                if (id === sortType) {
+                    btn.className = 'px-2.5 py-1.5 rounded-lg font-semibold bg-white text-slate-900 shadow-xs transition flex items-center gap-1';
+                } else {
+                    btn.className = 'px-2.5 py-1.5 rounded-lg font-medium text-slate-600 hover:text-slate-900 transition flex items-center gap-1';
+                }
+            });
+            renderFlightList();
+        }
+
+        function setPriceViewMode(mode) {
+// ... existing code ... -->
+            // 2) 정렬 적용 (가격 낮은순 / 출발 시간순 / 비행시간 짧은순)
+            filteredFlights.sort((a, b) => {
+                if (state.flightSort === 'price') {
+                    return calculateFlightTotal(a) - calculateFlightTotal(b);
+                } else if (state.flightSort === 'time') {
+                    return a.depTime.localeCompare(b.depTime);
+                } else {
+                    return (a.durationMin || 0) - (b.durationMin || 0);
+                }
+            });
+
+            if (filteredFlights.length === 0) {
+// ... existing code ... -->
+            document.getElementById('ratio-text').textContent = `항공 ${flightPct}% · 숙박 ${hotelPct}% · 현지/기타 ${foodPct + etcPct}%`;
+            updateHotelTierUI(state.expenses.hotelPerNight);
+        }
+
+        /**
+         * 9. 후보지 비교함 관리 (추가, 삭제, 렌더링, 비교표 복사)
+         */
+        function addToCompare() {
+            const city = DESTINATIONS[state.selectedCityId];
+            const selectedFlight = city.flights.find(f => f.id === state.selectedFlightId) || city.flights[0];
+            const days = state.nights + 1;
+            const totalPax = state.pax.adult + state.pax.child + state.pax.infant;
+            const payingPax = state.pax.adult + state.pax.child;
+
+            const flightCost = calculateFlightTotal(selectedFlight);
+            const hotelCost = state.expenses.hotelPerNight * state.expenses.rooms * state.nights;
+            const foodCost = state.expenses.foodPerDay * payingPax * days;
+            const etcCost = state.expenses.etcTotal;
+            const grandTotal = flightCost + hotelCost + foodCost + etcCost;
+            const perPersonAvg = Math.round(grandTotal / totalPax);
+
+            const item = {
+                uid: Date.now(),
+                cityName: city.name,
+                flag: city.flag,
+                nights: state.nights,
+                days: days,
+                totalPax: totalPax,
+                paxSummary: `성인${state.pax.adult}${state.pax.child > 0 ? `/아동${state.pax.child}` : ''}${state.pax.infant > 0 ? `/유아${state.pax.infant}` : ''}`,
+                airline: selectedFlight.airline.split(' ')[0],
+                depTime: selectedFlight.depTime,
+                flightCost,
+                hotelCost,
+                localCost: foodCost + etcCost,
+                grandTotal,
+                perPersonAvg
+            };
+
+            // 동일 도시가 이미 있으면 최신 견적으로 교체, 없으면 추가 (최대 6개)
+            const existingIdx = state.compareList.findIndex(c => c.cityName === item.cityName);
+            if (existingIdx > -1) {
+                state.compareList[existingIdx] = item;
+                showToast(`${city.name} 견적이 최신 설정으로 업데이트되었습니다.`);
+            } else {
+                if (state.compareList.length >= 6) {
+                    state.compareList.shift();
+                }
+                state.compareList.push(item);
+                showToast(`${city.name} 견적이 후보지 비교함에 담겼습니다!`);
+            }
+
+            renderCompareTable();
+        }
+
+        function removeFromCompare(uid) {
+            state.compareList = state.compareList.filter(item => item.uid !== uid);
+            renderCompareTable();
+        }
+
+        function renderCompareTable() {
+            const container = document.getElementById('compare-container');
+            const copyBtn = document.getElementById('copy-compare-btn');
+
+            if (state.compareList.length === 0) {
+                copyBtn.classList.add('hidden');
+                container.innerHTML = `
+                    <div class="p-6 rounded-2xl bg-slate-50 border border-dashed border-slate-200 text-center text-xs sm:text-sm text-slate-500">
+                        아직 담긴 후보지가 없습니다. 위에서 도시와 항공권을 고른 뒤 <strong>[현재 견적 비교함에 담기]</strong>를 눌러 여러 도시를 비교해 보세요!
+                    </div>
+                `;
+                return;
+            }
+
+            copyBtn.classList.remove('hidden');
+            const minTotal = Math.min(...state.compareList.map(i => i.grandTotal));
+
+            container.innerHTML = `
+                <div class="overflow-x-auto rounded-2xl border border-slate-200">
+                    <table class="w-full text-left border-collapse text-xs sm:text-sm">
+                        <thead>
+                            <tr class="bg-slate-100/80 text-slate-600 border-b border-slate-200">
+                                <th class="py-3 px-3.5 font-bold">후보 도시</th>
+                                <th class="py-3 px-3 font-semibold">일정 / 인원</th>
+                                <th class="py-3 px-3 font-semibold">항공권</th>
+                                <th class="py-3 px-3 font-semibold">숙박 / 현지</th>
+                                <th class="py-3 px-3 font-bold text-slate-900">총 예상 경비</th>
+                                <th class="py-3 px-3 font-semibold">1인 평균</th>
+                                <th class="py-3 px-2 text-center">삭제</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-slate-100">
+                            ${state.compareList.map(item => {
+                                const isCheapest = state.compareList.length > 1 && item.grandTotal === minTotal;
+                                return `
+                                    <tr class="${isCheapest ? 'bg-emerald-50/40' : 'bg-white'} hover:bg-slate-50 transition">
+                                        <td class="py-3 px-3.5 font-extrabold text-slate-900 whitespace-nowrap">
+                                            ${item.flag} ${item.cityName}
+                                            ${isCheapest ? '<span class="ml-1 px-1.5 py-0.5 rounded bg-emerald-100 text-emerald-700 text-[10px] font-bold">최저 예산</span>' : ''}
+                                        </td>
+                                        <td class="py-3 px-3 text-slate-600 whitespace-nowrap">${item.nights}박 ${item.days}일 · ${item.paxSummary}</td>
+                                        <td class="py-3 px-3 text-slate-700 whitespace-nowrap">
+                                            <div class="font-semibold">${formatKRW(item.flightCost)}</div>
+                                            <div class="text-[11px] text-slate-400">${item.airline} (${item.depTime})</div>
+                                        </td>
+                                        <td class="py-3 px-3 text-slate-600 whitespace-nowrap">
+                                            <div>숙박 ${formatManwon(item.hotelCost)}</div>
+                                            <div class="text-[11px] text-slate-400">현지 ${formatManwon(item.localCost)}</div>
+                                        </td>
+                                        <td class="py-3 px-3 font-extrabold text-sky-600 whitespace-nowrap">${formatKRW(item.grandTotal)}</td>
+                                        <td class="py-3 px-3 font-semibold text-slate-700 whitespace-nowrap">${formatKRW(item.perPersonAvg)}</td>
+                                        <td class="py-3 px-2 text-center">
+                                            <button onclick="removeFromCompare(${item.uid})" class="p-1.5 rounded-lg text-slate-400 hover:text-rose-500 hover:bg-rose-50 transition" title="삭제">
+                                                <i data-lucide="trash-2" class="w-4 h-4"></i>
+                                            </button>
+                                        </td>
+                                    </tr>
+                                `;
+                            }).join('')}
+                        </tbody>
+                    </table>
+                </div>
+            `;
+            lucide.createIcons();
+        }
+
+        function copyCompareSummary() {
+            if (state.compareList.length === 0) return;
+            const lines = [
+                `📊 [우리 가족 여행 후보지 비교표]`,
+                `----------------------------------`,
+                ...state.compareList.map((item, idx) => 
+                    `${idx + 1}. ${item.flag} ${item.cityName} (${item.nights}박 ${item.days}일 / ${item.paxSummary})\n   · 총액: ${formatKRW(item.grandTotal)} (1인 평균 ${formatKRW(item.perPersonAvg)})\n   · 내역: 항공 ${formatManwon(item.flightCost)} + 숙박 ${formatManwon(item.hotelCost)} + 현지 ${formatManwon(item.localCost)}`
+                ),
+                `----------------------------------`
+            ];
+            const textarea = document.createElement('textarea');
+            textarea.value = lines.join('\n');
+            textarea.style.position = 'fixed';
+            textarea.style.left = '-9999px';
+            document.body.appendChild(textarea);
+            textarea.select();
+            try {
+                document.execCommand('copy');
+                showToast('후보지 비교표가 복사되었습니다! 가족 단톡방에 공유해 보세요.');
+            } catch (e) {
+                showToast('복사에 실패했습니다.');
+            }
+            document.body.removeChild(textarea);
+        }
+
+        /**
+         * 10. 가족 공유용 견적 텍스트 클립보드 복사
+         */
+// ... existing code ... -->
+            state.expenses = {
+                hotelPerNight: 250000,
+                rooms: 1,
+                foodPerDay: 80000,
+                etcTotal: 300000
+            };
+            state.compareList = [];
+
+            document.getElementById('pax-adult').textContent = '2';
+// ... existing code ... -->
+        function renderAll() {
+            renderCityGrid();
+            renderFlightList();
+            renderSummaryAndExpenses();
+            renderCompareTable();
+        }
+
+        // 페이지 로드 시 실행
+// ... existing code ... -->
